@@ -96,7 +96,7 @@ public class RxDBAdapter {
     					c.getString(2), //patient
     					c.getString(3), //symptoms
     					c.getString(4), //sideEffects
-    					c.getString(5), //dose
+    					c.getInt(5), //dose
     					c.getInt(6), //pillsPerDay
     					MainActivity.df.parse(c.getString(12)), //startDate
     					c.getInt(7), //daysBetween
@@ -123,7 +123,7 @@ public class RxDBAdapter {
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
                 + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + RX_NAME + " TEXT,"
-                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_DOSE + "TEXT," + RX_PRD + 
+                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_DOSE + "INTEGER," + RX_PRD + 
                 "INTEGER," + RX_DBR + "INTEGER, " + RX_PHRM + "TEXT, " + RX_MD + "TEXT" +
                 RX_MDNMB + "TEXT, " + RX_NMB + "TEXT," + RX_STD + "TEXT);";
  

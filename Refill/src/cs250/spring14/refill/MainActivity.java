@@ -10,15 +10,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
@@ -48,6 +57,7 @@ public class MainActivity extends ActionBarActivity implements
 		frags = new Fragment[]{new RxFragment(), new HistoryFragment()};
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
@@ -84,7 +94,6 @@ public class MainActivity extends ActionBarActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -95,12 +104,125 @@ public class MainActivity extends ActionBarActivity implements
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		 switch (item.getItemId()) {
+	        case R.id.action_add:
+	            openDialog(this);
+	            return true;
+	        case R.id.action_settings:
+	        	return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+		 }
 	}
+	
+	private void openDialog(Context context) {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
+		LinearLayout layout= new LinearLayout(this);
+	    layout.setOrientation(1); 
+	    builder.setMessage("Add a Prescription");
+	    final EditText nameET = new EditText(this);
+	    final EditText patientET = new EditText(this);
+	    final EditText sympET = new EditText(this);
+	    final EditText sideEffectsET = new EditText(this);
+	    final EditText doseET = new EditText(this);
+	    final EditText ppdET = new EditText(this);
+	    final EditText startET = new EditText(this);
+	    final EditText dbrET = new EditText(this);
+	    final EditText pharmET = new EditText(this);
+	    final EditText physET = new EditText(this);
+	    final EditText mdPhoneET = new EditText(this);
+	    final EditText rxnumbET = new EditText(this);
+	    nameET.setHint("   Prescription Name: ");
+	    patientET.setHint("   Patient Name: ");
+	    sympET.setHint("   Symptoms: ");
+	    sideEffectsET.setHint("   Side effects: ");
+	    doseET.setHint("   Dose: (mg) ");
+	    ppdET.setHint("   Pills Per Day: ");
+	    startET.setHint("   Start Date: (mm/dd/yyyy): ");
+	    dbrET.setHint("   Days Between Refills: ");
+	    pharmET.setHint("   Pharmacy: ");
+	    physET.setHint("   Physician: ");
+	    mdPhoneET.setHint("   MD Phone Number: ");
+	    rxnumbET.setHint("   RX Number: ");
+	    nameET.setSingleLine();
+	    patientET.setSingleLine();
+	    sympET.setSingleLine();
+	    sideEffectsET.setSingleLine();
+	    doseET.setSingleLine();
+	    ppdET.setSingleLine();
+	    startET.setSingleLine();
+	    dbrET.setSingleLine();
+	    pharmET.setSingleLine();
+	    physET.setSingleLine();
+	    mdPhoneET.setSingleLine();
+	    rxnumbET.setSingleLine();
+	    mdPhoneET.setInputType(InputType.TYPE_CLASS_PHONE);
+	    rxnumbET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    dbrET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    ppdET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    layout.addView(nameET);
+	    layout.addView(patientET);
+	    layout.addView(sympET);
+	    layout.addView(sideEffectsET);
+	    layout.addView(doseET);
+	    layout.addView(ppdET);
+	    layout.addView(startET);
+	    layout.addView(dbrET);
+	    layout.addView(pharmET);
+	    layout.addView(physET);
+	    layout.addView(mdPhoneET);
+	    layout.addView(rxnumbET);
+	    //Set the dialog to this linear layout (I didn't wanna do it all in XML; knew it wouldn't be necessary)
+	    builder.setView(layout);
+	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	        	   //Adios amigos!
+	        	   return;
+	           }
+	       });
+	    builder.setPositiveButton("OK", null);
+	    //This is to make it so hitting OK on an invalid input doesn't close the dialog!
+		final AlertDialog dialog = builder.create();
+		//Code adapted from http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+	        @Override
+	        public void onShow(DialogInterface d) {
+
+	            Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+	            b.setOnClickListener(new View.OnClickListener() {
+	            	//The code to add an entry can be found here
+	                @Override
+	                public void onClick(View view) {
+	                	//Perform our checks; for now, just that they are non-empty (we can and will expand on this shortly)
+	                	if (nameET.getText().toString().trim().length()==0) {
+	 	        		   Toast.makeText(getApplicationContext(), "Please ensure you have a valid name", Toast.LENGTH_SHORT).show();
+	                	}
+	                	else if(patientET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid patient",Toast.LENGTH_SHORT).show();}
+	                	else if(sympET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid symp",Toast.LENGTH_SHORT).show();}
+	                	else if(sideEffectsET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid sideEffects",Toast.LENGTH_SHORT).show();}
+	                	else if(doseET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose",Toast.LENGTH_SHORT).show();}
+	                	else if(ppdET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid ppd",Toast.LENGTH_SHORT).show();}
+	                	else if(startET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid start",Toast.LENGTH_SHORT).show();}
+	                	else if(dbrET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dbr",Toast.LENGTH_SHORT).show();}
+	                	else if(pharmET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid pharm",Toast.LENGTH_SHORT).show();}
+	                	else if(physET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phys",Toast.LENGTH_SHORT).show();}
+	                	else if(mdPhoneET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid mdPhone",Toast.LENGTH_SHORT).show();}
+	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid rxnumb",Toast.LENGTH_SHORT).show();}
+	                	else {
+	                		Toast.makeText(getApplicationContext(), "We would add something!", Toast.LENGTH_SHORT).show();
+	                		dialog.dismiss();
+	                	}
+	                }
+	            });
+	        }
+	       });
+		dialog.show();	
+		}
+	
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
