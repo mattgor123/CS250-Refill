@@ -36,7 +36,7 @@ public class RxItem {
 	}
 	
 	public String getName() {
-		return this.getName();
+		return this.name;
 	}
 	
 	public String getPatient() {
