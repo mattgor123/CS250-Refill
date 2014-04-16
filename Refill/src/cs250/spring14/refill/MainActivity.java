@@ -56,7 +56,8 @@ public class MainActivity extends ActionBarActivity implements
 	private final String[] tabs = new String[]{"Prescriptions","History"};
 	private Fragment[] frags;
 	public static RxDBAdapter rxAdapter;
-
+	public static int currFrag;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,6 +86,8 @@ public class MainActivity extends ActionBarActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
+						MainActivity.currFrag = position;
+						frags[currFrag].onResume();
 					}
 				});
 
@@ -279,6 +282,8 @@ public class MainActivity extends ActionBarActivity implements
 	                			String rxnumb = rxnumbET.getText().toString();
 								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, start));
 								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
+								//Manually call onResume to ensure that we update the view
+								frags[currFrag].onResume();
 							} catch (NumberFormatException e) {
 								Toast.makeText(getApplicationContext(), "Sorry,  your Rx couldn't be added. Please check all fields.",Toast.LENGTH_SHORT).show();
 								e.printStackTrace();

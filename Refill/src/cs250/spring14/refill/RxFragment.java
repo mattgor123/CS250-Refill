@@ -21,7 +21,7 @@ public class RxFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_rx, container, false);
         rxList = (ListView) rootView.findViewById(R.id.listView1);
         try {
-			rxAdap = new ArrayAdapter<RxItem>(rootView.getContext(),android.R.layout.simple_list_item_1, MainActivity.rxAdapter.getAllRxs());
+			rxAdap = new RxWrapper(rootView.getContext(),0, MainActivity.rxAdapter.getAllRxs());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -29,4 +29,16 @@ public class RxFragment extends Fragment {
         rxAdap.notifyDataSetChanged();
         return rootView;
     }
+	
+	//We will manually call this to ensure the Prescriptions view is always current
+	@Override
+	public void onResume() {
+		super.onResume();
+		rxAdap.clear();
+		try {
+			rxAdap.addAll(MainActivity.rxAdapter.getAllRxs());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 }

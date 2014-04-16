@@ -36,7 +36,7 @@ public class RxItem {
 		this.rxNumb = rxNumb;
 		this.lastrefill = lastrefill;
 	}
-	private Date getNextRefillDate() {
+	public Date getNextRefillDate() {
 		Calendar c = Calendar.getInstance();
 		c.setTime(lastrefill);
 		c.add(Calendar.DATE, daysBetweenRefills);
