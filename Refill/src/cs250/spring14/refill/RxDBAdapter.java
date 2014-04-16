@@ -24,7 +24,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 1; 
+    private static final int DB_VERSION = 5; //was getting errors table Rxs has no column named RX_startDate or RX_sidefects
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -78,7 +78,7 @@ public class RxDBAdapter {
         cvalues.put(RX_MD, Rx.getPhysician());
         cvalues.put(RX_MDNMB, Rx.getMdPhoneNumber());
         cvalues.put(RX_NMB, Rx.getRxNumb());
-        cvalues.put(RX_STD, MainActivity.df.format(Rx.getStartDate().toString()));
+        cvalues.put(RX_STD, MainActivity.df.format(Rx.getStartDate()));
         return db.insert(RX_TABLE, null, cvalues);
     }
     
@@ -123,9 +123,9 @@ public class RxDBAdapter {
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
                 + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + RX_NAME + " TEXT,"
-                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_DOSE + "INTEGER," + RX_PRD + 
-                "INTEGER," + RX_DBR + "INTEGER, " + RX_PHRM + "TEXT, " + RX_MD + "TEXT" +
-                RX_MDNMB + "TEXT, " + RX_NMB + "TEXT," + RX_STD + "TEXT);";
+                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " INTEGER," + RX_PRD + 
+                " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT, " + RX_MD + " TEXT, " +
+                RX_MDNMB + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT);";
  
         public RxdbHelper(Context context, String name, CursorFactory fct, int version) {
             super(context, name, fct, version);

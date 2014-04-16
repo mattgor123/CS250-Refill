@@ -1,8 +1,10 @@
 package cs250.spring14.refill;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import android.support.v7.app.ActionBarActivity;
@@ -96,6 +98,10 @@ public class MainActivity extends ActionBarActivity implements
 					.setText(tName)
 					.setTabListener(this));
 		}
+		
+		//Rx adapter stuff
+		rxAdapter = new RxDBAdapter(this);
+		rxAdapter.open();
 	}
 
 	@Override
@@ -112,7 +118,7 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		 switch (item.getItemId()) {
 	        case R.id.action_add:
-	            openDialog(this);
+	            openAddDialog(this);
 	            return true;
 	        case R.id.action_settings:
 	        	return true;
@@ -124,7 +130,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * Used to create the Dialog box which appears when one hits the + button.
 	 * @param context the application context where the dialog should be displayeed
 	 */
-	private void openDialog(Context context) {	
+	private void openAddDialog(Context context) {	
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
 		LinearLayout layout= new LinearLayout(this);
@@ -144,11 +150,11 @@ public class MainActivity extends ActionBarActivity implements
 	    final EditText rxnumbET = new EditText(this);
 	    nameET.setHint("   Prescription Name: ");
 	    patientET.setHint("   Patient Name: ");
-	    sympET.setHint("   Symptoms: ");
+	    sympET.setHint("   For treating:  ");
 	    sideEffectsET.setHint("   Side effects: ");
 	    doseET.setHint("   Dose: (mg) ");
 	    ppdET.setHint("   Pills Per Day: ");
-	    startET.setHint("   Start Date: (mm/dd/yyyy): ");
+	    startET.setHint("   Start Date: (Click to Pick): ");
 	    dbrET.setHint("   Days Between Refills: ");
 	    pharmET.setHint("   Pharmacy: ");
 	    physET.setHint("   Physician: ");
@@ -177,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements
 	            myCalendar.set(Calendar.YEAR, year);
 	            myCalendar.set(Calendar.MONTH, monthOfYear);
 	            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-	            startET.setText(MainActivity.df.format(myCalendar.getTime()));
+	            startET.setText(df.format(myCalendar.getTime()));
 	        }
 	    };
 	    /**
@@ -198,6 +204,9 @@ public class MainActivity extends ActionBarActivity implements
 	    physET.setSingleLine();
 	    mdPhoneET.setSingleLine();
 	    rxnumbET.setSingleLine();
+	    nameET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+	    patientET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+	    physET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    mdPhoneET.setInputType(InputType.TYPE_CLASS_PHONE);
 	    rxnumbET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -242,19 +251,41 @@ public class MainActivity extends ActionBarActivity implements
 	 	        		   Toast.makeText(getApplicationContext(), "Please ensure you have a valid name", Toast.LENGTH_SHORT).show();
 	                	}
 	                	else if(patientET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid patient",Toast.LENGTH_SHORT).show();}
-	                	else if(sympET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid symp",Toast.LENGTH_SHORT).show();}
-	                	else if(sideEffectsET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid sideEffects",Toast.LENGTH_SHORT).show();}
-	                	else if(doseET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose",Toast.LENGTH_SHORT).show();}
-	                	else if(ppdET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid ppd",Toast.LENGTH_SHORT).show();}
-	                	else if(startET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid start",Toast.LENGTH_SHORT).show();}
-	                	else if(dbrET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dbr",Toast.LENGTH_SHORT).show();}
-	                	else if(pharmET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid pharm",Toast.LENGTH_SHORT).show();}
-	                	else if(physET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phys",Toast.LENGTH_SHORT).show();}
-	                	else if(mdPhoneET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid mdPhone",Toast.LENGTH_SHORT).show();}
-	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid rxnumb",Toast.LENGTH_SHORT).show();}
+	                	else if(sympET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid symptoms",Toast.LENGTH_SHORT).show();}
+	                	else if(sideEffectsET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid side effects",Toast.LENGTH_SHORT).show();}
+	                	else if(doseET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose in mg",Toast.LENGTH_SHORT).show();}
+	                	else if(ppdET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid # of pills per day",Toast.LENGTH_SHORT).show();}
+	                	else if(startET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid start date",Toast.LENGTH_SHORT).show();}
+	                	else if(dbrET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid days between refills",Toast.LENGTH_SHORT).show();}
+	                	else if(pharmET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid pharmacy",Toast.LENGTH_SHORT).show();}
+	                	else if(physET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid physician",Toast.LENGTH_SHORT).show();}
+	                	else if(mdPhoneET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid contact phone number",Toast.LENGTH_SHORT).show();}
+	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid Rx number",Toast.LENGTH_SHORT).show();}
 	                	else {
-	                		//None of our inputs are empty! We can begin to process the Rx and possibly even add it.
-	                		Toast.makeText(getApplicationContext(), "We would add something!", Toast.LENGTH_SHORT).show();
+	                		//None of our inputs are empty;
+	                		//We insert a new RxItem into the database
+	                		try {
+	                			String name = nameET.getText().toString();//name
+	                			String patient = patientET.getText().toString();//patient
+	                			String symp = sympET.getText().toString(); //symptoms
+	                			String sideEffects = sideEffectsET.getText().toString();//side effects
+	                			int dose = Integer.parseInt(doseET.getText().toString());//dose
+	                			int ppd = Integer.parseInt(ppdET.getText().toString()); //pills per day
+	                			Date start = df.parse(startET.getText().toString());//start date
+	                			int dbr = Integer.parseInt(dbrET.getText().toString()); //day between refills
+	                			String pharm = pharmET.getText().toString(); //pharmacy
+	                			String phys = physET.getText().toString(); //physician
+	                			String mdPhone = mdPhoneET.getText().toString(); //phone number
+	                			String rxnumb = rxnumbET.getText().toString();
+								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb));
+								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
+							} catch (NumberFormatException e) {
+								Toast.makeText(getApplicationContext(), "Sorry,  your Rx couldn't be added. Please check all fields.",Toast.LENGTH_SHORT).show();
+								e.printStackTrace();
+							} catch (ParseException e) {
+								Toast.makeText(getApplicationContext(), "Sorry,  your Rx couldn't be added. Please check all fields.",Toast.LENGTH_SHORT).show();
+								e.printStackTrace();
+							}
 	                		dialog.dismiss();
 	                	}
 	                }
@@ -263,25 +294,6 @@ public class MainActivity extends ActionBarActivity implements
 	       });
 		dialog.show();	
 		}
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case 99:
-		   // set date picker as current date
-		   return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-			
-			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-					Toast.makeText(getApplicationContext(), "You chose y: " + year + ", m: " + monthOfYear + ", d: " + dayOfMonth, Toast.LENGTH_SHORT).show();
-			}
-		}, 
-         	Calendar.getInstance().get(Calendar.YEAR),
-            Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-		}
-		return null;
-	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
