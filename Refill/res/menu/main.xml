@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cs250.spring14.refill.MainActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
-    
     <item android:id="@+id/action_add"
           android:icon="@drawable/ic_action_new"
-          android:showAsAction="ifRoom"
+          app:showAsAction="always"
           android:title="@string/add"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
 
 </menu>

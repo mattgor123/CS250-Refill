@@ -2,6 +2,7 @@ package cs250.spring14.refill;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
@@ -22,8 +25,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements
 	private final String[] tabs = new String[]{"Prescriptions","History"};
 	private Fragment[] frags;
 	public static RxDBAdapter rxAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,9 +120,11 @@ public class MainActivity extends ActionBarActivity implements
 	            return super.onOptionsItemSelected(item);
 		 }
 	}
-	
-	private void openDialog(Context context) {
-		
+	/**
+	 * Used to create the Dialog box which appears when one hits the + button.
+	 * @param context the application context where the dialog should be displayeed
+	 */
+	private void openDialog(Context context) {	
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
 		LinearLayout layout= new LinearLayout(this);
@@ -152,7 +160,39 @@ public class MainActivity extends ActionBarActivity implements
 	    sideEffectsET.setSingleLine();
 	    doseET.setSingleLine();
 	    ppdET.setSingleLine();
-	    startET.setSingleLine();
+	    //To avoid having to deal with keyboard popping up when you want to pick date
+	    startET.setFocusable(false);
+	    //Get the calendar for the datepicker listener
+	    final Calendar myCalendar = Calendar.getInstance();
+	    //Code adapted from http://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
+	    /**
+	     * This is the OnDateSetListener for our startET EditText
+	     */
+	    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+	        @Override
+	        public void onDateSet(DatePicker view, int year, int monthOfYear,
+	                int dayOfMonth) {
+	            // TODO Auto-generated method stub
+	            myCalendar.set(Calendar.YEAR, year);
+	            myCalendar.set(Calendar.MONTH, monthOfYear);
+	            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+	            startET.setText(MainActivity.df.format(myCalendar.getTime()));
+	        }
+	    };
+	    /**
+	     * This is where we actually launch the onDateSetListener
+	     */
+	    startET.setOnClickListener(new OnClickListener() {
+
+	            @Override
+	            public void onClick(View v) {
+	                // TODO Auto-generated method stub
+	                new DatePickerDialog(MainActivity.this, date, myCalendar
+	                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+	                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+	            }
+	        });
 	    dbrET.setSingleLine();
 	    pharmET.setSingleLine();
 	    physET.setSingleLine();
@@ -175,7 +215,7 @@ public class MainActivity extends ActionBarActivity implements
 	    layout.addView(physET);
 	    layout.addView(mdPhoneET);
 	    layout.addView(rxnumbET);
-	    //Set the dialog to this linear layout (I didn't wanna do it all in XML; knew it wouldn't be necessary)
+	    //Set the dialog to this linear layout (I didn't wanna do it all in XML; stackOverflow suggested doing it in code sooo...)
 	    builder.setView(layout);
 	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
@@ -213,6 +253,7 @@ public class MainActivity extends ActionBarActivity implements
 	                	else if(mdPhoneET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid mdPhone",Toast.LENGTH_SHORT).show();}
 	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid rxnumb",Toast.LENGTH_SHORT).show();}
 	                	else {
+	                		//None of our inputs are empty! We can begin to process the Rx and possibly even add it.
 	                		Toast.makeText(getApplicationContext(), "We would add something!", Toast.LENGTH_SHORT).show();
 	                		dialog.dismiss();
 	                	}
@@ -222,7 +263,25 @@ public class MainActivity extends ActionBarActivity implements
 	       });
 		dialog.show();	
 		}
-	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case 99:
+		   // set date picker as current date
+		   return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+					Toast.makeText(getApplicationContext(), "You chose y: " + year + ", m: " + monthOfYear + ", d: " + dayOfMonth, Toast.LENGTH_SHORT).show();
+			}
+		}, 
+         	Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		}
+		return null;
+	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
