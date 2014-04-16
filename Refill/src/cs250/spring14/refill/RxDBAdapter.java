@@ -24,7 +24,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 5; //was getting errors table Rxs has no column named RX_startDate or RX_sidefects
+    private static final int DB_VERSION = 6; //was getting errors table Rxs has no column named RX_startDate or RX_sidefects
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -40,9 +40,11 @@ public class RxDBAdapter {
     public static final String RX_MDNMB = "RX_mdNumb"; //column 10 - MD's phone number
     public static final String RX_NMB = "RX_number"; //column 11 - 
     public static final String RX_STD = "RX_startDate"; //column 12
+    //Adding most recent refill as a field
+    public static final String RX_LAST = "RX_last"; //column 13
     
     public static final String[] RX_COLS = {RX_ID, RX_NAME, RX_PT, RX_SYMPT, RX_SFECT, RX_DOSE, RX_PRD,
-    	RX_DBR, RX_PHRM, RX_MD, RX_MDNMB, RX_NMB, RX_STD};
+    	RX_DBR, RX_PHRM, RX_MD, RX_MDNMB, RX_NMB, RX_STD, RX_LAST};
     
     
     public RxDBAdapter(Context ctx) {
@@ -79,6 +81,7 @@ public class RxDBAdapter {
         cvalues.put(RX_MDNMB, Rx.getMdPhoneNumber());
         cvalues.put(RX_NMB, Rx.getRxNumb());
         cvalues.put(RX_STD, MainActivity.df.format(Rx.getStartDate()));
+        cvalues.put(RX_LAST, MainActivity.df.format(Rx.getLastRefill()));
         return db.insert(RX_TABLE, null, cvalues);
     }
     
@@ -103,7 +106,8 @@ public class RxDBAdapter {
     					c.getString(8), //pharmacy
     					c.getString(9), //physician
     					c.getString(10), //mdPhoneNumber
-    					c.getString(11) //RX Number
+    					c.getString(11), //RX Number
+    					MainActivity.df.parse(c.getString(13))
     					);
     			rxs.add(result);
     		} while (c.moveToNext());
@@ -124,8 +128,8 @@ public class RxDBAdapter {
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
                 + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + RX_NAME + " TEXT,"
                 + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " INTEGER," + RX_PRD + 
-                " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT, " + RX_MD + " TEXT, " +
-                RX_MDNMB + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT);";
+                " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT," + RX_MD + " TEXT, " +
+                RX_MDNMB + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT, " + RX_LAST + " TEXT);";
  
         public RxdbHelper(Context context, String name, CursorFactory fct, int version) {
             super(context, name, fct, version);

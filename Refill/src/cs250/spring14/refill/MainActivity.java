@@ -277,7 +277,7 @@ public class MainActivity extends ActionBarActivity implements
 	                			String phys = physET.getText().toString(); //physician
 	                			String mdPhone = mdPhoneET.getText().toString(); //phone number
 	                			String rxnumb = rxnumbET.getText().toString();
-								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb));
+								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, start));
 								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
 							} catch (NumberFormatException e) {
 								Toast.makeText(getApplicationContext(), "Sorry,  your Rx couldn't be added. Please check all fields.",Toast.LENGTH_SHORT).show();
@@ -328,7 +328,9 @@ public class MainActivity extends ActionBarActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
-			return frags[position];
+			if (position <= 1)
+				return frags[position];
+			return null;
 		}
 
 		@Override

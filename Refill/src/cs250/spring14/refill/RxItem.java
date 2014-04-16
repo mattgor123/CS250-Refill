@@ -1,5 +1,6 @@
 package cs250.spring14.refill;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class RxItem {
@@ -16,11 +17,11 @@ public class RxItem {
 	private String physician;
 	private String mdPhoneNumb;
 	private String rxNumb;
-	
+	private Date lastrefill;
 	
 	public RxItem(String name, String patient, String symptoms, String sideEffects,
 			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
-			String mdPhoneNumb, String rxNumb) {
+			String mdPhoneNumb, String rxNumb, Date lastrefill) {
 		this.name = name;
 		this.patient = patient;
 		this.symptoms = symptoms;
@@ -33,8 +34,19 @@ public class RxItem {
 		this.physician = physician;
 		this.mdPhoneNumb = mdPhoneNumb;
 		this.rxNumb = rxNumb;
+		this.lastrefill = lastrefill;
+	}
+	private Date getNextRefillDate() {
+		Calendar c = Calendar.getInstance();
+		c.setTime(lastrefill);
+		c.add(Calendar.DATE, daysBetweenRefills);
+		return c.getTime();
 	}
 	
+	@Override
+	public String toString() {
+		return this.name + ", Rx for " + this.patient;
+	}
 	public String getName() {
 		return this.name;
 	}
@@ -61,6 +73,10 @@ public class RxItem {
 	
 	public Date getStartDate() {
 		return this.start;
+	}
+	
+	public Date getLastRefill() {
+		return this.lastrefill;
 	}
 	
 	public int getDaysBetweenRefills() {
