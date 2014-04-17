@@ -38,7 +38,7 @@ public class RxFragment extends Fragment {
 					int position, long id) {
 				//This is where we will add functionality to edit the Rx
 				final RxItem rx = (RxItem) parent.getItemAtPosition(position);
-				alertMessage("Would you like to edit or remove this Rx?", "Please select your action", "Remove", 
+				alertMessage("Please select an action", "Would you like to Remove or View/Edit details for " + rx.getName() + "?", "Remove", 
 						//Remove
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -50,7 +50,7 @@ public class RxFragment extends Fragment {
 										.show();
 							}
 						}, 
-						"Edit",
+						"View/Edit",
 						//Edit
 						new DialogInterface.OnClickListener() {
 							@Override

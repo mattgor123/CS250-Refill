@@ -54,17 +54,17 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 					String nstr = i.getName();
 					if (name != null){
 						String str = nstr;
-						if (str.length() > 18) str = (String) str.subSequence(0, 16) + "...";
+						if (str.length() > 16) str = (String) str.subSequence(0, 14) + "...";
 						name.setText(str);
 					}
 					if (details != null){
 						String str = "Use: " + i.getDose() + "mg, " + i.getPillsPerDay() + "x daily";
-						if (str.length() > 33) str = (String) str.subSequence(0, 30) + "...";
+						if (str.length() > 28) str = (String) str.subSequence(0, 25) + "...";
 						details.setText(str);
 					}
 					if (next != null) {
 						String str = "Next refill: " + MainActivity.df.format(i.getNextRefillDate());
-						if (str.length() > 33) str = (String) str.subSequence(0, 30) + "...";
+						if (str.length() > 28) str = (String) str.subSequence(0, 25) + "...";
 						next.setText(str);
 					}
 					if (iv != null) {
