@@ -24,7 +24,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 6; //was getting errors table Rxs has no column named RX_startDate or RX_sidefects
+    private static final int DB_VERSION = 8; //need to play around with ID's
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -82,13 +82,16 @@ public class RxDBAdapter {
         cvalues.put(RX_NMB, Rx.getRxNumb());
         cvalues.put(RX_STD, MainActivity.df.format(Rx.getStartDate()));
         cvalues.put(RX_LAST, MainActivity.df.format(Rx.getLastRefill()));
-        return db.insert(RX_TABLE, null, cvalues);
+        long row = db.insert(RX_TABLE, null, cvalues);
+        Rx.setId(row);
+        return row;
     }
     
     public int removeRx(long ri)
     {
-    	//return db.delete(RX_TABLE, RX_NAME+"="+rx_name, null);
-    	return db.delete(RX_TABLE, RX_ID+"="+ri, null);
+    	db = dbHelper.getWritableDatabase();
+    	return db.delete(RX_TABLE, RX_ID + " = ?",
+    			new String[] { String.valueOf(ri) });
     }
     
     public Cursor getAllRxsCursor() {
@@ -113,8 +116,9 @@ public class RxDBAdapter {
     					c.getString(9), //physician
     					c.getString(10), //mdPhoneNumber
     					c.getString(11), //RX Number
-    					MainActivity.df.parse(c.getString(13))
+    					MainActivity.df.parse(c.getString(13)) //last refill
     					);
+    			result.setId(c.getPosition());
     			rxs.add(result);
     		} while (c.moveToNext());
 		return rxs;
@@ -132,7 +136,7 @@ public class RxDBAdapter {
     	 
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
-                + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + RX_NAME + " TEXT,"
+                + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + RX_NAME + " TEXT,"
                 + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " INTEGER," + RX_PRD + 
                 " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT," + RX_MD + " TEXT, " +
                 RX_MDNMB + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT, " + RX_LAST + " TEXT);";

@@ -18,6 +18,7 @@ public class RxItem {
 	private String mdPhoneNumb;
 	private String rxNumb;
 	private Date lastrefill;
+	private long id;
 	
 	public RxItem(String name, String patient, String symptoms, String sideEffects,
 			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
@@ -98,4 +99,11 @@ public class RxItem {
 	public String getRxNumb() {
 		return this.rxNumb;
 	}	
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getId() {
+		return this.id;
+	}
 }

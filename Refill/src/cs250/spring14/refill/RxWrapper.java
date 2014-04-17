@@ -84,6 +84,14 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 			return R.drawable.valium;
 		case "adderall":
 			return R.drawable.adderall;
+		case "vicodin":
+			return R.drawable.vicodin;
+		case "zocor":
+			return R.drawable.zocor;
+		case "zestril":
+			return R.drawable.zestril;
+		case "synthroid":
+			return R.drawable.synthroid;
 		default:
 			return R.drawable.default_pill;
 		}

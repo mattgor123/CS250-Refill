@@ -55,10 +55,7 @@ public class RxFragment extends Fragment {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								//Remove functionality must be added here
-								//MainActivity.rxAdapter.removeRx(rx.getName());
-								Toast.makeText(getActivity(),
-										"You selected to remove Rx " + rx.getName(), Toast.LENGTH_SHORT)
-										.show();
+								MainActivity.rxAdapter.removeRx(rx.getId());
 							}
 						}, 
 						"View/Edit",

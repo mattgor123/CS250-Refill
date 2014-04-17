@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * Used to create the Dialog box which appears when one hits the + button.
 	 * @param context the application context where the dialog should be displayeed
 	 */
-	public void openAddDialog(Context context, final RxItem rx) {	
+	public void openAddDialog(Context context, final RxItem rx) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
 		LinearLayout layout= new LinearLayout(this);
@@ -222,7 +222,7 @@ public class MainActivity extends ActionBarActivity implements
 	    
 	    if (rx != null)
 		{
-			nameET.setText(rx.getName());
+	    	nameET.setText(rx.getName());
 			patientET.setText(rx.getPatient());
 			sympET.setText(rx.getSymptoms());
 			sideEffectsET.setText(rx.getSideEffects());
@@ -289,9 +289,11 @@ public class MainActivity extends ActionBarActivity implements
 	                		//None of our inputs are empty;
 	                		//We insert a new RxItem into the database
 	                		try {
+	                			Date lastRefillDate = null;
 	                			if (rx != null)
 	                			{
-	                				//rxAdapter.removeRx(rx.);
+	                				lastRefillDate = rx.getLastRefill();
+	                				rxAdapter.removeRx(rx.getId());
 	                			}
 	                			String name = nameET.getText().toString();//name
 	                			String patient = patientET.getText().toString();//patient
@@ -305,6 +307,9 @@ public class MainActivity extends ActionBarActivity implements
 	                			String phys = physET.getText().toString(); //physician
 	                			String mdPhone = mdPhoneET.getText().toString(); //phone number
 	                			String rxnumb = rxnumbET.getText().toString();
+	                			if (lastRefillDate == null) {
+	                				lastRefillDate = start;
+	                			}
 								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, start));
 								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
