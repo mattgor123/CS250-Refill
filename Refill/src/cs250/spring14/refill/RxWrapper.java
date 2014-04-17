@@ -1,17 +1,21 @@
 package cs250.spring14.refill;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RxWrapper extends ArrayAdapter<RxItem> {
 	private List<RxItem> items;
-	
 	public RxWrapper(Context context, int resource, List<RxItem> objects) {
 		super(context, resource, objects);
 		this.items = objects;
@@ -46,22 +50,42 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 					TextView name = (TextView) v.findViewById(R.id.name);
 					TextView details = (TextView) v.findViewById(R.id.details);
 					TextView next = (TextView) v.findViewById(R.id.next);
+					ImageView iv = (ImageView) v.findViewById(R.id.pill_ico);
+					String nstr = i.getName();
 					if (name != null){
-						String str = i.getName();
-						if (str.length() > 24) str = (String) str.subSequence(0, 24);
+						String str = nstr;
+						if (str.length() > 18) str = (String) str.subSequence(0, 16) + "...";
 						name.setText(str);
 					}
 					if (details != null){
 						String str = "Use: " + i.getDose() + "mg, " + i.getPillsPerDay() + "x daily";
+						if (str.length() > 33) str = (String) str.subSequence(0, 30) + "...";
 						details.setText(str);
 					}
 					if (next != null) {
 						String str = "Next refill: " + MainActivity.df.format(i.getNextRefillDate());
+						if (str.length() > 33) str = (String) str.subSequence(0, 30) + "...";
 						next.setText(str);
 					}
+					if (iv != null) {
+						//Here we handle finding the image from the name
+						iv.setImageResource(getIconFromString(nstr.toLowerCase(Locale.US)));
+					}
 				}
-
 				// the view must be returned to our activity
 				return v;
+	}
+	
+	public int getIconFromString(String name) {
+		switch (name) {
+		case "xanax":
+			return R.drawable.xanax;
+		case "valium":
+			return R.drawable.valium;
+		case "adderall":
+			return R.drawable.adderall;
+		default:
+			return R.drawable.default_pill;
+		}
 	}
 }

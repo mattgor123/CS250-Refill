@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -30,5 +30,16 @@
         android:layout_below="@+id/details"
         android:layout_marginLeft="6sp"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/pill_ico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0sp"
+        android:scaleType="fitEnd"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/name"
+        android:layout_alignBottom="@+id/next"
+        android:src="@drawable/default_pill" />
 
 </RelativeLayout>
