@@ -85,6 +85,12 @@ public class RxDBAdapter {
         return db.insert(RX_TABLE, null, cvalues);
     }
     
+    public int removeRx(long ri)
+    {
+    	//return db.delete(RX_TABLE, RX_NAME+"="+rx_name, null);
+    	return db.delete(RX_TABLE, RX_ID+"="+ri, null);
+    }
+    
     public Cursor getAllRxsCursor() {
         return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
     }

@@ -57,6 +57,7 @@ public class MainActivity extends ActionBarActivity implements
 	private Fragment[] frags;
 	public static RxDBAdapter rxAdapter;
 	public static int currFrag;
+	private static MainActivity _instance;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class MainActivity extends ActionBarActivity implements
 		//Rx adapter stuff
 		rxAdapter = new RxDBAdapter(this);
 		rxAdapter.open();
+		_instance = this;
 	}
 
 	@Override
@@ -121,7 +123,7 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		 switch (item.getItemId()) {
 	        case R.id.action_add:
-	            openAddDialog(this);
+	            openAddDialog(this,null);
 	            return true;
 	        case R.id.action_settings:
 	        	return true;
@@ -133,11 +135,13 @@ public class MainActivity extends ActionBarActivity implements
 	 * Used to create the Dialog box which appears when one hits the + button.
 	 * @param context the application context where the dialog should be displayeed
 	 */
-	private void openAddDialog(Context context) {	
+	public void openAddDialog(Context context, final RxItem rx) {	
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
 		LinearLayout layout= new LinearLayout(this);
 	    layout.setOrientation(1); 
+	    layout.setVerticalScrollBarEnabled(true);
+	    layout.setHorizontalScrollBarEnabled(false);
 	    builder.setMessage("Add a Prescription");
 	    final EditText nameET = new EditText(this);
 	    final EditText patientET = new EditText(this);
@@ -215,6 +219,23 @@ public class MainActivity extends ActionBarActivity implements
 	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    dbrET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    ppdET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    
+	    if (rx != null)
+		{
+			nameET.setText(rx.getName());
+			patientET.setText(rx.getPatient());
+			sympET.setText(rx.getSymptoms());
+			sideEffectsET.setText(rx.getSideEffects());
+			doseET.setText(Integer.toString(rx.getDose()));
+			ppdET.setText(Integer.toString(rx.getPillsPerDay()));
+		    startET.setText(df.format(rx.getStartDate()));
+		    dbrET.setText(Integer.toString(rx.getDaysBetweenRefills()));
+		    pharmET.setText(rx.getPharmacy());
+		    physET.setText(rx.getPhysician());
+		    mdPhoneET.setText(rx.getMdPhoneNumber());
+		    rxnumbET.setText(rx.getRxNumb());
+		}
+	    
 	    layout.addView(nameET);
 	    layout.addView(patientET);
 	    layout.addView(sympET);
@@ -268,6 +289,10 @@ public class MainActivity extends ActionBarActivity implements
 	                		//None of our inputs are empty;
 	                		//We insert a new RxItem into the database
 	                		try {
+	                			if (rx != null)
+	                			{
+	                				//rxAdapter.removeRx(rx.);
+	                			}
 	                			String name = nameET.getText().toString();//name
 	                			String patient = patientET.getText().toString();//patient
 	                			String symp = sympET.getText().toString(); //symptoms
@@ -316,6 +341,11 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	public static MainActivity getInstance()
+	{
+		return _instance;
 	}
 
 	/**
