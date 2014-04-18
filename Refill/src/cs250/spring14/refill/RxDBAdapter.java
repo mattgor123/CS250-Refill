@@ -8,13 +8,11 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.text.format.DateFormat;
 import android.util.Log;
 
 
@@ -66,25 +64,25 @@ public class RxDBAdapter {
         db.close();
     }
     
-    public long insertRx(RxItem Rx) {
+    public long insertRx(RxItem rx) {
         // create a new row of values to insert
         ContentValues cvalues = new ContentValues();
         // assign values for each col
-        cvalues.put(RX_NAME, Rx.getName());
-        cvalues.put(RX_PT, Rx.getPatient());
-        cvalues.put(RX_SYMPT, Rx.getSymptoms());
-        cvalues.put(RX_SFECT, Rx.getSideEffects());
-        cvalues.put(RX_DOSE, Rx.getDose());
-        cvalues.put(RX_PRD, Rx.getPillsPerDay());
-        cvalues.put(RX_DBR, Rx.getDaysBetweenRefills());
-        cvalues.put(RX_PHRM, Rx.getPharmacy());
-        cvalues.put(RX_MD, Rx.getPhysician());
-        cvalues.put(RX_MDNMB, Rx.getMdPhoneNumber());
-        cvalues.put(RX_NMB, Rx.getRxNumb());
-        cvalues.put(RX_STD, MainActivity.df.format(Rx.getStartDate()));
-        cvalues.put(RX_LAST, MainActivity.df.format(Rx.getLastRefill()));
+        cvalues.put(RX_NAME, rx.getName());
+        cvalues.put(RX_PT, rx.getPatient());
+        cvalues.put(RX_SYMPT, rx.getSymptoms());
+        cvalues.put(RX_SFECT, rx.getSideEffects());
+        cvalues.put(RX_DOSE, rx.getDose());
+        cvalues.put(RX_PRD, rx.getPillsPerDay());
+        cvalues.put(RX_DBR, rx.getDaysBetweenRefills());
+        cvalues.put(RX_PHRM, rx.getPharmacy());
+        cvalues.put(RX_MD, rx.getPhysician());
+        cvalues.put(RX_MDNMB, rx.getMdPhoneNumber());
+        cvalues.put(RX_NMB, rx.getRxNumb());
+        cvalues.put(RX_STD, MainActivity.df.format(rx.getStartDate()));
+        cvalues.put(RX_LAST, MainActivity.df.format(rx.getLastRefill()));
         long row = db.insert(RX_TABLE, null, cvalues);
-        Rx.setId(row);
+        rx.setId(row);
         return row;
     }
     
@@ -139,8 +137,7 @@ public class RxDBAdapter {
     					c.getString(11), //RX Number
     					MainActivity.df.parse(c.getString(13)) //last refill
     					);
-    			int id = c.getInt(0);
-    			result.setId(id);
+    			result.setId(c.getInt(0));
     			rxs.add(result);
     		} while (c.moveToNext());
 		return rxs;

@@ -40,6 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/name"
         android:layout_alignBottom="@+id/next"
+        android:contentDescription="@string/pillicon"
         android:src="@drawable/default_pill" />
 
 </RelativeLayout>

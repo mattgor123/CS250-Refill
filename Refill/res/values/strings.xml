@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
+	<!-- The app's name -->
     <string name="app_name">Refill</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <!-- The settings button name -->
     <string name="action_settings">Settings</string>
+    <!-- The pill's icon -->
+    <string name="pillicon">The pill\'s icon</string>
+    <!-- The add button name -->
 	<string name="add">add</string>
 	
 </resources>
