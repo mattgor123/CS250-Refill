@@ -33,6 +33,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -137,7 +140,10 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	public void openAddDialog(Context context, final RxItem rx) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		//Now I'm making the linear layout for this badboy (easier to do programatically than in XML)
+		//Now I'm making the scrollview with a linear layout for this badboy (easier to do programatically than in XML)
+		ScrollView sv = new ScrollView(this);
+		LayoutParams svlp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        sv.setLayoutParams(svlp);
 		LinearLayout layout= new LinearLayout(this);
 	    layout.setOrientation(1); 
 	    layout.setVerticalScrollBarEnabled(true);
@@ -249,7 +255,10 @@ public class MainActivity extends ActionBarActivity implements
 	    layout.addView(mdPhoneET);
 	    layout.addView(rxnumbET);
 	    //Set the dialog to this linear layout (I didn't wanna do it all in XML; stackOverflow suggested doing it in code sooo...)
-	    builder.setView(layout);
+	    sv.setFillViewport(true);
+        sv.setVerticalScrollBarEnabled(true);
+	    sv.addView(layout);
+	    builder.setView(sv);
 	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   //Adios amigos!
