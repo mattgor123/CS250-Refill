@@ -3,6 +3,7 @@ package cs250.spring14.refill;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,7 +25,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 8; //need to play around with ID's
+    private static final int DB_VERSION = 9; //Insert, Delete, Update working great as of 4/18/2014
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -86,6 +87,26 @@ public class RxDBAdapter {
         Rx.setId(row);
         return row;
     }
+    
+    public boolean updateRx(long ri, String name, String patient, String symptoms, String sideEffects,
+			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
+			String mdPhoneNumb, String rxNumb, Date lastrefill ) {
+		ContentValues cvalues = new ContentValues();
+		cvalues.put(RX_NAME, name);
+        cvalues.put(RX_PT, patient);
+        cvalues.put(RX_SYMPT, symptoms);
+        cvalues.put(RX_SFECT, sideEffects);
+        cvalues.put(RX_DOSE, dose);
+        cvalues.put(RX_PRD, pillsPerDay);
+        cvalues.put(RX_DBR, daysBetweenRefills);
+        cvalues.put(RX_PHRM, pharmacy);
+        cvalues.put(RX_MD, physician);
+        cvalues.put(RX_MDNMB, mdPhoneNumb);
+        cvalues.put(RX_NMB, rxNumb);
+        cvalues.put(RX_STD, MainActivity.df.format(start));
+        cvalues.put(RX_LAST, MainActivity.df.format(lastrefill));
+        return db.update(RX_TABLE, cvalues, RX_ID + " = ?", new String[] {String.valueOf(ri)}) > 0;
+	}
     
     public int removeRx(long ri)
     {

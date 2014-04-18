@@ -299,11 +299,6 @@ public class MainActivity extends ActionBarActivity implements
 	                		//We insert a new RxItem into the database
 	                		try {
 	                			Date lastRefillDate = null;
-	                			if (rx != null)
-	                			{
-	                				lastRefillDate = rx.getLastRefill();
-	                				rxAdapter.removeRx(rx.getId());
-	                			}
 	                			String name = nameET.getText().toString();//name
 	                			String patient = patientET.getText().toString();//patient
 	                			String symp = sympET.getText().toString(); //symptoms
@@ -316,10 +311,17 @@ public class MainActivity extends ActionBarActivity implements
 	                			String phys = physET.getText().toString(); //physician
 	                			String mdPhone = mdPhoneET.getText().toString(); //phone number
 	                			String rxnumb = rxnumbET.getText().toString();
-	                			if (lastRefillDate == null) {
-	                				lastRefillDate = start;
+	                			//This means we were editing
+	                			if (rx != null)
+	                			{
+	                				lastRefillDate = rx.getLastRefill();
+	                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate);
 	                			}
-								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate));
+	                			//This means we we were inserting a new one
+	                			else {
+	                				lastRefillDate = start;
+	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate));									
+	                			}
 								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
 								frags[currFrag].onResume();

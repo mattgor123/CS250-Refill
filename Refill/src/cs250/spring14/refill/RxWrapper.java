@@ -59,7 +59,7 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 					}
 					if (details != null){
 						String str = "Use: " + i.getDose() + "mg, " + i.getPillsPerDay() + "x daily";
-						if (str.length() > 28) str = (String) str.subSequence(0, 25) + "...";
+						if (str.length() > 26) str = (String) str.subSequence(0, 23) + "...";
 						details.setText(str);
 					}
 					if (next != null) {
