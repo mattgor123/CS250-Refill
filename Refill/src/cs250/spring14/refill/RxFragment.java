@@ -56,6 +56,7 @@ public class RxFragment extends Fragment {
 									int which) {
 								//Remove functionality must be added here
 								MainActivity.rxAdapter.removeRx(rx.getId());
+								onResume();
 							}
 						}, 
 						"View/Edit",

@@ -91,7 +91,7 @@ public class RxDBAdapter {
     {
     	db = dbHelper.getWritableDatabase();
     	return db.delete(RX_TABLE, RX_ID + " = ?",
-    			new String[] { String.valueOf(ri) });
+    		new String[] { String.valueOf(ri) });
     }
     
     public Cursor getAllRxsCursor() {
@@ -118,7 +118,8 @@ public class RxDBAdapter {
     					c.getString(11), //RX Number
     					MainActivity.df.parse(c.getString(13)) //last refill
     					);
-    			result.setId(c.getPosition());
+    			int id = c.getInt(0);
+    			result.setId(id);
     			rxs.add(result);
     		} while (c.moveToNext());
 		return rxs;

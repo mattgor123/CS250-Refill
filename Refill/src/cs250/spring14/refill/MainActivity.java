@@ -319,7 +319,7 @@ public class MainActivity extends ActionBarActivity implements
 	                			if (lastRefillDate == null) {
 	                				lastRefillDate = start;
 	                			}
-								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, start));
+								rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate));
 								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
 								frags[currFrag].onResume();
