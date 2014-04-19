@@ -20,7 +20,7 @@ public class DoctorDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Dr.db";
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 10;
     
     private static final String DR_TABLE = "Drs";
     public static final String DR_ID = "Dr_id";   // column 0

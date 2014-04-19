@@ -23,7 +23,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 16; //dose -> real
+    private static final int DB_VERSION = 17; //dose -> real
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
