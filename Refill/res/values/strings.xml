@@ -9,5 +9,7 @@
     <string name="pillicon">The pill\'s icon</string>
     <!-- The add button name -->
 	<string name="add">add</string>
+	<!-- The historyitem's icon -->
+	<string name="historyicon">The HistoryItem\'s icon</string>
 	
 </resources>

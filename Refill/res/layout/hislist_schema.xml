@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/owner"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+     <ImageView
+        android:id="@+id/his_ico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0sp"
+        android:scaleType="fitEnd"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/owner"
+        android:layout_alignBottom="@+id/msg"
+        android:contentDescription="@string/historyicon" />
+
+</RelativeLayout>

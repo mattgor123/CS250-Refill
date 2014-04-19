@@ -60,6 +60,7 @@ public class MainActivity extends ActionBarActivity implements
 	public static RxDBAdapter rxAdapter;
 	public static DoctorDBAdapter drAdapter;
 	public static PharmacyDBAdapter phAdapter;
+	public static HistoryDBAdapter hAdapter;
 	public static int currFrag;
 	private static MainActivity _instance;
 	
@@ -116,6 +117,9 @@ public class MainActivity extends ActionBarActivity implements
 		//Ph adapter stuff
 		phAdapter = new PharmacyDBAdapter(this);
 		phAdapter.open();
+		//History adapter stuff
+		hAdapter = new HistoryDBAdapter(this);
+		hAdapter.open();
 		_instance = this;
 	}
 
@@ -339,11 +343,15 @@ public class MainActivity extends ActionBarActivity implements
 	                			{
 	                				lastRefillDate = rx.getLastRefill();
 	                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
+	                				String message = "Updated in Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
+	                				hAdapter.insertHis(new HistoryItem(name,message));
 	                			}
 	                			//This means we we were inserting a new one
 	                			else {
 	                				lastRefillDate = start;
 	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, makePharmFromString(pharm), makeDocFromString(doc), rxnumb, lastRefillDate));									
+	                				String message = "Added to Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
+	                				hAdapter.insertHis(new HistoryItem(name,message));
 	                			}
 								//Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + " items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
@@ -395,12 +403,14 @@ public class MainActivity extends ActionBarActivity implements
 		super.onStart();
 		rxAdapter.open();
 		drAdapter.open();
+		phAdapter.open();
 	}
 	@Override
 	public void onStop() {
 		super.onStop();
 		rxAdapter.close();
 		drAdapter.close();
+		phAdapter.close();
 	}
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
@@ -449,6 +459,8 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our Doctor
 					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
 					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
+					String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
+					hAdapter.insertHis(new HistoryItem(nameStr,message));
 					//Better way to do it, but just wanted to get functionality
 					aa.clear();
 					aa.addAll(drAdapter.getAllDrs());
@@ -456,6 +468,7 @@ public class MainActivity extends ActionBarActivity implements
 					email.setText("");
 					phone.setText("");
 					spinner.setSelection(aa.getCount());
+					frags[currFrag].onResume();
 				}
 			}
 			
@@ -540,6 +553,8 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our pharmacy
 					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
 					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
+					String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
+					hAdapter.insertHis(new HistoryItem(nameStr,message));
 					//Better way to do it, but just wanted to get functionality
 					aa.clear();
 					aa.addAll(phAdapter.getAllDrs());
@@ -548,6 +563,7 @@ public class MainActivity extends ActionBarActivity implements
 					phone.setText("");
 					street.setText("");
 					spinner.setSelection(aa.getCount());
+					frags[currFrag].onResume();
 				}
 			}
 			
