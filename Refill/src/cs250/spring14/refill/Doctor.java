@@ -23,7 +23,7 @@ public class Doctor {
 	 * @return the doctor, formatted as a string
 	 */
 	public String toString() {
-		return name + ", call: " + phone + " or e-mail: " + email;	
+		return name + " <" + phone + ">";	
 	}
 	/**
 	 * @return the name

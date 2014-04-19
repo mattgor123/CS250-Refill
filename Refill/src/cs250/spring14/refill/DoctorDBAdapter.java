@@ -20,7 +20,7 @@ public class DoctorDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Dr.db";
-    private static final int DB_VERSION = 0;
+    private static final int DB_VERSION = 4;
     
     private static final String DR_TABLE = "Drs";
     public static final String DR_ID = "Dr_id";   // column 0
@@ -111,7 +111,7 @@ public class DoctorDBAdapter {
      * Method to get all the Doctors from the DB
      * @return an ArrayList<Doctor> with all the Doctors
      */
-    public ArrayList<Doctor> getAllRxs() {
+    public ArrayList<Doctor> getAllDrs() {
     	ArrayList<Doctor> drs = new ArrayList<Doctor>();
     	Cursor c = this.getAllDrsCursor();
     	if (c.moveToFirst())
@@ -136,7 +136,7 @@ public class DoctorDBAdapter {
     public Cursor getDrCursor(long ri) throws SQLException {
         Cursor result = db.query(true, DR_TABLE, DR_COLS, DR_ID+"="+ri, null, null, null, null, null);
         if ((result.getCount() == 0) || !result.moveToFirst()) {
-            throw new SQLException("No Rx items found for row: " + ri);
+            throw new SQLException("No Dr items found for row: " + ri);
         }
         return result;
     }
@@ -173,5 +173,5 @@ public class DoctorDBAdapter {
             adb.execSQL("DROP TABLE IF EXISTS " + DR_TABLE);
             onCreate(adb);
         }
-    } // RxdbHelper class
+    } // DrDBHelper class
 }

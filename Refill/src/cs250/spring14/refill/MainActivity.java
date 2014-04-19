@@ -3,6 +3,7 @@ package cs250.spring14.refill;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -15,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,12 +26,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
@@ -52,6 +58,7 @@ public class MainActivity extends ActionBarActivity implements
 	private final String[] tabs = new String[]{"Prescriptions","History"};
 	private Fragment[] frags;
 	public static RxDBAdapter rxAdapter;
+	public static DoctorDBAdapter drAdapter;
 	public static int currFrag;
 	private static MainActivity _instance;
 	
@@ -102,6 +109,9 @@ public class MainActivity extends ActionBarActivity implements
 		//Rx adapter stuff
 		rxAdapter = new RxDBAdapter(this);
 		rxAdapter.open();
+		//Dr adapter stuff
+		drAdapter = new DoctorDBAdapter(this);
+		drAdapter.open();
 		_instance = this;
 	}
 
@@ -131,7 +141,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * Used to create the Dialog box which appears when one hits the + button.
 	 * @param context the application context where the dialog should be displayeed
 	 */
-	public void openAddDialog(Context context, final RxItem rx) {
+	public void openAddDialog(final Context context, final RxItem rx) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the scrollview with a linear layout for this badboy (easier to do programatically than in XML)
 		ScrollView sv = new ScrollView(this);
@@ -152,7 +162,6 @@ public class MainActivity extends ActionBarActivity implements
 	    final EditText dbrET = new EditText(this);
 	    final EditText pharmET = new EditText(this);
 	    final EditText physET = new EditText(this);
-	    final EditText mdPhoneET = new EditText(this);
 	    final EditText rxnumbET = new EditText(this);
 	    nameET.setHint("   Prescription Name: ");
 	    patientET.setHint("   Patient Name: ");
@@ -160,11 +169,10 @@ public class MainActivity extends ActionBarActivity implements
 	    sideEffectsET.setHint("   Side effects: ");
 	    doseET.setHint("   Dose: (mg) ");
 	    ppdET.setHint("   Pills Per Day: ");
-	    startET.setHint("   Start Date: (Click to Pick): ");
+	    startET.setHint("   Start Date (Click to Pick): ");
 	    dbrET.setHint("   Days Between Refills: ");
 	    pharmET.setHint("   Pharmacy: ");
-	    physET.setHint("   Physician: ");
-	    mdPhoneET.setHint("   MD Phone Number: ");
+	    physET.setHint("   Doctor (Click to Pick/Add): ");
 	    rxnumbET.setHint("   RX Number: ");
 	    nameET.setSingleLine();
 	    patientET.setSingleLine();
@@ -174,6 +182,10 @@ public class MainActivity extends ActionBarActivity implements
 	    ppdET.setSingleLine();
 	    //To avoid having to deal with keyboard popping up when you want to pick date
 	    startET.setFocusable(false);
+	    startET.setFocusableInTouchMode(false);
+	    //To avoid having to deal with keyboard popping up when you want to pick the Dr
+	    physET.setFocusable(false);
+	    physET.setFocusableInTouchMode(false);
 	    //Get the calendar for the datepicker listener
 	    final Calendar myCalendar = Calendar.getInstance();
 	    //Code adapted from http://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
@@ -205,20 +217,28 @@ public class MainActivity extends ActionBarActivity implements
 	                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 	            }
 	        });
+	    /**
+	     * Now I'm going to make the Spinner for the Doctor selection
+	     */
+	    physET.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				makeDoctorDialog(context,v);
+			}
+	    });
 	    dbrET.setSingleLine();
 	    pharmET.setSingleLine();
-	    physET.setSingleLine();
-	    mdPhoneET.setSingleLine();
 	    rxnumbET.setSingleLine();
 	    nameET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    patientET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    physET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-	    mdPhoneET.setInputType(InputType.TYPE_CLASS_PHONE);
 	    rxnumbET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    dbrET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    ppdET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    
+	    //This means we are editing an existing Rx
 	    if (rx != null)
 		{
 	    	nameET.setText(rx.getName());
@@ -230,8 +250,7 @@ public class MainActivity extends ActionBarActivity implements
 		    startET.setText(df.format(rx.getStartDate()));
 		    dbrET.setText(Integer.toString(rx.getDaysBetweenRefills()));
 		    pharmET.setText(rx.getPharmacy());
-		    physET.setText(rx.getPhysician());
-		    mdPhoneET.setText(rx.getMdPhoneNumber());
+		    physET.setText(rx.getDocString());
 		    rxnumbET.setText(rx.getRxNumb());
 		}
 	    
@@ -245,13 +264,13 @@ public class MainActivity extends ActionBarActivity implements
 	    layout.addView(dbrET);
 	    layout.addView(pharmET);
 	    layout.addView(physET);
-	    layout.addView(mdPhoneET);
 	    layout.addView(rxnumbET);
-	    //Set the dialog to this linear layout (I didn't wanna do it all in XML; stackOverflow suggested doing it in code sooo...)
 	    sv.setFillViewport(true);
         sv.setVerticalScrollBarEnabled(true);
-	    sv.addView(layout);
-	    builder.setView(sv);
+        //Set the ScrollView to contain this LinearLayout (I didn't wanna do it all in XML; stackOverflow suggested doing it in code sooo...)
+        sv.addView(layout);
+	    //Set the builder's View to the ScrollView
+        builder.setView(sv);
 	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   //Adios amigos!
@@ -285,7 +304,6 @@ public class MainActivity extends ActionBarActivity implements
 	                	else if(dbrET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid days between refills",Toast.LENGTH_SHORT).show();}
 	                	else if(pharmET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid pharmacy",Toast.LENGTH_SHORT).show();}
 	                	else if(physET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid physician",Toast.LENGTH_SHORT).show();}
-	                	else if(mdPhoneET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid contact phone number",Toast.LENGTH_SHORT).show();}
 	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid Rx number",Toast.LENGTH_SHORT).show();}
 	                	else {
 	                		//None of our inputs are empty;
@@ -301,21 +319,22 @@ public class MainActivity extends ActionBarActivity implements
 	                			Date start = df.parse(startET.getText().toString());//start date
 	                			int dbr = Integer.parseInt(dbrET.getText().toString()); //day between refills
 	                			String pharm = pharmET.getText().toString(); //pharmacy
-	                			String phys = physET.getText().toString(); //physician
-	                			String mdPhone = mdPhoneET.getText().toString(); //phone number
+	                			String doc = physET.getText().toString();
+	                			//For debugging purposes; we'll get rid of this later
+	                			assert (doc!=null);
 	                			String rxnumb = rxnumbET.getText().toString();
 	                			//This means we were editing
 	                			if (rx != null)
 	                			{
 	                				lastRefillDate = rx.getLastRefill();
-	                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate);
+	                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
 	                			}
 	                			//This means we we were inserting a new one
 	                			else {
 	                				lastRefillDate = start;
-	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, phys, mdPhone, rxnumb, lastRefillDate));									
+	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, makeDocFromString(doc), rxnumb, lastRefillDate));									
 	                			}
-								Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + "items in the DB", Toast.LENGTH_SHORT).show();
+								//Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + " items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
 								frags[currFrag].onResume();
 							} catch (NumberFormatException e) {
@@ -334,6 +353,31 @@ public class MainActivity extends ActionBarActivity implements
 		dialog.show();	
 		}
 
+	public static Doctor makeDocFromString(String string) {
+		String[] tokens = string.split(" :: ");
+		if(tokens.length != 3)
+		{
+			//Something got screwed up
+			return null;
+		}
+		else
+		{
+			return new Doctor(tokens[0],tokens[1],tokens[2]);
+		}
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		rxAdapter.open();
+		drAdapter.open();
+	}
+	@Override
+	public void onStop() {
+		super.onStop();
+		rxAdapter.close();
+		drAdapter.close();
+	}
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -347,6 +391,94 @@ public class MainActivity extends ActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	protected void makeDoctorDialog(Context context,final View v) {
+		ArrayList<Doctor> drs = drAdapter.getAllDrs();
+		if (drs.size() == 0) {
+			//Dummy doctor in first spot for the spinner
+			Doctor adding = new Doctor("","","Select a Doctor or Add One");
+			adding.setId(drAdapter.insertDr(adding));
+			drs.add(adding);
+		}
+		final ArrayAdapter<Doctor> aa = new ArrayAdapter<Doctor>(getApplicationContext(),android.R.layout.simple_spinner_item, drs);
+		final Spinner spinner = new Spinner(getApplicationContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		LinearLayout layout= new LinearLayout(this);
+	    layout.setOrientation(1); 
+		// TODO Auto-generated method stub
+		final EditText name = new EditText(this);
+		final EditText email = new EditText(this);
+		final EditText phone = new EditText(this);
+		Button add = new Button(this);
+		add.setText("Add a New Doctor");
+		add.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Basic input checking; will get better with time
+				String nameStr = name.getText().toString().trim();
+				String emailStr = email.getText().toString().trim();
+				String phoneStr = phone.getText().toString().trim();
+				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
+				if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else {
+					//We are good to add our Doctor
+					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
+					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
+					//Better way to do it, but just wanted to get functionality
+					aa.clear();
+					aa.addAll(drAdapter.getAllDrs());
+					name.setText("");
+					email.setText("");
+					phone.setText("");
+					spinner.setSelection(aa.getCount());
+				}
+			}
+			
+		});
+		name.setSingleLine();
+		email.setSingleLine();
+		phone.setSingleLine();
+		name.setHint("    Name: ");
+		email.setHint("    Email: ");
+		phone.setHint("    Phone: ");
+		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		phone.setInputType(InputType.TYPE_CLASS_PHONE);
+		layout.addView(name);
+		layout.addView(email);
+		layout.addView(phone);
+		layout.addView(add);
+		builder.setView(layout);
+		final Dialog d = builder.create();
+		spinner.setAdapter(aa);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent,
+					View view, int position, long id) {
+				Doctor dr = (Doctor) spinner.getSelectedItem();
+				if (dr.getId() == 1)
+				{
+					//We hit our Dummy Doctor, do nothing.
+				}
+				else {
+					EditText et = (EditText) v;
+					et.setText(dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone());
+					d.dismiss();					
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				//Nothing selected; do nothing						
+			}
+			
+		});
+		layout.addView(spinner);
+		d.show();
+	}
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {

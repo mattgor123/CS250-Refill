@@ -23,7 +23,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 9; //Insert, Delete, Update working great as of 4/18/2014
+    private static final int DB_VERSION = 10; //Playing around with Doctor stuff
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -36,14 +36,13 @@ public class RxDBAdapter {
     public static final String RX_DBR = "RX_daysBetween"; //column 7 - how often it is refilled - user will input how many days
     public static final String RX_PHRM = "RX_pharmacy"; //column 8 - pharmacy
     public static final String RX_MD = "RX_doctor"; //column 9
-    public static final String RX_MDNMB = "RX_mdNumb"; //column 10 - MD's phone number
-    public static final String RX_NMB = "RX_number"; //column 11 - 
-    public static final String RX_STD = "RX_startDate"; //column 12
+    public static final String RX_NMB = "RX_number"; //column 10 - 
+    public static final String RX_STD = "RX_startDate"; //column 11
     //Adding most recent refill as a field
-    public static final String RX_LAST = "RX_last"; //column 13
+    public static final String RX_LAST = "RX_last"; //column 12
     
     public static final String[] RX_COLS = {RX_ID, RX_NAME, RX_PT, RX_SYMPT, RX_SFECT, RX_DOSE, RX_PRD,
-    	RX_DBR, RX_PHRM, RX_MD, RX_MDNMB, RX_NMB, RX_STD, RX_LAST};
+    	RX_DBR, RX_PHRM, RX_MD, RX_NMB, RX_STD, RX_LAST};
     
     
     public RxDBAdapter(Context ctx) {
@@ -76,8 +75,7 @@ public class RxDBAdapter {
         cvalues.put(RX_PRD, rx.getPillsPerDay());
         cvalues.put(RX_DBR, rx.getDaysBetweenRefills());
         cvalues.put(RX_PHRM, rx.getPharmacy());
-        cvalues.put(RX_MD, rx.getPhysician());
-        cvalues.put(RX_MDNMB, rx.getMdPhoneNumber());
+        cvalues.put(RX_MD, rx.getDocString());
         cvalues.put(RX_NMB, rx.getRxNumb());
         cvalues.put(RX_STD, MainActivity.df.format(rx.getStartDate()));
         cvalues.put(RX_LAST, MainActivity.df.format(rx.getLastRefill()));
@@ -88,7 +86,7 @@ public class RxDBAdapter {
     
     public boolean updateRx(long ri, String name, String patient, String symptoms, String sideEffects,
 			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
-			String mdPhoneNumb, String rxNumb, Date lastrefill ) {
+			String rxNumb, Date lastrefill ) {
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_NAME, name);
         cvalues.put(RX_PT, patient);
@@ -99,7 +97,6 @@ public class RxDBAdapter {
         cvalues.put(RX_DBR, daysBetweenRefills);
         cvalues.put(RX_PHRM, pharmacy);
         cvalues.put(RX_MD, physician);
-        cvalues.put(RX_MDNMB, mdPhoneNumb);
         cvalues.put(RX_NMB, rxNumb);
         cvalues.put(RX_STD, MainActivity.df.format(start));
         cvalues.put(RX_LAST, MainActivity.df.format(lastrefill));
@@ -129,13 +126,12 @@ public class RxDBAdapter {
     					c.getString(4), //sideEffects
     					c.getInt(5), //dose
     					c.getInt(6), //pillsPerDay
-    					MainActivity.df.parse(c.getString(12)), //startDate
+    					MainActivity.df.parse(c.getString(11)), //startDate
     					c.getInt(7), //daysBetween
     					c.getString(8), //pharmacy
-    					c.getString(9), //physician
-    					c.getString(10), //mdPhoneNumber
-    					c.getString(11), //RX Number
-    					MainActivity.df.parse(c.getString(13)) //last refill
+    					MainActivity.makeDocFromString(c.getString(9)), //physician
+    					c.getString(10), //RX Number
+    					MainActivity.df.parse(c.getString(12)) //last refill
     					);
     			result.setId(c.getInt(0));
     			rxs.add(result);
@@ -157,8 +153,7 @@ public class RxDBAdapter {
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
                 + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + RX_NAME + " TEXT,"
                 + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " INTEGER," + RX_PRD + 
-                " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT," + RX_MD + " TEXT, " +
-                RX_MDNMB + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT, " + RX_LAST + " TEXT);";
+                " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT," + RX_MD + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT, " + RX_LAST + " TEXT);";
  
         public RxdbHelper(Context context, String name, CursorFactory fct, int version) {
             super(context, name, fct, version);
