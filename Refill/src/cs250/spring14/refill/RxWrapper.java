@@ -82,8 +82,22 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 		switch (name) {
 		case "adderall":
 			return R.drawable.adderall;
+		case "albuterol":
+			return R.drawable.albuterol;
+		case "ambien":
+			return R.drawable.ambien;
+		case "aspirin":
+			return R.drawable.aspirin;
+		case "atenolol":
+			return R.drawable.atenolol;
 		case "cymbalta":
 			return R.drawable.cymbalta;
+		case "darvocet":
+			return R.drawable.darvocet;
+		case "diovan":
+			return R.drawable.diovan;
+		case "effexor":
+			return R.drawable.effexor;
 		case "hydrocodone":
 			return R.drawable.hydrocodone;
 		case "lexapro":
@@ -94,20 +108,50 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 			return R.drawable.lisinopril;
 		case "lyrica":
 			return R.drawable.lyrica;
+		case "metformin":
+			return R.drawable.metformin;
+		case "morphine":
+			return R.drawable.morphine;
+		case "naproxen":
+			return R.drawable.naproxen;
+		case "neurontin":
+			return R.drawable.neurontin;
+		case "nexium":
+			return R.drawable.nexium;
+		case "norvasc":
+			return R.drawable.norvasc;
 		case "oxycontin":
 			return R.drawable.oxycontin;
 		case "paxil":
 			return R.drawable.paxil;
 		case "percocet":
 			return R.drawable.percocet;
+		case "phentermine":
+			return R.drawable.phentermine;
+		case "prednisone":
+			return R.drawable.prednisone;
+		case "protonix":
+			return R.drawable.protonix;
+		case "seroquel":
+			return R.drawable.seroquel;
+		case "soma":
+			return R.drawable.soma;
 		case "synthroid":
 			return R.drawable.synthroid;
+		case "toprol":
+			return R.drawable.toprol;
 		case "tramadol":
 			return R.drawable.tramadol;
+		case "tylenol":
+			return R.drawable.tylenol;
+		case "ultram":
+			return R.drawable.ultram;
 		case "valium":
 			return R.drawable.valium;
 		case "vicodin":
 			return R.drawable.vicodin;
+		case "wellbutrin":
+			return R.drawable.wellbutrin;
 		case "xanax":
 			return R.drawable.xanax;
 		case "zestril":
@@ -115,7 +159,7 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 		case "zocor":
 			return R.drawable.zocor;
 		case "zoloft":
-		    return R.drawable.zoloft;
+			return R.drawable.zoloft;
 		default:
 			return R.drawable.default_pill;
 		}

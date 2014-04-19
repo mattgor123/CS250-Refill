@@ -9,7 +9,7 @@ public class RxItem {
 	private String patient;
 	private String symptoms;
 	private String sideEffects;
-	private int dose;
+	private double dose;
 	private int pillsPerDay;
 	private Date start;
 	private int daysBetweenRefills; //We gotta rethink how we will do this - user writes how many days
@@ -20,7 +20,7 @@ public class RxItem {
 	private long id;
 	
 	public RxItem(String name, String patient, String symptoms, String sideEffects,
-			int dose, int pillsPerDay, Date start, int daysBetweenRefills, Pharmacy pharmacy, Doctor doc, String rxNumb, Date lastrefill) {
+			double dose, int pillsPerDay, Date start, int daysBetweenRefills, Pharmacy pharmacy, Doctor doc, String rxNumb, Date lastrefill) {
 		this.name = name;
 		this.patient = patient;
 		this.symptoms = symptoms;
@@ -61,7 +61,7 @@ public class RxItem {
 		return this.sideEffects;
 	}
 	
-	public int getDose() {
+	public double getDose() {
 		return this.dose;
 	}
 	

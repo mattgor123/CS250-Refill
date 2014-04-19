@@ -73,7 +73,6 @@ public class MainActivity extends ActionBarActivity implements
 		//Get whether the log-in screen should be displayed from SharedPrefs
 		SharedPreferences prefs = this.getSharedPreferences("refill", Context.MODE_PRIVATE);
 		shouldLogin = prefs.getBoolean(LoginActivity.nextKey, true);
-		shouldLogin = true;
 		if (shouldLogin) {
 			//Show the log-in screen
 			Intent login = new Intent(this, LoginActivity.class);
@@ -272,7 +271,7 @@ public class MainActivity extends ActionBarActivity implements
 	    patientET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    physET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    rxnumbET.setInputType(InputType.TYPE_CLASS_NUMBER);
-	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER);
+	    doseET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 	    dbrET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    ppdET.setInputType(InputType.TYPE_CLASS_NUMBER);
 	    
@@ -283,7 +282,7 @@ public class MainActivity extends ActionBarActivity implements
 			patientET.setText(rx.getPatient());
 			sympET.setText(rx.getSymptoms());
 			sideEffectsET.setText(rx.getSideEffects());
-			doseET.setText(Integer.toString(rx.getDose()));
+			doseET.setText(Double.toString(rx.getDose()));
 			ppdET.setText(Integer.toString(rx.getPillsPerDay()));
 		    startET.setText(df.format(rx.getStartDate()));
 		    dbrET.setText(Integer.toString(rx.getDaysBetweenRefills()));
@@ -336,7 +335,7 @@ public class MainActivity extends ActionBarActivity implements
 	                	else if(patientET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid patient",Toast.LENGTH_SHORT).show();}
 	                	else if(sympET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid symptoms",Toast.LENGTH_SHORT).show();}
 	                	else if(sideEffectsET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid side effects",Toast.LENGTH_SHORT).show();}
-	                	else if(!isValidInt(doseET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose in mg",Toast.LENGTH_SHORT).show();}
+	                	else if(!isValidDouble(doseET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose in mg",Toast.LENGTH_SHORT).show();}
 	                	else if(!isValidInt(ppdET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid # of pills per day",Toast.LENGTH_SHORT).show();}
 	                	else if(startET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid start date",Toast.LENGTH_SHORT).show();}
 	                	else if(!isValidInt(dbrET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid days between refills",Toast.LENGTH_SHORT).show();}
@@ -352,7 +351,7 @@ public class MainActivity extends ActionBarActivity implements
 	                			String patient = patientET.getText().toString();//patient
 	                			String symp = sympET.getText().toString(); //symptoms
 	                			String sideEffects = sideEffectsET.getText().toString();//side effects
-	                			int dose = Integer.parseInt(doseET.getText().toString());//dose
+	                			double dose = Double.parseDouble(doseET.getText().toString());//dose
 	                			int ppd = Integer.parseInt(ppdET.getText().toString()); //pills per day
 	                			Date start = df.parse(startET.getText().toString());//start date
 	                			int dbr = Integer.parseInt(dbrET.getText().toString()); //day between refills
@@ -411,17 +410,9 @@ public class MainActivity extends ActionBarActivity implements
 		dialog.show();	
 		}
 
-	private boolean isValidInt(EditText et) {
-		String str = et.getText().toString().trim();
-		if (str.length() > 0) {
-			return Integer.valueOf(et.getText().toString().trim()) > 0;
-		}
-		else return false;
-	}
-	
 	private boolean shouldUpdateRx(RxItem rx, String name,
 			String patient, String symp, String sideEffects,
-			int dose, int ppd, int dbr,
+			double dose, int ppd, int dbr,
 			String pharm, String doc, String rxnumb) {
 		return ((!rx.getName().equals(name)) || (!rx.getPatient().equals(patient)) ||
 				(!rx.getSymptoms().equals(symp)) || (!rx.getSideEffects().equals(sideEffects))
@@ -462,6 +453,7 @@ public class MainActivity extends ActionBarActivity implements
 		rxAdapter.open();
 		drAdapter.open();
 		phAdapter.open();
+		hAdapter.open();
 	}
 	@Override
 	public void onStop() {
@@ -469,6 +461,7 @@ public class MainActivity extends ActionBarActivity implements
 		rxAdapter.close();
 		drAdapter.close();
 		phAdapter.close();
+		hAdapter.close();
 	}
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
@@ -672,6 +665,22 @@ public class MainActivity extends ActionBarActivity implements
 		});
 		layout.addView(spinner);
 		d.show();
+	}
+	
+	private boolean isValidInt(EditText et) {
+		String str = et.getText().toString().trim();
+		if (str.length() > 0) {
+			return Integer.valueOf(str) > 0;
+		}
+		else return false;
+	}
+	
+	private boolean isValidDouble(EditText et) {
+		String str = et.getText().toString().trim();
+		if(str.length() > 0 && !str.equals(".")) {
+			return Double.valueOf(str) > 0;
+		}
+		else return false;
 	}
 	
 	private boolean isValidName(String str) {

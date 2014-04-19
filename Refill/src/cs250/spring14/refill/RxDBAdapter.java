@@ -23,7 +23,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 15; //Playing around with History stuff
+    private static final int DB_VERSION = 16; //dose -> real
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -85,7 +85,7 @@ public class RxDBAdapter {
     }
     
     public boolean updateRx(long ri, String name, String patient, String symptoms, String sideEffects,
-			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
+			double dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, String physician,
 			String rxNumb, Date lastrefill ) {
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_NAME, name);
@@ -124,7 +124,7 @@ public class RxDBAdapter {
     					c.getString(2), //patient
     					c.getString(3), //symptoms
     					c.getString(4), //sideEffects
-    					c.getInt(5), //dose
+    					c.getFloat(5), //dose
     					c.getInt(6), //pillsPerDay
     					MainActivity.df.parse(c.getString(11)), //startDate
     					c.getInt(7), //daysBetween
@@ -152,7 +152,7 @@ public class RxDBAdapter {
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + RX_TABLE
                 + " (" + RX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + RX_NAME + " TEXT,"
-                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " INTEGER," + RX_PRD + 
+                + RX_PT + " TEXT," + RX_SYMPT + " TEXT," + RX_SFECT + " TEXT," + RX_DOSE + " REAL," + RX_PRD + 
                 " INTEGER," + RX_DBR + " INTEGER, " + RX_PHRM + " TEXT," + RX_MD + " TEXT, " + RX_NMB + " TEXT," + RX_STD + " TEXT, " + RX_LAST + " TEXT);";
  
         public RxdbHelper(Context context, String name, CursorFactory fct, int version) {
