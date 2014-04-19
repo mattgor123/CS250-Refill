@@ -73,22 +73,49 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 				return v;
 	}
 	
+	/**
+	 * Helper method to get the resource for a pill given its name
+	 * @param name
+	 * @return the int of the resource created in the R file
+	 */
 	public int getIconFromString(String name) {
 		switch (name) {
-		case "xanax":
-			return R.drawable.xanax;
-		case "valium":
-			return R.drawable.valium;
 		case "adderall":
 			return R.drawable.adderall;
-		case "vicodin":
-			return R.drawable.vicodin;
-		case "zocor":
-			return R.drawable.zocor;
-		case "zestril":
-			return R.drawable.zestril;
+		case "cymbalta":
+			return R.drawable.cymbalta;
+		case "hydrocodone":
+			return R.drawable.hydrocodone;
+		case "lexapro":
+			return R.drawable.lexapro;
+		case "lipitor":
+			return R.drawable.lipitor;
+		case "lisinopril":
+			return R.drawable.lisinopril;
+		case "lyrica":
+			return R.drawable.lyrica;
+		case "oxycontin":
+			return R.drawable.oxycontin;
+		case "paxil":
+			return R.drawable.paxil;
+		case "percocet":
+			return R.drawable.percocet;
 		case "synthroid":
 			return R.drawable.synthroid;
+		case "tramadol":
+			return R.drawable.tramadol;
+		case "valium":
+			return R.drawable.valium;
+		case "vicodin":
+			return R.drawable.vicodin;
+		case "xanax":
+			return R.drawable.xanax;
+		case "zestril":
+			return R.drawable.zestril;
+		case "zocor":
+			return R.drawable.zocor;
+		case "zoloft":
+		    return R.drawable.zoloft;
 		default:
 			return R.drawable.default_pill;
 		}
