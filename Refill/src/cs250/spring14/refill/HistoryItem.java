@@ -2,8 +2,24 @@ package cs250.spring14.refill;
 
 public class HistoryItem {
 
+	public enum HistoryType {
+		P("P"), //pharm 
+		D("D"), //doctor
+		R("R"); //prescription
+	 
+		private String type;
+	 
+		private HistoryType(String s) {
+			this.type = s;
+		}
+	 
+		public String getType() {
+			return type;
+		}	 
+	}
 	private String owner;
 	private String message;
+	private HistoryType h;
 	private long id;
 	
 	/**
@@ -11,9 +27,10 @@ public class HistoryItem {
 	 * @param o the owner
 	 * @param m the message
 	 */
-	public HistoryItem(String o, String m) {
+	public HistoryItem(String o, String m, String h) {
 		this.setOwner(o);
 		this.setMessage(m);
+		this.setH(HistoryType.valueOf(h));
 	}
 
 	/**
@@ -54,5 +71,24 @@ public class HistoryItem {
 	public void setId(long id) {
 		this.id = id;
 		
+	}
+
+	public int getIconResource() {
+		switch (this.h) {
+		case D:
+			return R.drawable.doctor;
+		case P:
+			return R.drawable.pharmacy;
+		default:
+			return R.drawable.default_pill;
+		}
+	}
+	
+	public HistoryType getH() {
+		return h;
+	}
+
+	public void setH(HistoryType h) {
+		this.h = h;
 	}
 }

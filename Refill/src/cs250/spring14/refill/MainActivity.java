@@ -222,7 +222,16 @@ public class MainActivity extends ActionBarActivity implements
 
 	            @Override
 	            public void onClick(View v) {
-	                // TODO Auto-generated method stub
+	            	if(startET.getText().toString().trim().length() >= 0)
+						try {
+							myCalendar.setTime(df.parse(startET.getText().toString()));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	            	else {
+	            		//myCalendar was already set to the right time, proceed
+	            	}
 	                new DatePickerDialog(MainActivity.this, date, myCalendar
 	                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 	                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -356,7 +365,7 @@ public class MainActivity extends ActionBarActivity implements
 	                				{
 		                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
 		                				String message = "Updated in Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
-		                				hAdapter.insertHis(new HistoryItem(name,message));
+		                				hAdapter.insertHis(new HistoryItem(name,message,"R"));
 	                				}
 	                				else {
 	                					//We hit OK but didn't update; don't do anything.
@@ -367,7 +376,7 @@ public class MainActivity extends ActionBarActivity implements
 	                				lastRefillDate = start;
 	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, makePharmFromString(pharm), makeDocFromString(doc), rxnumb, lastRefillDate));									
 	                				String message = "Added to Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
-	                				hAdapter.insertHis(new HistoryItem(name,message));
+	                				hAdapter.insertHis(new HistoryItem(name,message,"R"));
 	                			}
 								//Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + " items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
@@ -481,14 +490,14 @@ public class MainActivity extends ActionBarActivity implements
 				String emailStr = email.getText().toString().trim();
 				String phoneStr = phone.getText().toString().trim();
 				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
 				else {
 					//We are good to add our Doctor
 					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
 					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
 					String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message));
+					hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
 					//Better way to do it, but just wanted to get functionality
 					aa.clear();
 					aa.addAll(drAdapter.getAllDrs());
@@ -574,15 +583,15 @@ public class MainActivity extends ActionBarActivity implements
 				String phoneStr = phone.getText().toString().trim();
 				String streetStr = street.getText().toString().trim();
 				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
-				if(streetStr.length()==0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
+				else if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else if(streetStr.length()==0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
 				else {
 					//We are good to add our pharmacy
 					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
 					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
 					String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message));
+					hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
 					//Better way to do it, but just wanted to get functionality
 					aa.clear();
 					aa.addAll(phAdapter.getAllDrs());

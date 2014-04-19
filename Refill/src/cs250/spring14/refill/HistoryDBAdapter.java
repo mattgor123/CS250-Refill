@@ -20,14 +20,15 @@ public class HistoryDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "His.db";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 11;
     
     private static final String H_TABLE = "His";
     public static final String H_ID = "H_id";   // column 0
     public static final String H_OWN = "H_own"; //column 1
     public static final String H_MSG = "H_msg"; //column 2
+    public static final String H_HT = "H_ht"; //column 3
     
-    public static final String[] H_COLS = {H_ID, H_OWN, H_MSG};
+    public static final String[] H_COLS = {H_ID, H_OWN, H_MSG, H_HT};
     
     /**
      * Constructor given a Context for this DBAdapter
@@ -59,7 +60,7 @@ public class HistoryDBAdapter {
     
     /**
      * Method to insert a HistoryItem into the database
-     * @param dr the HistoryItem to insert
+     * @param h the HistoryItem to insert
      * @return the row # of the History DB to which we just inserted
      */
     public long insertHis(HistoryItem h) {
@@ -68,6 +69,7 @@ public class HistoryDBAdapter {
         // assign values for each col
         cvalues.put(H_OWN, h.getOwner());
         cvalues.put(H_MSG, h.getMessage());
+        cvalues.put(H_HT, h.getH().getType());
         long row = db.insert(H_TABLE, null, cvalues);
         return row;
     }
@@ -75,14 +77,16 @@ public class HistoryDBAdapter {
     /**
      * Method to update a HistoryItem
      * @param ri the row in the DB where this HistoryItem lives
-     * @param name the HistoryItem's name
-     * @param email the HistoryItem's email
+     * @param own the HistoryItem's owner
+     * @param msg the HistoryItem's msg
+     * @param ht the HistoryItem's HistoryType
      * @return true if update successful; false otherwise
      */
-    public boolean updateHis(long ri, String name, String email, String phone) {
+    public boolean updateHis(long ri, String own, String msg, String h) {
 		ContentValues cvalues = new ContentValues();
-		cvalues.put(H_OWN, name);
-        cvalues.put(H_MSG, email);
+		cvalues.put(H_OWN, own);
+        cvalues.put(H_MSG, msg);
+        cvalues.put(H_HT, h);
         return db.update(H_TABLE, cvalues, H_ID + " = ?", new String[] {String.valueOf(ri)}) > 0;
 	}
     
@@ -98,15 +102,16 @@ public class HistoryDBAdapter {
     		new String[] { String.valueOf(ri) });
     }
     /**
-     * Method to get a cursor for all the Doctors
+     * Method to get a cursor for all the HistoryItems
+     * Sorted in descending order for display purposes
      * @return the Cursor
      */
     public Cursor getAllHisCursor() {
-        return db.query(H_TABLE, H_COLS, null, null, null, null, null);
+        return db.query(H_TABLE, H_COLS, null, null, null, null, H_ID + " DESC");
     }
     /**
-     * Method to get all the Pharmacys from the DB
-     * @return an ArrayList<Pharmacy> with all the Doctors
+     * Method to get all the HistoryItems from the DB
+     * @return an ArrayList<HistoryItem> with all the HistoryItems
      */
     public ArrayList<HistoryItem> getAllHis() {
     	ArrayList<HistoryItem> his = new ArrayList<HistoryItem>();
@@ -115,7 +120,8 @@ public class HistoryDBAdapter {
     		do {
     			HistoryItem result = new HistoryItem(
     					c.getString(1), //owner
-    					c.getString(2)); //message
+    					c.getString(2), //message
+    					c.getString(3));
     			//Set the ID to the row in the DB
     			result.setId(c.getInt(0));
     			his.add(result);
@@ -123,7 +129,7 @@ public class HistoryDBAdapter {
 		return his;
     }
     /**
-     * Method to return the cursor for a Doctor given a specific row
+     * Method to return the cursor for a HistoryItem given a specific row
      * @param ri the row
      * @return the Cursor
      * @throws SQLException
@@ -146,7 +152,7 @@ public class HistoryDBAdapter {
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + H_TABLE
                 + " (" + H_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + H_OWN + " TEXT,"
-                + H_MSG + " TEXT);";
+                + H_MSG + " TEXT, " + H_HT + " TEXT);";
  
         public HisDBHelper(Context context, String name, CursorFactory fct, int version) {
             super(context, name, fct, version);

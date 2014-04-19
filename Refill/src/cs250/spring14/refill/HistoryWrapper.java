@@ -1,7 +1,6 @@
 package cs250.spring14.refill;
 
 import java.util.List;
-import java.util.Locale;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,19 +57,10 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 					}
 					if (iv != null) {
 						//Here we handle finding the image from the name
-						iv.setImageResource(getIconFromString(nstr.toLowerCase(Locale.US)));
+						iv.setImageResource(i.getIconResource());
 					}
 				}
 				// the view must be returned to our activity
 				return v;
-	}
-	
-	public int getIconFromString(String str) {
-		switch (str) {
-		case "cvs":
-			return R.drawable.default_pill;
-		default:
-			return R.drawable.default_pill;
-		}
 	}
 }

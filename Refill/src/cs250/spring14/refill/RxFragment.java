@@ -47,7 +47,7 @@ public class RxFragment extends Fragment {
 								//Remove functionality must be added here
 								MainActivity.rxAdapter.removeRx(rx.getId());
 								String msg = "Removed from Prescriptions DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
-								MainActivity.hAdapter.insertHis(new HistoryItem(rx.getName(),msg));
+								MainActivity.hAdapter.insertHis(new HistoryItem(rx.getName(),msg,"R"));
 								onResume();
 							}
 						}, 
@@ -104,6 +104,4 @@ public class RxFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
-	
 }

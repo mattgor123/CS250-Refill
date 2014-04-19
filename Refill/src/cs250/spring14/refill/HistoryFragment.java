@@ -1,8 +1,5 @@
 package cs250.spring14.refill;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +11,6 @@ import android.widget.ListView;
 public class HistoryFragment extends Fragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
-	private ArrayList<HistoryItem> array;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,8 +18,7 @@ public class HistoryFragment extends Fragment {
  
         View rootView = inflater.inflate(R.layout.fragment_his, container, false);
         historyList = (ListView) rootView.findViewById(R.id.listView1);
-        array = MainActivity.hAdapter.getAllHis();
-        hisAdap = new HistoryWrapper(rootView.getContext(),0, array);
+        hisAdap = new HistoryWrapper(rootView.getContext(),0, MainActivity.hAdapter.getAllHis());
         historyList.setAdapter(hisAdap);
         hisAdap.notifyDataSetChanged();
         return rootView;
@@ -33,9 +28,7 @@ public class HistoryFragment extends Fragment {
 	public void onResume(){
 		super.onResume();
 		hisAdap.clear();
-		array = MainActivity.hAdapter.getAllHis();
-		Collections.reverse(array);
-		hisAdap.addAll(array);
+		hisAdap.addAll(MainActivity.hAdapter.getAllHis());
 	}
 
 }
