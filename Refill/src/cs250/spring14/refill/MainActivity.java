@@ -324,10 +324,10 @@ public class MainActivity extends ActionBarActivity implements
 	                	else if(patientET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid patient",Toast.LENGTH_SHORT).show();}
 	                	else if(sympET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid symptoms",Toast.LENGTH_SHORT).show();}
 	                	else if(sideEffectsET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid side effects",Toast.LENGTH_SHORT).show();}
-	                	else if(doseET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose in mg",Toast.LENGTH_SHORT).show();}
-	                	else if(ppdET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid # of pills per day",Toast.LENGTH_SHORT).show();}
+	                	else if(!isValidInt(doseET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid dose in mg",Toast.LENGTH_SHORT).show();}
+	                	else if(!isValidInt(ppdET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid # of pills per day",Toast.LENGTH_SHORT).show();}
 	                	else if(startET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid start date",Toast.LENGTH_SHORT).show();}
-	                	else if(dbrET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid days between refills",Toast.LENGTH_SHORT).show();}
+	                	else if(!isValidInt(dbrET)){Toast.makeText(getApplicationContext(), "Please ensure you've entered valid days between refills",Toast.LENGTH_SHORT).show();}
 	                	else if(pharmET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid pharmacy",Toast.LENGTH_SHORT).show();}
 	                	else if(physET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid physician",Toast.LENGTH_SHORT).show();}
 	                	else if(rxnumbET.getText().toString().trim().length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid Rx number",Toast.LENGTH_SHORT).show();}
@@ -350,6 +350,7 @@ public class MainActivity extends ActionBarActivity implements
 	                			//This means we were editing
 	                			if (rx != null)
 	                			{
+	                				//Need to see if we should change lastRefillDate
 	                				boolean dateChanged;
 	                				if (!start.equals(rx.getStartDate())) {
 	                					//This means the date has been updated; must update last Refill date to match
@@ -361,6 +362,7 @@ public class MainActivity extends ActionBarActivity implements
 	                					lastRefillDate = rx.getLastRefill();
 	                					dateChanged = false;
 	                				}
+	                				//Check if we should update
 	                				if(shouldUpdateRx(rx, name, patient, symp, sideEffects, dose, ppd, dbr, pharm, doc, rxnumb) || dateChanged )
 	                				{
 		                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
@@ -368,7 +370,7 @@ public class MainActivity extends ActionBarActivity implements
 		                				hAdapter.insertHis(new HistoryItem(name,message,"R"));
 	                				}
 	                				else {
-	                					//We hit OK but didn't update; don't do anything.
+	                					//We hit OK but didn't want to update; don't do anything (or add to history)
 	                				}
 	                			}
 	                			//This means we we were inserting a new one
@@ -397,7 +399,14 @@ public class MainActivity extends ActionBarActivity implements
 		dialog.show();	
 		}
 
-
+	private boolean isValidInt(EditText et) {
+		String str = et.getText().toString().trim();
+		if (str.length() > 0) {
+			return Integer.valueOf(et.getText().toString().trim()) > 0;
+		}
+		else return false;
+	}
+	
 	private boolean shouldUpdateRx(RxItem rx, String name,
 			String patient, String symp, String sideEffects,
 			int dose, int ppd, int dbr,
@@ -489,9 +498,9 @@ public class MainActivity extends ActionBarActivity implements
 				String nameStr = name.getText().toString().trim();
 				String emailStr = email.getText().toString().trim();
 				String phoneStr = phone.getText().toString().trim();
-				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				else if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				else if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				if(!isValidName(nameStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
+				else if(!isValidEmail(emailStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(!isValidPhone(phoneStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
 				else {
 					//We are good to add our Doctor
 					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
@@ -518,7 +527,7 @@ public class MainActivity extends ActionBarActivity implements
 		phone.setHint("    Phone: ");
 		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
-		phone.setInputType(InputType.TYPE_CLASS_PHONE);
+		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
 		layout.addView(name);
 		layout.addView(email);
 		layout.addView(phone);
@@ -583,9 +592,9 @@ public class MainActivity extends ActionBarActivity implements
 				String phoneStr = phone.getText().toString().trim();
 				String streetStr = street.getText().toString().trim();
 				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				else if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				else if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
-				else if(streetStr.length()==0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
+				else if(!isValidEmail(emailStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(!isValidPhone(phoneStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else if(!isValidStreet(streetStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
 				else {
 					//We are good to add our pharmacy
 					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
@@ -612,10 +621,10 @@ public class MainActivity extends ActionBarActivity implements
 		name.setHint("    Name: ");
 		email.setHint("    Email For Refill: ");
 		phone.setHint("    Phone: ");
-		street.setHint("    Street: ");
+		street.setHint("    Street (123 Oak): ");
 		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
-		phone.setInputType(InputType.TYPE_CLASS_PHONE);
+		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
 		street.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
 		layout.addView(name);
 		layout.addView(email);
@@ -652,6 +661,49 @@ public class MainActivity extends ActionBarActivity implements
 		layout.addView(spinner);
 		d.show();
 	}
+	
+	private boolean isValidName(String str) {
+		if (str.length() > 2) {
+			String[] name = str.split(" ");
+			if (name.length < 2) {
+				//We have not entered a First & Last name
+				return false;
+			}
+			//Very basic; just seeing if we have at least 1 space. Could do more validation later.
+			else return true;
+		}
+		return false;
+	}
+	
+	private boolean isValidPhone(String str) {
+		if (str.length() >= 10) {
+			return android.util.Patterns.PHONE.matcher(str).matches();
+		}
+		else return false;
+	}
+	
+	private boolean isValidEmail(String str) {
+	    if (str.length() >= 5) {
+	        return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches();
+	    }
+	    else return false;
+	}
+	
+	private boolean isValidStreet(String str) {
+		if (str.length() > 0) {
+			String[] address = str.split(" ");
+			if (address.length < 2) {
+				//We've entered an invalid address;
+				//Must be at least of the form # STREETNAME
+				return false;
+			}
+			if (address[0].matches("\\d+")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {

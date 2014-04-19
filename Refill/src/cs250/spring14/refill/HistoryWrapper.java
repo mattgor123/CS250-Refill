@@ -16,6 +16,12 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 		this.items = objects;
 	}
 
+	//We don't want to be able to click on a HistoryItem
+	@Override
+	public boolean isEnabled(int position) {
+		return super.isEnabled(position) && false;
+	}
+	
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent){
 		// assign the view we are converting to a local variable

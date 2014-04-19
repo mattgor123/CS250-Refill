@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class RxFragment extends Fragment {
 	ListView rxList;
 	ArrayAdapter<RxItem> rxAdap;
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
