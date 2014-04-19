@@ -13,14 +13,14 @@ public class RxItem {
 	private int pillsPerDay;
 	private Date start;
 	private int daysBetweenRefills; //We gotta rethink how we will do this - user writes how many days
-	private String pharmacy;
+	private Pharmacy pharmacy;
 	private Doctor doc;
 	private String rxNumb;
 	private Date lastrefill;
 	private long id;
 	
 	public RxItem(String name, String patient, String symptoms, String sideEffects,
-			int dose, int pillsPerDay, Date start, int daysBetweenRefills, String pharmacy, Doctor doc, String rxNumb, Date lastrefill) {
+			int dose, int pillsPerDay, Date start, int daysBetweenRefills, Pharmacy pharmacy, Doctor doc, String rxNumb, Date lastrefill) {
 		this.name = name;
 		this.patient = patient;
 		this.symptoms = symptoms;
@@ -81,7 +81,7 @@ public class RxItem {
 		return this.daysBetweenRefills;
 	}
 	
-	public String getPharmacy() {
+	public Pharmacy getPharmacy() {
 		return this.pharmacy;
 	}
 	
@@ -91,6 +91,10 @@ public class RxItem {
 	
 	public String getDocString() {
 		return this.doc.getName() + " :: " + this.doc.getEmail() + " :: " + this.doc.getPhone();
+	}
+	
+	public String getPhString() {
+		return this.pharmacy.getName() + " :: " + this.pharmacy.getEmail() + " :: " + this.pharmacy.getPhone() + " :: " + this.pharmacy.getStreetAddress();
 	}
 		
 	public String getRxNumb() {

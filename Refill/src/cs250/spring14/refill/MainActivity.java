@@ -59,6 +59,7 @@ public class MainActivity extends ActionBarActivity implements
 	private Fragment[] frags;
 	public static RxDBAdapter rxAdapter;
 	public static DoctorDBAdapter drAdapter;
+	public static PharmacyDBAdapter phAdapter;
 	public static int currFrag;
 	private static MainActivity _instance;
 	
@@ -112,6 +113,9 @@ public class MainActivity extends ActionBarActivity implements
 		//Dr adapter stuff
 		drAdapter = new DoctorDBAdapter(this);
 		drAdapter.open();
+		//Ph adapter stuff
+		phAdapter = new PharmacyDBAdapter(this);
+		phAdapter.open();
 		_instance = this;
 	}
 
@@ -151,7 +155,6 @@ public class MainActivity extends ActionBarActivity implements
 	    layout.setOrientation(1); 
 	    layout.setVerticalScrollBarEnabled(true);
 	    layout.setHorizontalScrollBarEnabled(false);
-	    builder.setMessage("Add a Prescription");
 	    final EditText nameET = new EditText(this);
 	    final EditText patientET = new EditText(this);
 	    final EditText sympET = new EditText(this);
@@ -171,7 +174,7 @@ public class MainActivity extends ActionBarActivity implements
 	    ppdET.setHint("   Pills Per Day: ");
 	    startET.setHint("   Start Date (Click to Pick): ");
 	    dbrET.setHint("   Days Between Refills: ");
-	    pharmET.setHint("   Pharmacy: ");
+	    pharmET.setHint("   Pharmacy (Click to Pick/Add): ");
 	    physET.setHint("   Doctor (Click to Pick/Add): ");
 	    rxnumbET.setHint("   RX Number: ");
 	    nameET.setSingleLine();
@@ -180,12 +183,16 @@ public class MainActivity extends ActionBarActivity implements
 	    sideEffectsET.setSingleLine();
 	    doseET.setSingleLine();
 	    ppdET.setSingleLine();
+	    physET.setSingleLine();
 	    //To avoid having to deal with keyboard popping up when you want to pick date
 	    startET.setFocusable(false);
 	    startET.setFocusableInTouchMode(false);
 	    //To avoid having to deal with keyboard popping up when you want to pick the Dr
 	    physET.setFocusable(false);
 	    physET.setFocusableInTouchMode(false);
+	    //To avoid having to deal with keyboard popping up when you want to pick the Ph
+	    pharmET.setFocusable(false);
+	    pharmET.setFocusableInTouchMode(false);
 	    //Get the calendar for the datepicker listener
 	    final Calendar myCalendar = Calendar.getInstance();
 	    //Code adapted from http://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
@@ -229,6 +236,12 @@ public class MainActivity extends ActionBarActivity implements
 	    });
 	    dbrET.setSingleLine();
 	    pharmET.setSingleLine();
+	    pharmET.setOnClickListener(new OnClickListener() {
+	    	@Override
+	    	public void onClick(View v) {
+	    		makePharmacyDialog(context,v);
+	    	}
+	    });
 	    rxnumbET.setSingleLine();
 	    nameET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 	    patientET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -249,7 +262,7 @@ public class MainActivity extends ActionBarActivity implements
 			ppdET.setText(Integer.toString(rx.getPillsPerDay()));
 		    startET.setText(df.format(rx.getStartDate()));
 		    dbrET.setText(Integer.toString(rx.getDaysBetweenRefills()));
-		    pharmET.setText(rx.getPharmacy());
+		    pharmET.setText(rx.getPhString());
 		    physET.setText(rx.getDocString());
 		    rxnumbET.setText(rx.getRxNumb());
 		}
@@ -320,8 +333,6 @@ public class MainActivity extends ActionBarActivity implements
 	                			int dbr = Integer.parseInt(dbrET.getText().toString()); //day between refills
 	                			String pharm = pharmET.getText().toString(); //pharmacy
 	                			String doc = physET.getText().toString();
-	                			//For debugging purposes; we'll get rid of this later
-	                			assert (doc!=null);
 	                			String rxnumb = rxnumbET.getText().toString();
 	                			//This means we were editing
 	                			if (rx != null)
@@ -332,7 +343,7 @@ public class MainActivity extends ActionBarActivity implements
 	                			//This means we we were inserting a new one
 	                			else {
 	                				lastRefillDate = start;
-	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, makeDocFromString(doc), rxnumb, lastRefillDate));									
+	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, makePharmFromString(pharm), makeDocFromString(doc), rxnumb, lastRefillDate));									
 	                			}
 								//Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + " items in the DB", Toast.LENGTH_SHORT).show();
 								//Manually call onResume to ensure that we update the view
@@ -363,6 +374,19 @@ public class MainActivity extends ActionBarActivity implements
 		else
 		{
 			return new Doctor(tokens[0],tokens[1],tokens[2]);
+		}
+	}
+	
+	public static Pharmacy makePharmFromString(String string) {
+		String[] tokens = string.split(" :: ");
+		if(tokens.length != 4)
+		{
+			//Something got screwed up
+			return null;
+		}
+		else
+		{
+			return new Pharmacy(tokens[0],tokens[1],tokens[2], tokens[3]);
 		}
 	}
 	
@@ -465,6 +489,102 @@ public class MainActivity extends ActionBarActivity implements
 				else {
 					EditText et = (EditText) v;
 					et.setText(dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone());
+					d.dismiss();					
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				//Nothing selected; do nothing						
+			}
+			
+		});
+		layout.addView(spinner);
+		d.show();
+	}
+	
+	protected void makePharmacyDialog(Context context,final View v) {
+		ArrayList<Pharmacy> phs = phAdapter.getAllDrs();
+		if (phs.size() == 0) {
+			//Dummy pharmacy in first spot for the spinner
+			Pharmacy adding = new Pharmacy("","","","Select a Pharmacy or Add One");
+			adding.setId(phAdapter.insertPh(adding));
+			phs.add(adding);
+		}
+		final ArrayAdapter<Pharmacy> aa = new ArrayAdapter<Pharmacy>(getApplicationContext(),android.R.layout.simple_spinner_item, phs);
+		final Spinner spinner = new Spinner(getApplicationContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		LinearLayout layout= new LinearLayout(this);
+	    layout.setOrientation(1); 
+		final EditText name = new EditText(this);
+		final EditText email = new EditText(this);
+		final EditText phone = new EditText(this);
+		final EditText street = new EditText(this);
+		Button add = new Button(this);
+		add.setText("Add a New Pharmacy");
+		add.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Basic input checking; will get better with time
+				String nameStr = name.getText().toString().trim();
+				String emailStr = email.getText().toString().trim();
+				String phoneStr = phone.getText().toString().trim();
+				String streetStr = street.getText().toString().trim();
+				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
+				if(emailStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				if(phoneStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				if(streetStr.length()==0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
+				else {
+					//We are good to add our pharmacy
+					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
+					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
+					//Better way to do it, but just wanted to get functionality
+					aa.clear();
+					aa.addAll(phAdapter.getAllDrs());
+					name.setText("");
+					email.setText("");
+					phone.setText("");
+					street.setText("");
+					spinner.setSelection(aa.getCount());
+				}
+			}
+			
+		});
+		name.setSingleLine();
+		email.setSingleLine();
+		phone.setSingleLine();
+		street.setSingleLine();
+		name.setHint("    Name: ");
+		email.setHint("    Email For Refill: ");
+		phone.setHint("    Phone: ");
+		street.setHint("    Street: ");
+		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		phone.setInputType(InputType.TYPE_CLASS_PHONE);
+		street.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+		layout.addView(name);
+		layout.addView(email);
+		layout.addView(phone);
+		layout.addView(street);
+		layout.addView(add);
+		builder.setView(layout);
+		final Dialog d = builder.create();
+		spinner.setAdapter(aa);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent,
+					View view, int position, long id) {
+				Pharmacy ph = (Pharmacy) spinner.getSelectedItem();
+				if (ph.getId() == 1)
+				{
+					//We hit our Dummy Pharmacy, do nothing.
+				}
+				else {
+					EditText et = (EditText) v;
+					et.setText(ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone() + " :: " + ph.getStreetAddress());
 					d.dismiss();					
 				}
 				

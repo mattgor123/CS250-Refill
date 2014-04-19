@@ -23,7 +23,7 @@ public class RxDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Rx.db";
-    private static final int DB_VERSION = 10; //Playing around with Doctor stuff
+    private static final int DB_VERSION = 11; //Playing around with Pharmacy stuff
     
     private static final String RX_TABLE = "Rxs";
     public static final String RX_ID = "Rx_id";   // column 0
@@ -74,7 +74,7 @@ public class RxDBAdapter {
         cvalues.put(RX_DOSE, rx.getDose());
         cvalues.put(RX_PRD, rx.getPillsPerDay());
         cvalues.put(RX_DBR, rx.getDaysBetweenRefills());
-        cvalues.put(RX_PHRM, rx.getPharmacy());
+        cvalues.put(RX_PHRM, rx.getPhString());
         cvalues.put(RX_MD, rx.getDocString());
         cvalues.put(RX_NMB, rx.getRxNumb());
         cvalues.put(RX_STD, MainActivity.df.format(rx.getStartDate()));
@@ -128,7 +128,7 @@ public class RxDBAdapter {
     					c.getInt(6), //pillsPerDay
     					MainActivity.df.parse(c.getString(11)), //startDate
     					c.getInt(7), //daysBetween
-    					c.getString(8), //pharmacy
+    					MainActivity.makePharmFromString(c.getString(8)), //pharmacy
     					MainActivity.makeDocFromString(c.getString(9)), //physician
     					c.getString(10), //RX Number
     					MainActivity.df.parse(c.getString(12)) //last refill
