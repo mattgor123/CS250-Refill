@@ -1,6 +1,8 @@
 package cs250.spring14.refill;
 
 import java.text.ParseException;
+import java.util.Calendar;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -44,6 +46,8 @@ public class RxFragment extends Fragment {
 									int which) {
 								//Remove functionality must be added here
 								MainActivity.rxAdapter.removeRx(rx.getId());
+								String msg = "Removed from Prescriptions DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
+								MainActivity.hAdapter.insertHis(new HistoryItem(rx.getName(),msg));
 								onResume();
 							}
 						}, 

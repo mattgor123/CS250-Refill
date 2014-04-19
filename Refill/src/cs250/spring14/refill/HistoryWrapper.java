@@ -53,7 +53,7 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 					}
 					if (msg != null){
 						String str = i.getMessage();
-						if (str.length() > 40) str = (String) str.subSequence(0, 37) + "...";
+						if (str.length() > 39) str = (String) str.subSequence(0, 36) + "...";
 						msg.setText(str);
 					}
 					if (iv != null) {

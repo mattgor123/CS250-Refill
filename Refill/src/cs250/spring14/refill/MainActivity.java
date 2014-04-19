@@ -341,10 +341,26 @@ public class MainActivity extends ActionBarActivity implements
 	                			//This means we were editing
 	                			if (rx != null)
 	                			{
-	                				lastRefillDate = rx.getLastRefill();
-	                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
-	                				String message = "Updated in Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
-	                				hAdapter.insertHis(new HistoryItem(name,message));
+	                				boolean dateChanged;
+	                				if (!start.equals(rx.getStartDate())) {
+	                					//This means the date has been updated; must update last Refill date to match
+	                					lastRefillDate = start;
+	                					dateChanged = true;
+	                				}
+	                				else {
+	                					//We have not updated the date, so we must keep the old last refill date
+	                					lastRefillDate = rx.getLastRefill();
+	                					dateChanged = false;
+	                				}
+	                				if(shouldUpdateRx(rx, name, patient, symp, sideEffects, dose, ppd, dbr, pharm, doc, rxnumb) || dateChanged )
+	                				{
+		                				rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc, rxnumb, lastRefillDate);
+		                				String message = "Updated in Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
+		                				hAdapter.insertHis(new HistoryItem(name,message));
+	                				}
+	                				else {
+	                					//We hit OK but didn't update; don't do anything.
+	                				}
 	                			}
 	                			//This means we we were inserting a new one
 	                			else {
@@ -372,6 +388,18 @@ public class MainActivity extends ActionBarActivity implements
 		dialog.show();	
 		}
 
+
+	private boolean shouldUpdateRx(RxItem rx, String name,
+			String patient, String symp, String sideEffects,
+			int dose, int ppd, int dbr,
+			String pharm, String doc, String rxnumb) {
+		return ((!rx.getName().equals(name)) || (!rx.getPatient().equals(patient)) ||
+				(!rx.getSymptoms().equals(symp)) || (!rx.getSideEffects().equals(sideEffects))
+				|| !(rx.getDose()==dose) || !(rx.getPillsPerDay()==ppd)
+				|| !(rx.getDaysBetweenRefills()==dbr) || (!rx.getPhString().equals(pharm))
+				|| (!rx.getDocString().equals(doc)) || !(rx.getRxNumb().equals(rxnumb)));
+	}
+	
 	public static Doctor makeDocFromString(String string) {
 		String[] tokens = string.split(" :: ");
 		if(tokens.length != 3)
