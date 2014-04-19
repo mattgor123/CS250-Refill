@@ -19,6 +19,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
@@ -62,11 +64,21 @@ public class MainActivity extends ActionBarActivity implements
 	public static PharmacyDBAdapter phAdapter;
 	public static HistoryDBAdapter hAdapter;
 	public static int currFrag;
+	private boolean shouldLogin;
 	private static MainActivity _instance;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Get whether the log-in screen should be displayed from SharedPrefs
+		SharedPreferences prefs = this.getSharedPreferences("refill", Context.MODE_PRIVATE);
+		shouldLogin = prefs.getBoolean(LoginActivity.nextKey, true);
+		shouldLogin = true;
+		if (shouldLogin) {
+			//Show the log-in screen
+			Intent login = new Intent(this, LoginActivity.class);
+			startActivity(login);
+		}
 		setContentView(R.layout.activity_main);
 		//Set up the fragments
 		frags = new Fragment[]{new RxFragment(), new HistoryFragment()};

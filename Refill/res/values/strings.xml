@@ -11,5 +11,14 @@
 	<string name="add">add</string>
 	<!-- The historyitem's icon -->
 	<string name="historyicon">The HistoryItem\'s icon</string>
-	
+	<!-- The username input -->
+	<string name="username">E-mail address</string>
+	<!--  The password input -->
+    <string name="password">Password</string>
+    <!-- The registration input -->
+    <string name="register">Login or Sign Up Now!</string>
+    <!-- The welcome image on login activity -->
+	<string name="welcome">The welcome image</string>
+	<!-- The 'display next time' checkbox -->
+	<string name="checkbox">Display Login screen next time?</string>
 </resources>
