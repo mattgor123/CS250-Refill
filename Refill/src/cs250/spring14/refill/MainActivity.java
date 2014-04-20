@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -65,6 +66,7 @@ public class MainActivity extends ActionBarActivity implements
 	public static HistoryDBAdapter hAdapter;
 	public static int currFrag;
 	private boolean shouldLogin;
+	protected static final int LOGIN = 3;
 	private static MainActivity _instance;
 	
 	@Override
@@ -76,7 +78,7 @@ public class MainActivity extends ActionBarActivity implements
 		if (shouldLogin) {
 			//Show the log-in screen
 			Intent login = new Intent(this, LoginActivity.class);
-			startActivity(login);
+			startActivityForResult(login, LOGIN);
 		}
 		setContentView(R.layout.activity_main);
 		//Set up the fragments
@@ -155,6 +157,26 @@ public class MainActivity extends ActionBarActivity implements
 	        default:
 	            return super.onOptionsItemSelected(item);
 		 }
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode) {
+		case LOGIN: {
+			if (resultCode == Activity.RESULT_OK) {
+				//We logged in successfully!		
+				String email = data.getStringExtra(LoginActivity.RESULT_STRING);
+				Toast.makeText(this, "Logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
+				break;
+			}
+			else if (resultCode == Activity.RESULT_CANCELED) {
+				//We hit the back button
+				finish();
+			}
+		}
+		
+		}
 	}
 	/**
 	 * Used to create the Dialog box which appears when one hits the + button.

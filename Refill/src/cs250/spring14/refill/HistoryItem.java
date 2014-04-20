@@ -5,7 +5,8 @@ public class HistoryItem {
 	public enum HistoryType {
 		P("P"), //pharm 
 		D("D"), //doctor
-		R("R"); //prescription
+		R("R"), //prescription
+		U("U"); //User
 	 
 		private String type;
 	 
@@ -75,6 +76,8 @@ public class HistoryItem {
 
 	public int getIconResource() {
 		switch (this.h) {
+		case U:
+			return R.drawable.user;
 		case D:
 			return R.drawable.doctor;
 		case P:

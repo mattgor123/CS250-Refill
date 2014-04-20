@@ -1,5 +1,6 @@
 package cs250.spring14.refill;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.animation.Animator;
@@ -8,6 +9,7 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckedTextView;
@@ -30,6 +33,7 @@ public class LoginActivity extends Activity {
 	
 	private static String credentials;
 	private static SharedPreferences prefs;
+	public static final String RESULT_STRING = "result";
 	private static final String credKey = "refill.credentials";
 	protected static final String nextKey = "refill.next";
 	/**
@@ -104,10 +108,28 @@ public class LoginActivity extends Activity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		Intent returnIntent = new Intent();
+		setResult(Activity.RESULT_CANCELED,returnIntent);
+		finish();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+        case R.id.action_forgot_password:
+        	Toast.makeText(this, "Your Refill account details are not stored anywhere but your phone. If you forgot your account details, please clear Refill's Data from Application Settings and create a new user. Thank you.", Toast.LENGTH_LONG).show();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+	 }
 	}
 
 	/**
@@ -213,7 +235,7 @@ public class LoginActivity extends Activity {
 			//This doesn't really do anything, but it looks cool so I felt like keeping it
 			try {
 				//Wait for a few seconds to get the loading screen
-				Thread.sleep(2000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				return false;
 			}
@@ -222,11 +244,12 @@ public class LoginActivity extends Activity {
 				if (android.util.Patterns.EMAIL_ADDRESS.matcher(mEmail).matches()) {
 					//Valid e-mail, check Password
 					if (mPassword.length() > 0) {
-						Toast.makeText(getApplicationContext(), "Created new account with e-mail: " + mEmail + " and password: " + mPassword, Toast.LENGTH_LONG).show();
 						//Save the credentials
 						String credentials = mEmail + ":" + mPassword;
-						prefs.edit().putString(credKey, credentials);
-						return prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit();						
+						if (prefs.edit().putString(credKey, credentials).commit() && prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit()){
+							MainActivity.hAdapter.insertHis(new HistoryItem(mEmail,"User Created on " + MainActivity.df.format(Calendar.getInstance().getTime()), "U"));
+							return true;
+						}
 					}
 				}
 			}
@@ -249,14 +272,15 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			showProgress(false);
-
 			if (success) {
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(RESULT_STRING, mEmail);
+				setResult(Activity.RESULT_OK, returnIntent);
 				finish();
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
-				Toast.makeText(getApplicationContext(), "If you've forgotten your credentials, please clear all of Refill's data from Application Settings and you can re-create an account. Note that this resets all prescription data & history for Refill. We do not store your credentials anywhere, so your account cannot be recovered.",Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -265,5 +289,6 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
+		
 	}
 }

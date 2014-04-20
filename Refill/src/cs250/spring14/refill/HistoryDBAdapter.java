@@ -64,6 +64,7 @@ public class HistoryDBAdapter {
      * @return the row # of the History DB to which we just inserted
      */
     public long insertHis(HistoryItem h) {
+    	open();
         // create a new row of values to insert
         ContentValues cvalues = new ContentValues();
         // assign values for each col
