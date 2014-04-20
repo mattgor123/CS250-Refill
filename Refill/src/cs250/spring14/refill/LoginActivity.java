@@ -36,6 +36,8 @@ public class LoginActivity extends Activity {
 	public static final String RESULT_STRING = "result";
 	private static final String credKey = "refill.credentials";
 	protected static final String nextKey = "refill.next";
+	protected static final int FAILED = 10;
+	protected static final int KILLED = 15;
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -110,7 +112,7 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		Intent returnIntent = new Intent();
-		setResult(Activity.RESULT_CANCELED,returnIntent);
+		setResult(KILLED,returnIntent);
 		finish();
 	}
 
@@ -229,15 +231,15 @@ public class LoginActivity extends Activity {
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 		@Override
-		protected Boolean doInBackground(Void... params) {
+		protected Integer doInBackground(Void... params) {
 			//This doesn't really do anything, but it looks cool so I felt like keeping it
 			try {
 				//Wait for a few seconds to get the loading screen
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				return false;
+				return Activity.RESULT_CANCELED;
 			}
 			if (credentials.length() == 0){
 				//We are creating a NEW user
@@ -248,7 +250,7 @@ public class LoginActivity extends Activity {
 						String credentials = mEmail + ":" + mPassword;
 						if (prefs.edit().putString(credKey, credentials).commit() && prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit()){
 							MainActivity.hAdapter.insertHis(new HistoryItem(mEmail,"User Created on " + MainActivity.df.format(Calendar.getInstance().getTime()), "U"));
-							return true;
+							return Activity.RESULT_FIRST_USER;
 						}
 					}
 				}
@@ -259,29 +261,40 @@ public class LoginActivity extends Activity {
 				if (pieces[0].toLowerCase(Locale.getDefault()).equals(mEmail.toLowerCase(Locale.getDefault()))) {
 				// Account exists, return true if the password matches.
 				if(pieces[1].equals(mPassword)) {
-					return prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit();
+					int i = (prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit() ? Activity.RESULT_OK : Activity.RESULT_CANCELED);
+					return i;
 				}
 				}				
 			}
 			//If we hit here, it means our credentials didn't match but we DO have
 			//some saved credentials.
-			return false;
+			return FAILED;
 		}
 
 		@Override
-		protected void onPostExecute(final Boolean success) {
+		protected void onPostExecute(final Integer success) {
 			mAuthTask = null;
 			showProgress(false);
-			if (success) {
+			if (success == Activity.RESULT_OK) {
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra(RESULT_STRING, mEmail);
 				setResult(Activity.RESULT_OK, returnIntent);
 				finish();
-			} else {
+			}
+			else if (success == Activity.RESULT_FIRST_USER) {
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(RESULT_STRING, mEmail);
+				setResult(Activity.RESULT_FIRST_USER,returnIntent);
+				finish();
+			}
+			else if (success == FAILED) {
 				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
+					.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
+			else {
+					
+		}
 		}
 
 		@Override

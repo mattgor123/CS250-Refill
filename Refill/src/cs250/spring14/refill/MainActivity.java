@@ -170,7 +170,12 @@ public class MainActivity extends ActionBarActivity implements
 				Toast.makeText(this, "Logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
 				break;
 			}
-			else if (resultCode == Activity.RESULT_CANCELED) {
+			else if (resultCode == Activity.RESULT_FIRST_USER) {
+				String email = data.getStringExtra(LoginActivity.RESULT_STRING);
+				Toast.makeText(this, "First time logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
+				break;
+			}
+			else if (resultCode == LoginActivity.KILLED) {
 				//We hit the back button
 				finish();
 			}
