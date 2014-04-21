@@ -57,7 +57,7 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 					String nstr = i.getOwner();
 					if (own != null){
 						String str = nstr;
-						if (str.length() > 16) str = (String) str.subSequence(0, 18) + "...";
+						if (str.length() > 17) str = (String) str.subSequence(0, 15) + "...";
 						own.setText(str);
 					}
 					if (msg != null){
