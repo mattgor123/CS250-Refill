@@ -109,7 +109,7 @@ public class MainActivity extends ActionBarActivity implements
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
 						MainActivity.currFrag = position;
-						frags[currFrag].onResume();
+						//frags[currFrag].onResume();
 					}
 				});
 
