@@ -30,7 +30,7 @@ import android.widget.Toast;
  * well.
  */
 public class LoginActivity extends Activity {
-	
+
 	private static String credentials;
 	private static SharedPreferences prefs;
 	public static final String RESULT_STRING = "result";
@@ -65,14 +65,13 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		ActionBar mActionBar = getActionBar();
 		mActionBar.hide();
-		//Get the shared preferences with the log-in details
+		// Get the shared preferences with the log-in details
 		prefs = this.getSharedPreferences("refill", Context.MODE_PRIVATE);
 		credentials = prefs.getString(credKey, "");
 		setContentView(R.layout.activity_login);
 		checkBox = (CheckedTextView) findViewById(R.id.checkedTextView1);
 		checkBox.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				((CheckedTextView) v).toggle();
 			}
 		});
@@ -112,7 +111,7 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		Intent returnIntent = new Intent();
-		setResult(KILLED,returnIntent);
+		setResult(KILLED, returnIntent);
 		finish();
 	}
 
@@ -122,16 +121,19 @@ public class LoginActivity extends Activity {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-        case R.id.action_forgot_password:
-        	Toast.makeText(this, "Your Refill account details are not stored anywhere but your phone. If you forgot your account details, please clear Refill's Data from Application Settings and create a new user. Thank you.", Toast.LENGTH_LONG).show();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-	 }
+		case R.id.action_forgot_password:
+			Toast.makeText(
+					this,
+					"Your Refill account details are not stored anywhere but your phone. If you forgot your account details, please clear Refill's Data from Application Settings and create a new user. Thank you.",
+					Toast.LENGTH_LONG).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class LoginActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} 
+		}
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
 			mEmailView.setError(getString(R.string.error_field_required));
@@ -234,40 +236,54 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
 		@Override
 		protected Integer doInBackground(Void... params) {
-			//This doesn't really do anything, but it looks cool so I felt like keeping it
+			// This doesn't really do anything, but it looks cool so I felt like
+			// keeping it
 			try {
-				//Wait for a few seconds to get the loading screen
+				// Wait for a few seconds to get the loading screen
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				return Activity.RESULT_CANCELED;
 			}
-			if (credentials.length() == 0){
-				//We are creating a NEW user
-				if (android.util.Patterns.EMAIL_ADDRESS.matcher(mEmail).matches()) {
-					//Valid e-mail, check Password
+			if (credentials.length() == 0) {
+				// We are creating a NEW user
+				if (android.util.Patterns.EMAIL_ADDRESS.matcher(mEmail)
+						.matches()) {
+					// Valid e-mail, check Password
 					if (mPassword.length() > 0) {
-						//Save the credentials
+						// Save the credentials
 						String credentials = mEmail + ":" + mPassword;
-						if (prefs.edit().putString(credKey, credentials).commit() && prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit()){
-							MainActivity.hAdapter.insertHis(new HistoryItem(mEmail,"User Created on " + MainActivity.df.format(Calendar.getInstance().getTime()), "U"));
+						if (prefs.edit().putString(credKey, credentials)
+								.commit()
+								&& prefs.edit()
+										.putBoolean(nextKey,
+												checkBox.isChecked()).commit()) {
+							MainActivity.hAdapter.insertHis(new HistoryItem(
+									mEmail, "User Created on "
+											+ MainActivity.df.format(Calendar
+													.getInstance().getTime()),
+									"U"));
 							return Activity.RESULT_FIRST_USER;
 						}
 					}
 				}
-			}
-			else {
-				//We are trying to log in
+			} else {
+				// We are trying to log in
 				String[] pieces = credentials.split(":");
-				if (pieces[0].toLowerCase(Locale.getDefault()).equals(mEmail.toLowerCase(Locale.getDefault()))) {
-				// Account exists, return true if the password matches.
-				if(pieces[1].equals(mPassword)) {
-					int i = (prefs.edit().putBoolean(nextKey, checkBox.isChecked()).commit() ? Activity.RESULT_OK : Activity.RESULT_CANCELED);
-					return i;
+				if (pieces[0].toLowerCase(Locale.getDefault()).equals(
+						mEmail.toLowerCase(Locale.getDefault()))) {
+					// Account exists, return true if the password matches.
+					if (pieces[1].equals(mPassword)) {
+						int i = (prefs.edit()
+								.putBoolean(nextKey, checkBox.isChecked())
+								.commit() ? Activity.RESULT_OK
+								: Activity.RESULT_CANCELED);
+						return i;
+					}
 				}
-				}				
 			}
-			//If we hit here, it means our credentials didn't match but we DO have
-			//some saved credentials.
+			// If we hit here, it means our credentials didn't match but we DO
+			// have
+			// some saved credentials.
 			return FAILED;
 		}
 
@@ -280,21 +296,18 @@ public class LoginActivity extends Activity {
 				returnIntent.putExtra(RESULT_STRING, mEmail);
 				setResult(Activity.RESULT_OK, returnIntent);
 				finish();
-			}
-			else if (success == Activity.RESULT_FIRST_USER) {
+			} else if (success == Activity.RESULT_FIRST_USER) {
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra(RESULT_STRING, mEmail);
-				setResult(Activity.RESULT_FIRST_USER,returnIntent);
+				setResult(Activity.RESULT_FIRST_USER, returnIntent);
 				finish();
-			}
-			else if (success == FAILED) {
+			} else if (success == FAILED) {
 				mPasswordView
-					.setError(getString(R.string.error_incorrect_password));
+						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
+			} else {
+
 			}
-			else {
-					
-		}
 		}
 
 		@Override
@@ -302,6 +315,6 @@ public class LoginActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
-		
+
 	}
 }

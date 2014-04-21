@@ -7,9 +7,10 @@ public class Pharmacy {
 	private String phone;
 	private String streetAddress;
 	private long id;
-	
+
 	/**
 	 * Constructor for Doctor given a name, e-mail, and phone
+	 * 
 	 * @param n
 	 * @param e
 	 * @param p
@@ -26,8 +27,9 @@ public class Pharmacy {
 	 * @return the pharmacy, formatted as a string
 	 */
 	public String toString() {
-		return name + " <" + streetAddress + ">";	
+		return name + " <" + streetAddress + ">";
 	}
+
 	/**
 	 * @return the name
 	 */
@@ -36,7 +38,8 @@ public class Pharmacy {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -50,7 +53,8 @@ public class Pharmacy {
 	}
 
 	/**
-	 * @param email the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -64,7 +68,8 @@ public class Pharmacy {
 	}
 
 	/**
-	 * @param streetAddress the streetAddress to set
+	 * @param streetAddress
+	 *            the streetAddress to set
 	 */
 	public void setStreetAddress(String streetAddress) {
 		this.streetAddress = streetAddress;
@@ -78,19 +83,20 @@ public class Pharmacy {
 	}
 
 	/**
-	 * @param phone the phone to set
+	 * @param phone
+	 *            the phone to set
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	/**
 	 * @return the ID
 	 */
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}

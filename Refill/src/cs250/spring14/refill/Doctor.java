@@ -6,9 +6,10 @@ public class Doctor {
 	private String email;
 	private String phone;
 	private long id;
-	
+
 	/**
 	 * Constructor for Doctor given a name, e-mail, and phone
+	 * 
 	 * @param n
 	 * @param e
 	 * @param p
@@ -23,8 +24,9 @@ public class Doctor {
 	 * @return the doctor, formatted as a string
 	 */
 	public String toString() {
-		return name + " <" + phone + ">";	
+		return name + " <" + phone + ">";
 	}
+
 	/**
 	 * @return the name
 	 */
@@ -33,7 +35,8 @@ public class Doctor {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -47,7 +50,8 @@ public class Doctor {
 	}
 
 	/**
-	 * @param email the email to set
+	 * @param email
+	 *            the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -61,19 +65,20 @@ public class Doctor {
 	}
 
 	/**
-	 * @param phone the phone to set
+	 * @param phone
+	 *            the phone to set
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	/**
 	 * @return the ID
 	 */
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}

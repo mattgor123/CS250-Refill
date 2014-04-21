@@ -18,16 +18,16 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/owner"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-     <ImageView
+
+    <ImageView
         android:id="@+id/his_ico"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="0sp"
-        android:scaleType="fitEnd"
+        android:layout_alignBottom="@+id/msg"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/owner"
-        android:layout_alignBottom="@+id/msg"
-        android:contentDescription="@string/historyicon" />
+        android:layout_marginRight="0sp"
+        android:contentDescription="@string/historyicon"
+        android:scaleType="fitEnd" />
 
 </RelativeLayout>

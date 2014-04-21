@@ -42,9 +42,9 @@
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:contentDescription="@string/welcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/welcome"
                 android:src="@drawable/welcome" />
 
             <EditText
@@ -73,15 +73,15 @@
                 android:id="@+id/checkedTextView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4sp"
+                android:layout_marginTop="1sp"
+                android:checkMark="?android:attr/textCheckMark"
                 android:checked="true"
                 android:clickable="true"
-                android:layout_marginTop="1sp"
-                android:layout_marginLeft="4sp"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
-                android:checkMark="?android:attr/textCheckMark"
-                android:text="@string/checkbox" />
+                android:text="@string/checkbox"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/sign_in_button"

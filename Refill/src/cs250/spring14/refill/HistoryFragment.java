@@ -27,112 +27,151 @@ import android.widget.AdapterView.OnItemClickListener;
 public class HistoryFragment extends Fragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
-	
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
- 
-        View rootView = inflater.inflate(R.layout.fragment_his, container, false);
-        historyList = (ListView) rootView.findViewById(R.id.listView1);
-        hisAdap = new HistoryWrapper(rootView.getContext(),0, MainActivity.hAdapter.getAllHis());
-        historyList.setAdapter(hisAdap);
-        historyList.setOnItemClickListener(new OnItemClickListener() {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_his, container,
+				false);
+		historyList = (ListView) rootView.findViewById(R.id.listView1);
+		hisAdap = new HistoryWrapper(rootView.getContext(), 0,
+				MainActivity.hAdapter.getAllHis());
+		historyList.setAdapter(hisAdap);
+		historyList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//This is where we will add functionality to edit the Dr./Pharmacy
-				final HistoryItem hi = (HistoryItem) parent.getItemAtPosition(position);
-				//Doctor
+				// This is where we will add functionality to edit the
+				// Dr./Pharmacy
+				final HistoryItem hi = (HistoryItem) parent
+						.getItemAtPosition(position);
+				// Doctor
 				if (hi.getH() == HistoryType.D) {
-					MainActivity.alertMessage(getActivity(),"Please select an action", "Would you like to Remove or View/Edit details for Dr. " + hi.getOwner() + "?", "Remove", 
-							//Remove
+					MainActivity.alertMessage(getActivity(),
+							"Please select an action",
+							"Would you like to Remove or View/Edit details for Dr. "
+									+ hi.getOwner() + "?", "Remove",
+							// Remove
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									if (MainActivity.drAdapter.removeDrByName(hi.getOwner())) {
-										//We were able to remove the pharmacy
-										String message = "Removed from Doctor DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
-		                				MainActivity.hAdapter.insertHis(new HistoryItem(hi.getOwner(),message,"DD"));
-		                				onResume();
-									}
-									else {
-										//Pharmacy has already been deleted
-										Toast.makeText(getActivity(),"Sorry, we couldn't delete this Doctor. Are you sure you haven't edited or already removed this Doctor?", Toast.LENGTH_SHORT).show();
+									if (MainActivity.drAdapter
+											.removeDrByName(hi.getOwner())) {
+										// We were able to remove the pharmacy
+										String message = "Removed from Doctor DB on "
+												+ MainActivity.df
+														.format(Calendar
+																.getInstance()
+																.getTime());
+										MainActivity.hAdapter
+												.insertHis(new HistoryItem(hi
+														.getOwner(), message,
+														"DD"));
+										onResume();
+									} else {
+										// Pharmacy has already been deleted
+										Toast.makeText(
+												getActivity(),
+												"Sorry, we couldn't delete this Doctor. Are you sure you haven't edited or already removed this Doctor?",
+												Toast.LENGTH_SHORT).show();
 									}
 								}
-							}, 
-							"View/Edit",
-							//Edit
+							}, "View/Edit",
+							// Edit
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									Doctor dr = MainActivity.drAdapter.getDocByName(hi.getOwner());
+									Doctor dr = MainActivity.drAdapter
+											.getDocByName(hi.getOwner());
 									if (dr != null) {
-										openEditDoctorDialog(getActivity(),dr);
-									}
-									else {
-										Toast.makeText(getActivity(), "Sorry,  we couldn't edit this Doctor. Are you sure you haven't removed this Doctor or edited their name?",Toast.LENGTH_SHORT).show();
-									}
-								}
-							});
-				}
-				//Pharmacy
-				else if (hi.getH() == HistoryType.P){
-					MainActivity.alertMessage(getActivity(),"Please select an action", "Would you like to Remove or View/Edit details for Pharmacy " + hi.getOwner() + "?", "Remove", 
-							//Remove
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									if (MainActivity.phAdapter.removePhByName(hi.getOwner())) {
-										//We were able to remove the pharmacy
-										String message = "Removed from Pharmacy DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
-		                				MainActivity.hAdapter.insertHis(new HistoryItem(hi.getOwner(),message,"PD"));
-		                				onResume();
-									}
-									else {
-										//Pharmacy has already been deleted
-										Toast.makeText(getActivity(),"Sorry, we couldn't delete this pharmacy. Are you sure you haven't edited or already removed this Pharmacy?", Toast.LENGTH_SHORT).show();
-									}
-								}
-							}, 
-							"View/Edit",
-							//Edit
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									Pharmacy ph = MainActivity.phAdapter.getPharmByName(hi.getOwner());
-									if (ph!=null) {
-										openEditPharmacyDialog(getActivity(),ph);										
-									}
-									else {
-										Toast.makeText(getActivity(), "Sorry,  we couldn't edit this pharmacy. Are you sure you haven't removed this Pharmacy or edited its name?",Toast.LENGTH_SHORT).show();
+										openEditDoctorDialog(getActivity(), dr);
+									} else {
+										Toast.makeText(
+												getActivity(),
+												"Sorry,  we couldn't edit this Doctor. Are you sure you haven't removed this Doctor or edited their name?",
+												Toast.LENGTH_SHORT).show();
 									}
 								}
 							});
 				}
-				
-			}
-        	
-        });
+				// Pharmacy
+				else if (hi.getH() == HistoryType.P) {
+					MainActivity.alertMessage(getActivity(),
+							"Please select an action",
+							"Would you like to Remove or View/Edit details for Pharmacy "
+									+ hi.getOwner() + "?", "Remove",
+							// Remove
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									if (MainActivity.phAdapter
+											.removePhByName(hi.getOwner())) {
+										// We were able to remove the pharmacy
+										String message = "Removed from Pharmacy DB on "
+												+ MainActivity.df
+														.format(Calendar
+																.getInstance()
+																.getTime());
+										MainActivity.hAdapter
+												.insertHis(new HistoryItem(hi
+														.getOwner(), message,
+														"PD"));
+										onResume();
+									} else {
+										// Pharmacy has already been deleted
+										Toast.makeText(
+												getActivity(),
+												"Sorry, we couldn't delete this pharmacy. Are you sure you haven't edited or already removed this Pharmacy?",
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+							}, "View/Edit",
+							// Edit
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Pharmacy ph = MainActivity.phAdapter
+											.getPharmByName(hi.getOwner());
+									if (ph != null) {
+										openEditPharmacyDialog(getActivity(),
+												ph);
+									} else {
+										Toast.makeText(
+												getActivity(),
+												"Sorry,  we couldn't edit this pharmacy. Are you sure you haven't removed this Pharmacy or edited its name?",
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+							});
+				}
 
-        hisAdap.notifyDataSetChanged();
-        return rootView;
-    }
+			}
+
+		});
+
+		hisAdap.notifyDataSetChanged();
+		return rootView;
+	}
 
 	/**
 	 * Helper method to open edit pharmacy dialog
-	 * @param context the context for the dialog
-	 * @param ph the pharmacy to edit
+	 * 
+	 * @param context
+	 *            the context for the dialog
+	 * @param ph
+	 *            the pharmacy to edit
 	 */
-	protected void openEditPharmacyDialog(final Context context, final Pharmacy ph) {
+	protected void openEditPharmacyDialog(final Context context,
+			final Pharmacy ph) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		LinearLayout layout= new LinearLayout(context);
-	    layout.setOrientation(1); 
+		LinearLayout layout = new LinearLayout(context);
+		layout.setOrientation(1);
 		// TODO Auto-generated method stub
 		final EditText name = new EditText(context);
 		final EditText email = new EditText(context);
@@ -152,10 +191,13 @@ public class HistoryFragment extends Fragment {
 		email.setText(ph.getEmail());
 		phone.setText(ph.getPhone());
 		address.setText(ph.getStreetAddress());
-		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		name.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
-		address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+		address.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
 		layout.addView(name);
 		layout.addView(email);
 		layout.addView(phone);
@@ -163,58 +205,79 @@ public class HistoryFragment extends Fragment {
 		layout.addView(add);
 		builder.setView(layout);
 		final Dialog d = builder.create();
-		add.setOnClickListener(new OnClickListener(){
+		add.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//Basic input checking; will get better with time
+				// Basic input checking; will get better with time
 				String nameStr = name.getText().toString().trim();
 				String emailStr = email.getText().toString().trim();
 				String phoneStr = phone.getText().toString().trim();
 				String addressStr = address.getText().toString().trim();
-				if(!MainActivity.isValidName(nameStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				else if(!MainActivity.isValidEmail(emailStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				else if(!MainActivity.isValidPhone(phoneStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
-				else if(!MainActivity.isValidStreet(addressStr)) {Toast.makeText(getActivity(), "Please ensure you've entered a valid street address", Toast.LENGTH_SHORT).show();}
-				else if (shouldUpdatePharm(ph,nameStr,emailStr,phoneStr,addressStr)) {
-					if (MainActivity.phAdapter.updatePh(ph.getId(), nameStr, emailStr, phoneStr, addressStr)) {
-						//We successfully updated the Doctor
+				if (!MainActivity.isValidName(nameStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid name",
+							Toast.LENGTH_SHORT).show();
+				} else if (!MainActivity.isValidEmail(emailStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid email",
+							Toast.LENGTH_SHORT).show();
+				} else if (!MainActivity.isValidPhone(phoneStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid phone",
+							Toast.LENGTH_SHORT).show();
+				} else if (!MainActivity.isValidStreet(addressStr)) {
+					Toast.makeText(
+							getActivity(),
+							"Please ensure you've entered a valid street address",
+							Toast.LENGTH_SHORT).show();
+				} else if (shouldUpdatePharm(ph, nameStr, emailStr, phoneStr,
+						addressStr)) {
+					if (MainActivity.phAdapter.updatePh(ph.getId(), nameStr,
+							emailStr, phoneStr, addressStr)) {
+						// We successfully updated the Doctor
 						String oldPharm = MainActivity.makeStringFromPharm(ph);
 						ph.setName(nameStr);
 						ph.setEmail(emailStr);
 						ph.setPhone(phoneStr);
 						ph.setStreetAddress(addressStr);
 						String newPharm = MainActivity.makeStringFromPharm(ph);
-						MainActivity.rxAdapter.updateAllRxWithPharmacy(oldPharm, newPharm);
-						String message = "Updated in Pharmacy DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
-						MainActivity.hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
+						MainActivity.rxAdapter.updateAllRxWithPharmacy(
+								oldPharm, newPharm);
+						String message = "Updated in Pharmacy DB on "
+								+ MainActivity.df.format(Calendar.getInstance()
+										.getTime());
+						MainActivity.hAdapter.insertHis(new HistoryItem(
+								nameStr, message, "P"));
 						d.dismiss();
 						onResume();
+					} else {
+						// We didn't actually successfully update the Doctor
+						String message = "Something went wrong updating your Pharmacy. Perhaps a Pharmacy with the name already exists?";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT)
+								.show();
 					}
-					else {
-						//We didn't actually successfully update the Doctor
-						String message ="Something went wrong updating your Pharmacy. Perhaps a Pharmacy with the name already exists?";
-						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-					}	
-				}
-				else {
-					//We shouldn't update; were just viewing
+				} else {
+					// We shouldn't update; were just viewing
 					d.dismiss();
 				}
 			}
 		});
 		d.show();
 	}
-	
+
 	/**
 	 * Helper method to open edit doctor dialog
-	 * @param context the context for the dialog
-	 * @param dr the doctor to edit
+	 * 
+	 * @param context
+	 *            the context for the dialog
+	 * @param dr
+	 *            the doctor to edit
 	 */
 	protected void openEditDoctorDialog(final Context context, final Doctor dr) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		LinearLayout layout= new LinearLayout(context);
-	    layout.setOrientation(1); 
+		LinearLayout layout = new LinearLayout(context);
+		layout.setOrientation(1);
 		// TODO Auto-generated method stub
 		final EditText name = new EditText(context);
 		final EditText email = new EditText(context);
@@ -230,8 +293,10 @@ public class HistoryFragment extends Fragment {
 		name.setText(dr.getName());
 		email.setText(dr.getEmail());
 		phone.setText(dr.getPhone());
-		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		name.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT
+				| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
 		layout.addView(name);
 		layout.addView(email);
@@ -239,39 +304,52 @@ public class HistoryFragment extends Fragment {
 		layout.addView(add);
 		builder.setView(layout);
 		final Dialog d = builder.create();
-		add.setOnClickListener(new OnClickListener(){
+		add.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//Basic input checking; will get better with time
+				// Basic input checking; will get better with time
 				String nameStr = name.getText().toString().trim();
 				String emailStr = email.getText().toString().trim();
 				String phoneStr = phone.getText().toString().trim();
-				if(!MainActivity.isValidName(nameStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
-				else if(!MainActivity.isValidEmail(emailStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
-				else if(!MainActivity.isValidPhone(phoneStr)){Toast.makeText(getActivity(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
-				else if (shouldUpdateDr(dr,nameStr,emailStr,phoneStr)) {
-					if (MainActivity.drAdapter.updateDr(dr.getId(), nameStr, emailStr, phoneStr)) {
-						//We successfully updated the Doctor
+				if (!MainActivity.isValidName(nameStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid name",
+							Toast.LENGTH_SHORT).show();
+				} else if (!MainActivity.isValidEmail(emailStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid email",
+							Toast.LENGTH_SHORT).show();
+				} else if (!MainActivity.isValidPhone(phoneStr)) {
+					Toast.makeText(getActivity(),
+							"Please ensure you've entered a valid phone",
+							Toast.LENGTH_SHORT).show();
+				} else if (shouldUpdateDr(dr, nameStr, emailStr, phoneStr)) {
+					if (MainActivity.drAdapter.updateDr(dr.getId(), nameStr,
+							emailStr, phoneStr)) {
+						// We successfully updated the Doctor
 						String oldStr = MainActivity.makeStringFromDoc(dr);
 						dr.setName(nameStr);
 						dr.setEmail(emailStr);
 						dr.setPhone(phoneStr);
 						String newStr = MainActivity.makeStringFromDoc(dr);
-						MainActivity.rxAdapter.updateAllRxWithDoctor(oldStr,newStr);
-						String message = "Updated in Doctors DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
-						MainActivity.hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
+						MainActivity.rxAdapter.updateAllRxWithDoctor(oldStr,
+								newStr);
+						String message = "Updated in Doctors DB on "
+								+ MainActivity.df.format(Calendar.getInstance()
+										.getTime());
+						MainActivity.hAdapter.insertHis(new HistoryItem(
+								nameStr, message, "D"));
 						d.dismiss();
 						onResume();
+					} else {
+						// We didn't actually successfully update the Doctor
+						String message = "Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT)
+								.show();
 					}
-					else {
-						//We didn't actually successfully update the Doctor
-						String message ="Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";
-						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-					}	
-				}
-				else {
-					//Nothing to update
+				} else {
+					// Nothing to update
 					d.dismiss();
 				}
 			}
@@ -279,18 +357,21 @@ public class HistoryFragment extends Fragment {
 		d.show();
 	}
 
-	private boolean shouldUpdateDr(Doctor dr, String name, String email, String phone) {
-		return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) ||
-				(!dr.getPhone().equals(phone)));
+	private boolean shouldUpdateDr(Doctor dr, String name, String email,
+			String phone) {
+		return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) || (!dr
+				.getPhone().equals(phone)));
 	}
-	
-	private boolean shouldUpdatePharm(Pharmacy ph, String name, String email, String phone, String address) {
-		return ((!ph.getName().equals(name)) || (!ph.getEmail().equals(email)) ||
-				(!ph.getPhone().equals(phone)) || (!ph.getStreetAddress().equals(address)));
+
+	private boolean shouldUpdatePharm(Pharmacy ph, String name, String email,
+			String phone, String address) {
+		return ((!ph.getName().equals(name)) || (!ph.getEmail().equals(email))
+				|| (!ph.getPhone().equals(phone)) || (!ph.getStreetAddress()
+				.equals(address)));
 	}
-	
+
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
 		hisAdap.clear();
 		hisAdap.addAll(MainActivity.hAdapter.getAllHis());
