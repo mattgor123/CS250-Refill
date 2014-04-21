@@ -21,4 +21,12 @@
 	<string name="welcome">The welcome image</string>
 	<!-- The 'display next time' checkbox -->
 	<string name="checkbox">Display Login screen next time?</string>
+	<!-- The rx image on login activity -->
+	<string name="rxicon">The rx image selection</string>
+	<!-- The pharmacy image on login activity -->
+	<string name="pharmicon">The pharmacy image selection</string>
+	<!-- The doctor image on login activity -->
+	<string name="docicon">The doctor image selection</string>
+	
+
 </resources>

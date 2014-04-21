@@ -35,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
@@ -150,8 +151,9 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		 switch (item.getItemId()) {
 	        case R.id.action_add:
-	            openAddDialog(this,null);
-	            return true;
+	            //openAddDialog(this,null);
+	            openCustomDialog(this);
+	        	return true;
 	        case R.id.action_settings:
 	        	return true;
 	        default:
@@ -204,10 +206,47 @@ public class MainActivity extends ActionBarActivity implements
 		alertDialog.setButton(b1Text, b1OCL);				
 		alertDialog.show();
 	}
-	
+	public void openCustomDialog(final Context context) {
+		final Dialog dialog = new Dialog(context);
+		dialog.setContentView(R.layout.select_dialog);
+		dialog.setTitle("Please choose what to add");
+		ImageButton pill = (ImageButton) dialog.findViewById(R.id.imageButton1);
+		ImageButton doc = (ImageButton) dialog.findViewById(R.id.imageButton2);
+		ImageButton pharm = (ImageButton) dialog.findViewById(R.id.imageButton3);
+		pill.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (drAdapter.getAllDrs().size() > 1) {
+					if (phAdapter.getAllPhs().size() > 1) {
+						openAddDialog(context,null);
+						dialog.dismiss();
+					}
+					else Toast.makeText(context, "Please add a Pharmacy before adding an Rx!", Toast.LENGTH_SHORT).show();
+				}
+				else Toast.makeText(context, "Please add a Doctor before adding an Rx", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		doc.setOnClickListener(new OnClickListener () {
+			@Override
+			public void onClick(View v) {
+				makeAddDoctorDialog(context);
+				dialog.dismiss();
+			}
+		});
+		pharm.setOnClickListener(new OnClickListener () {
+			@Override
+			public void onClick(View v) {
+				makeAddPharmacyDialog(context);
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
 	/**
 	 * Used to create the Dialog box which appears when one hits the + button.
-	 * @param context the application context where the dialog should be displayeed
+	 * @param context the application context where the dialog should be displayed
+	 * @param rx the RxItem we are editing if we are editing, or null if we are adding
 	 */
 	public void openAddDialog(final Context context, final RxItem rx) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -304,7 +343,7 @@ public class MainActivity extends ActionBarActivity implements
 
 			@Override
 			public void onClick(View v) {
-				makeDoctorDialog(context,v);
+				makeDoctorSelectDialog(context,v);
 			}
 	    });
 	    dbrET.setSingleLine();
@@ -312,7 +351,7 @@ public class MainActivity extends ActionBarActivity implements
 	    pharmET.setOnClickListener(new OnClickListener() {
 	    	@Override
 	    	public void onClick(View v) {
-	    		makePharmacyDialog(context,v);
+	    		makePharmacySelectDialog(context,v);
 	    	}
 	    });
 	    rxnumbET.setSingleLine();
@@ -439,9 +478,12 @@ public class MainActivity extends ActionBarActivity implements
 	                				rxAdapter.insertRx(new RxItem(name, patient, symp, sideEffects, dose, ppd, start, dbr, makePharmFromString(pharm), makeDocFromString(doc), rxnumb, lastRefillDate));									
 	                				String message = "Added to Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
 	                				hAdapter.insertHis(new HistoryItem(name,message,"R"));
+	                				//Switch to the Prescriptions tab if we've added a prescription
+	                				MainActivity.getInstance().mViewPager.setCurrentItem(0);
+	                				
 	                			}
 								//Toast.makeText(getApplicationContext(), "Added " + nameET.getText().toString() + " to the Rx Database, now " + rxAdapter.getAllRxs().size() + " items in the DB", Toast.LENGTH_SHORT).show();
-								//Manually call onResume to ensure that we update the view
+								//Manually call onResume to ensure that we update the view	                			
 								frags[currFrag].onResume();
 							} catch (NumberFormatException e) {
 								Toast.makeText(getApplicationContext(), "Sorry,  your Rx couldn't be added. Please check all fields.",Toast.LENGTH_SHORT).show();
@@ -525,7 +567,72 @@ public class MainActivity extends ActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	protected void makeDoctorDialog(Context context,final View v) {
+	/**
+	 * Helper method to open dialog to add a doctor WITHOUT the selection spinner
+	 * @param context the context for the dialog
+	 */
+	protected void makeAddDoctorDialog(Context context) {
+		if (drAdapter.getAllDrs().size() == 0) {
+			//Dummy doctor in first spot for the spinner
+			Doctor adding = new Doctor("","","Select a Doctor or Add One");
+			adding.setId(drAdapter.insertDr(adding));
+		}		
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		LinearLayout layout= new LinearLayout(this);
+	    layout.setOrientation(1); 
+		// TODO Auto-generated method stub
+		final EditText name = new EditText(this);
+		final EditText email = new EditText(this);
+		final EditText phone = new EditText(this);
+		Button add = new Button(this);
+		add.setText("Add a New Doctor");
+				name.setSingleLine();
+		email.setSingleLine();
+		phone.setSingleLine();
+		name.setHint("    Name: ");
+		email.setHint("    Email: ");
+		phone.setHint("    Phone: ");
+		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
+		layout.addView(name);
+		layout.addView(email);
+		layout.addView(phone);
+		layout.addView(add);
+		builder.setView(layout);
+		final Dialog d = builder.create();
+		add.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Basic input checking; will get better with time
+				String nameStr = name.getText().toString().trim();
+				String emailStr = email.getText().toString().trim();
+				String phoneStr = phone.getText().toString().trim();
+				if(!isValidName(nameStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
+				else if(!isValidEmail(emailStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(!isValidPhone(phoneStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else {
+					//We are good to add our Doctor
+					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
+					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
+					String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
+					hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
+					d.dismiss();
+					MainActivity.getInstance().mViewPager.setCurrentItem(1);
+				}
+			}
+		});
+		d.show();
+	}
+	
+	/**
+	 * Helper method to make the doctor dialog from the adding Rx
+	 * This has the spinner to make a selection amongst doctors
+	 * @param context the context for the dialog
+	 * @param v the calling view (to set the text to the selected doctor)
+	 */
+	protected void makeDoctorSelectDialog(Context context,final View v) {
 		ArrayList<Doctor> drs = drAdapter.getAllDrs();
 		if (drs.size() == 0) {
 			//Dummy doctor in first spot for the spinner
@@ -617,7 +724,73 @@ public class MainActivity extends ActionBarActivity implements
 		d.show();
 	}
 	
-	protected void makePharmacyDialog(Context context,final View v) {
+	protected void makeAddPharmacyDialog(Context context) {
+		if (phAdapter.getAllPhs().size() == 0) {
+			//Dummy pharmacy in first spot for the spinner
+			Pharmacy adding = new Pharmacy("","","","Select a Pharmacy or Add One");
+			adding.setId(phAdapter.insertPh(adding));
+		}
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		LinearLayout layout= new LinearLayout(this);
+	    layout.setOrientation(1); 
+		final EditText name = new EditText(this);
+		final EditText email = new EditText(this);
+		final EditText phone = new EditText(this);
+		final EditText street = new EditText(this);
+		Button add = new Button(this);
+		add.setText("Add a New Pharmacy");
+				name.setSingleLine();
+		email.setSingleLine();
+		phone.setSingleLine();
+		street.setSingleLine();
+		name.setHint("    Name: ");
+		email.setHint("    Email For Refill: ");
+		phone.setHint("    Phone: ");
+		street.setHint("    Street (123 Oak): ");
+		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		email.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);		
+		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
+		street.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+		layout.addView(name);
+		layout.addView(email);
+		layout.addView(phone);
+		layout.addView(street);
+		layout.addView(add);
+		builder.setView(layout);
+		final Dialog d = builder.create();
+		add.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//Basic input checking; will get better with time
+				String nameStr = name.getText().toString().trim();
+				String emailStr = email.getText().toString().trim();
+				String phoneStr = phone.getText().toString().trim();
+				String streetStr = street.getText().toString().trim();
+				if(nameStr.length() == 0){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name",Toast.LENGTH_SHORT).show();}
+				else if(!isValidEmail(emailStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid email",Toast.LENGTH_SHORT).show();}
+				else if(!isValidPhone(phoneStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone",Toast.LENGTH_SHORT).show();}
+				else if(!isValidStreet(streetStr)){Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",Toast.LENGTH_SHORT).show();}
+				else {
+					//We are good to add our pharmacy
+					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
+					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
+					String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
+					hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
+					d.dismiss();
+					MainActivity.getInstance().mViewPager.setCurrentItem(1);
+				}
+			}
+		});
+		d.show();
+	}
+	
+	/**
+	 * Helper method to make the select a pharmacy or add one
+	 * @param context the context for the dialog
+	 * @param v the calling view (EditText in this case)
+	 */
+	protected void makePharmacySelectDialog(Context context,final View v) {
 		ArrayList<Pharmacy> phs = phAdapter.getAllPhs();
 		if (phs.size() == 0) {
 			//Dummy pharmacy in first spot for the spinner
@@ -630,6 +803,7 @@ public class MainActivity extends ActionBarActivity implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout= new LinearLayout(this);
 	    layout.setOrientation(1); 
+	    
 		final EditText name = new EditText(this);
 		final EditText email = new EditText(this);
 		final EditText phone = new EditText(this);

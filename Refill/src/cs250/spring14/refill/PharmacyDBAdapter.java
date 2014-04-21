@@ -19,7 +19,7 @@ public class PharmacyDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Ph.db";
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 8;
     
     private static final String PH_TABLE = "phs";
     public static final String PH_ID = "Ph_id";   // column 0
