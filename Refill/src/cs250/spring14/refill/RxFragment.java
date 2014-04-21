@@ -58,7 +58,7 @@ public class RxFragment extends Fragment {
 									int which) {
 								//Edit functionality must be added here
 								
-								MainActivity.getInstance().openAddDialog(MainActivity.getInstance(), rx);
+								MainActivity.getInstance().openAddOrEditRxDialog(MainActivity.getInstance(), rx);
 								 //Toast.makeText(getActivity(),
 											//"You selected to edit Rx " + rx.getName(), Toast.LENGTH_SHORT)
 											//.show();

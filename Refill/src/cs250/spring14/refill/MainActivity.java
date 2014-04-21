@@ -216,28 +216,22 @@ public class MainActivity extends ActionBarActivity implements
 		pill.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (drAdapter.getAllDrs().size() > 1) {
-					if (phAdapter.getAllPhs().size() > 1) {
-						openAddDialog(context,null);
-						dialog.dismiss();
-					}
-					else Toast.makeText(context, "Please add a Pharmacy before adding an Rx!", Toast.LENGTH_SHORT).show();
-				}
-				else Toast.makeText(context, "Please add a Doctor before adding an Rx", Toast.LENGTH_SHORT).show();
+				openAddOrEditRxDialog(context,null);
+				dialog.dismiss();
 			}
 		});
 		
 		doc.setOnClickListener(new OnClickListener () {
 			@Override
 			public void onClick(View v) {
-				makeAddDoctorDialog(context);
+				openAddDoctorDialog(context);
 				dialog.dismiss();
 			}
 		});
 		pharm.setOnClickListener(new OnClickListener () {
 			@Override
 			public void onClick(View v) {
-				makeAddPharmacyDialog(context);
+				openAddPharmacyDialog(context);
 				dialog.dismiss();
 			}
 		});
@@ -248,7 +242,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * @param context the application context where the dialog should be displayed
 	 * @param rx the RxItem we are editing if we are editing, or null if we are adding
 	 */
-	public void openAddDialog(final Context context, final RxItem rx) {
+	public void openAddOrEditRxDialog(final Context context, final RxItem rx) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		//Now I'm making the scrollview with a linear layout for this badboy (easier to do programatically than in XML)
 		ScrollView sv = new ScrollView(this);
@@ -343,7 +337,7 @@ public class MainActivity extends ActionBarActivity implements
 
 			@Override
 			public void onClick(View v) {
-				makeDoctorSelectDialog(context,v);
+				openDoctorSelectDialog(context,v);
 			}
 	    });
 	    dbrET.setSingleLine();
@@ -351,7 +345,7 @@ public class MainActivity extends ActionBarActivity implements
 	    pharmET.setOnClickListener(new OnClickListener() {
 	    	@Override
 	    	public void onClick(View v) {
-	    		makePharmacySelectDialog(context,v);
+	    		openPharmacySelectDialog(context,v);
 	    	}
 	    });
 	    rxnumbET.setSingleLine();
@@ -512,6 +506,13 @@ public class MainActivity extends ActionBarActivity implements
 				|| (!rx.getDocString().equals(doc)) || !(rx.getRxNumb().equals(rxnumb)));
 	}
 	
+	public static String makeStringFromDoc(Doctor dr) {
+		return dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone();
+	}
+	
+	public static String makeStringFromPharm(Pharmacy ph) {
+		return ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone() + " :: " + ph.getStreetAddress();
+	}
 	public static Doctor makeDocFromString(String string) {
 		String[] tokens = string.split(" :: ");
 		if(tokens.length != 3)
@@ -571,7 +572,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * Helper method to open dialog to add a doctor WITHOUT the selection spinner
 	 * @param context the context for the dialog
 	 */
-	protected void makeAddDoctorDialog(Context context) {
+	protected void openAddDoctorDialog(final Context context) {
 		if (drAdapter.getAllDrs().size() == 0) {
 			//Dummy doctor in first spot for the spinner
 			Doctor adding = new Doctor("","","Select a Doctor or Add One");
@@ -589,7 +590,7 @@ public class MainActivity extends ActionBarActivity implements
 				name.setSingleLine();
 		email.setSingleLine();
 		phone.setSingleLine();
-		name.setHint("    Name: ");
+		name.setHint("    Name (must be unique): ");
 		email.setHint("    Email: ");
 		phone.setHint("    Phone: ");
 		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
@@ -616,15 +617,27 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our Doctor
 					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
 					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
-					String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
-					d.dismiss();
-					MainActivity.getInstance().mViewPager.setCurrentItem(1);
+					//ID will be 0 if the insert returned 0 aka didn't add to the DB
+					if (newDoc.getId() > 0) {
+						//We added the Doctor
+						String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
+						d.dismiss();
+						frags[currFrag].onResume();
+						MainActivity.getInstance().mViewPager.setCurrentItem(1);
+					}
+					else {
+						//We didn't actually add the Doctor; ID = 0
+						String message ="All Doctors must have unique names. Please try again.";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		});
 		d.show();
 	}
+	
+	
 	
 	/**
 	 * Helper method to make the doctor dialog from the adding Rx
@@ -632,7 +645,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * @param context the context for the dialog
 	 * @param v the calling view (to set the text to the selected doctor)
 	 */
-	protected void makeDoctorSelectDialog(Context context,final View v) {
+	protected void openDoctorSelectDialog(final Context context,final View v) {
 		ArrayList<Doctor> drs = drAdapter.getAllDrs();
 		if (drs.size() == 0) {
 			//Dummy doctor in first spot for the spinner
@@ -666,16 +679,23 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our Doctor
 					Doctor newDoc = new Doctor(nameStr,emailStr,phoneStr);
 					newDoc.setId(drAdapter.insertDr(new Doctor(nameStr,emailStr,phoneStr)));
-					String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
-					//Better way to do it, but just wanted to get functionality
-					aa.clear();
-					aa.addAll(drAdapter.getAllDrs());
-					name.setText("");
-					email.setText("");
-					phone.setText("");
-					spinner.setSelection(aa.getCount());
-					frags[currFrag].onResume();
+					if (newDoc.getId() > 0) {	
+						//We added our Doctor
+						String message = "Added to Doctors DB on " + df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(nameStr,message,"D"));
+						//Better way to do it, but just wanted to get functionality
+						aa.clear();
+						aa.addAll(drAdapter.getAllDrs());
+						name.setText("");
+						email.setText("");
+						phone.setText("");
+						spinner.setSelection(aa.getCount());
+						frags[currFrag].onResume();
+					}
+					else {
+						String message = "Couldn't add your Doctor. Please ensure each Doctor's name is unique.";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 			
@@ -683,7 +703,7 @@ public class MainActivity extends ActionBarActivity implements
 		name.setSingleLine();
 		email.setSingleLine();
 		phone.setSingleLine();
-		name.setHint("    Name: ");
+		name.setHint("    Name (must be unique): ");
 		email.setHint("    Email: ");
 		phone.setHint("    Phone: ");
 		name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
@@ -708,7 +728,7 @@ public class MainActivity extends ActionBarActivity implements
 				}
 				else {
 					EditText et = (EditText) v;
-					et.setText(dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone());
+					et.setText(makeStringFromDoc(dr));
 					d.dismiss();					
 				}
 				
@@ -724,7 +744,7 @@ public class MainActivity extends ActionBarActivity implements
 		d.show();
 	}
 	
-	protected void makeAddPharmacyDialog(Context context) {
+	protected void openAddPharmacyDialog(final Context context) {
 		if (phAdapter.getAllPhs().size() == 0) {
 			//Dummy pharmacy in first spot for the spinner
 			Pharmacy adding = new Pharmacy("","","","Select a Pharmacy or Add One");
@@ -739,11 +759,11 @@ public class MainActivity extends ActionBarActivity implements
 		final EditText street = new EditText(this);
 		Button add = new Button(this);
 		add.setText("Add a New Pharmacy");
-				name.setSingleLine();
+		name.setSingleLine();
 		email.setSingleLine();
 		phone.setSingleLine();
 		street.setSingleLine();
-		name.setHint("    Name: ");
+		name.setHint("    Unique Name (CVS Boston): ");
 		email.setHint("    Email For Refill: ");
 		phone.setHint("    Phone: ");
 		street.setHint("    Street (123 Oak): ");
@@ -775,10 +795,17 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our pharmacy
 					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
 					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
-					String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
-					d.dismiss();
-					MainActivity.getInstance().mViewPager.setCurrentItem(1);
+					if (newPh.getId() > 0) {
+						String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
+						d.dismiss();
+						frags[currFrag].onResume();
+						MainActivity.getInstance().mViewPager.setCurrentItem(1);
+					}
+					else {
+						String message = "Couldn't add your Pharmacy to the DB. Please ensure all Pharmacy names are unique";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		});
@@ -790,7 +817,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * @param context the context for the dialog
 	 * @param v the calling view (EditText in this case)
 	 */
-	protected void makePharmacySelectDialog(Context context,final View v) {
+	protected void openPharmacySelectDialog(final Context context,final View v) {
 		ArrayList<Pharmacy> phs = phAdapter.getAllPhs();
 		if (phs.size() == 0) {
 			//Dummy pharmacy in first spot for the spinner
@@ -827,17 +854,23 @@ public class MainActivity extends ActionBarActivity implements
 					//We are good to add our pharmacy
 					Pharmacy newPh = new Pharmacy(nameStr,emailStr,phoneStr,streetStr);
 					newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr,emailStr,phoneStr,streetStr)));
-					String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
-					hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
-					//Better way to do it, but just wanted to get functionality
-					aa.clear();
-					aa.addAll(phAdapter.getAllPhs());
-					name.setText("");
-					email.setText("");
-					phone.setText("");
-					street.setText("");
-					spinner.setSelection(aa.getCount());
-					frags[currFrag].onResume();
+					if (newPh.getId() > 0) {						
+						String message = "Added to Pharmacy DB on " + df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
+						//Better way to do it, but just wanted to get functionality
+						aa.clear();
+						aa.addAll(phAdapter.getAllPhs());
+						name.setText("");
+						email.setText("");
+						phone.setText("");
+						street.setText("");
+						spinner.setSelection(aa.getCount());
+						frags[currFrag].onResume();
+					}
+					else {
+						String message = "Couldn't add your Pharmacy. Please ensure all Pharmacys have unique name.";
+						Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 			
@@ -846,7 +879,7 @@ public class MainActivity extends ActionBarActivity implements
 		email.setSingleLine();
 		phone.setSingleLine();
 		street.setSingleLine();
-		name.setHint("    Name: ");
+		name.setHint("    Unique Name (CVS Boston): ");
 		email.setHint("    Email For Refill: ");
 		phone.setHint("    Phone: ");
 		street.setHint("    Street (123 Oak): ");
@@ -874,7 +907,7 @@ public class MainActivity extends ActionBarActivity implements
 				}
 				else {
 					EditText et = (EditText) v;
-					et.setText(ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone() + " :: " + ph.getStreetAddress());
+					et.setText(makeStringFromPharm(ph));
 					d.dismiss();					
 				}
 				
@@ -890,7 +923,7 @@ public class MainActivity extends ActionBarActivity implements
 		d.show();
 	}
 	
-	private boolean isValidInt(EditText et) {
+	protected static boolean isValidInt(EditText et) {
 		String str = et.getText().toString().trim();
 		if (str.length() > 0) {
 			return Integer.valueOf(str) > 0;
@@ -898,7 +931,7 @@ public class MainActivity extends ActionBarActivity implements
 		else return false;
 	}
 	
-	private boolean isValidDouble(EditText et) {
+	protected static boolean isValidDouble(EditText et) {
 		String str = et.getText().toString().trim();
 		if(str.length() > 0 && !str.equals(".")) {
 			return Double.valueOf(str) > 0;
@@ -906,7 +939,7 @@ public class MainActivity extends ActionBarActivity implements
 		else return false;
 	}
 	
-	private boolean isValidName(String str) {
+	protected static boolean isValidName(String str) {
 		if (str.length() > 2) {
 			String[] name = str.split(" ");
 			if (name.length < 2) {
@@ -919,21 +952,21 @@ public class MainActivity extends ActionBarActivity implements
 		return false;
 	}
 	
-	private boolean isValidPhone(String str) {
+	protected static boolean isValidPhone(String str) {
 		if (str.length() >= 10) {
 			return android.util.Patterns.PHONE.matcher(str).matches();
 		}
 		else return false;
 	}
 	
-	private boolean isValidEmail(String str) {
+	protected static boolean isValidEmail(String str) {
 	    if (str.length() >= 5) {
 	        return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches();
 	    }
 	    else return false;
 	}
 	
-	private boolean isValidStreet(String str) {
+	protected static boolean isValidStreet(String str) {
 		if (str.length() > 0) {
 			String[] address = str.split(" ");
 			if (address.length < 2) {

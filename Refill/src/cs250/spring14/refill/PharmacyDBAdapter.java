@@ -19,7 +19,7 @@ public class PharmacyDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Ph.db";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 14; //all pharmacies must have unique name
     
     private static final String PH_TABLE = "phs";
     public static final String PH_ID = "Ph_id";   // column 0
@@ -85,6 +85,11 @@ public class PharmacyDBAdapter {
      * @return true if update successful; false otherwise
      */
     public boolean updatePh(long ri, String name, String email, String phone, String street) {
+    	Pharmacy ph = getPharmByName(name);
+    	if (ph!=null) {
+    		//there already is a doc with this name; make sure he has the same ID
+    		if (ph.getId() != ri) return false;
+    	}
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(PH_NAME, name);
         cvalues.put(PH_EMAIL, email);
@@ -103,12 +108,17 @@ public class PharmacyDBAdapter {
      * @return true if update successful; false otherwise
      */
     public boolean updatePhByName(String pname, String name, String email, String phone, String street) {
-		ContentValues cvalues = new ContentValues();
-		cvalues.put(PH_NAME, name);
-        cvalues.put(PH_EMAIL, email);
-        cvalues.put(PH_PHONE, phone);
-        cvalues.put(PH_STR, street);
-        return db.update(PH_TABLE, cvalues, PH_NAME + " = ?", new String[] {String.valueOf(pname)}) > 0;
+		if (pname != name && getPharmByName(name)!=null) {
+			return false;
+		}
+		else {
+	    	ContentValues cvalues = new ContentValues();
+			cvalues.put(PH_NAME, name);
+	        cvalues.put(PH_EMAIL, email);
+	        cvalues.put(PH_PHONE, phone);
+	        cvalues.put(PH_STR, street);
+	        return db.update(PH_TABLE, cvalues, PH_NAME + " = ?", new String[] {String.valueOf(pname)}) > 0;
+		}
 	}
     
     
@@ -176,6 +186,27 @@ public class PharmacyDBAdapter {
         return result;
     }
     
+    public Pharmacy getPharmByName(String name) throws SQLException {
+    	Cursor c = db.query(true, PH_TABLE, PH_COLS, PH_NAME+"=?", new String[] {String.valueOf(name)}, null, null, null, null);
+        if ((c.getCount() == 0) || !c.moveToFirst()) {
+    		return null;
+    	}
+    	else if ((c.getCount() > 1)) {
+    		return null;
+    	}
+    	else {
+    		Pharmacy result = new Pharmacy(
+					c.getString(1), //name
+					c.getString(2), //email
+					c.getString(3), //phone
+					c.getString(4) //street
+			);
+			//Set the ID to the row in the DB
+			result.setId(c.getInt(0));
+			return result;
+    	}    		
+    }
+    
     /**
      * 
      * Static inner helper DBHelper class
@@ -185,7 +216,7 @@ public class PharmacyDBAdapter {
     	 
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + PH_TABLE
-                + " (" + PH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PH_NAME + " TEXT,"
+                + " (" + PH_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PH_NAME + " TEXT UNIQUE,"
                 + PH_EMAIL + " TEXT," + PH_PHONE + " TEXT, " + PH_STR + " TEXT);";
  
         public PhDBHelper(Context context, String name, CursorFactory fct, int version) {

@@ -20,7 +20,7 @@ public class DoctorDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "Dr.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 14; //All Doctors must have unique name
     
     private static final String DR_TABLE = "Drs";
     public static final String DR_ID = "Dr_id";   // column 0
@@ -94,12 +94,37 @@ public class DoctorDBAdapter {
      * @return true if update successful; false otherwise
      */
     public boolean updateDr(long ri, String name, String email, String phone) {
-		ContentValues cvalues = new ContentValues();
+    	Doctor doc = getDocByName(name);
+    	if (doc!=null) {
+    		//there already is a doc with this name; make sure he has the same ID
+    		if (doc.getId() != ri) return false;
+    	}
+    	ContentValues cvalues = new ContentValues();
 		cvalues.put(DR_NAME, name);
         cvalues.put(DR_EMAIL, email);
         cvalues.put(DR_PHONE, phone);
-        return db.update(DR_TABLE, cvalues, DR_ID + " = ?", new String[] {String.valueOf(ri)}) > 0;
+        return db.update(DR_TABLE, cvalues, DR_ID + " = ?", new String[] {String.valueOf(ri)}) > 0; 
 	}
+    
+    public Doctor getDocByName(String name) throws SQLException {
+    	Cursor c = db.query(true, DR_TABLE, DR_COLS, DR_NAME+"=?", new String[] {String.valueOf(name)}, null, null, null, null);
+        if ((c.getCount() == 0) || !c.moveToFirst()) {
+    		return null;
+    	}
+    	else if ((c.getCount() > 1)) {
+    		return null;
+    	}
+    	else {
+    		Doctor result = new Doctor(
+					c.getString(1), //name
+					c.getString(2), //email
+					c.getString(3) //phone
+			);
+			//Set the ID to the row in the DB
+			result.setId(c.getInt(0));
+			return result;
+    	}    		
+    }
     
     /**
      * Method to update a Doctor given Name
@@ -110,11 +135,16 @@ public class DoctorDBAdapter {
      * @return true if update successful; false otherwise
      */
     public boolean updateDrByName(String dname, String name, String email, String phone) {
-		ContentValues cvalues = new ContentValues();
-		cvalues.put(DR_NAME, name);
-        cvalues.put(DR_EMAIL, email);
-        cvalues.put(DR_PHONE, phone);
-        return db.update(DR_TABLE, cvalues, DR_NAME + " = ?", new String[] {String.valueOf(dname)}) > 0;
+    	if (dname != name && getDocByName(name)!=null) {
+			return false;
+		}
+		else {	    
+	    	ContentValues cvalues = new ContentValues();
+			cvalues.put(DR_NAME, name);
+	        cvalues.put(DR_EMAIL, email);
+	        cvalues.put(DR_PHONE, phone);
+	        return db.update(DR_TABLE, cvalues, DR_NAME + " = ?", new String[] {String.valueOf(dname)}) > 0;
+		}
 	}
     
     /**
@@ -178,7 +208,7 @@ public class DoctorDBAdapter {
     	 
 		// SQL statement to create a new database
         private static final String DB_CREATE = "CREATE TABLE " + DR_TABLE
-                + " (" + DR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DR_NAME + " TEXT,"
+                + " (" + DR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DR_NAME + " TEXT UNIQUE,"
                 + DR_EMAIL + " TEXT," + DR_PHONE + " TEXT);";
  
         public DrDBHelper(Context context, String name, CursorFactory fct, int version) {

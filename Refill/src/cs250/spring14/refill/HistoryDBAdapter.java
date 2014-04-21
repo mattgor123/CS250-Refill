@@ -20,7 +20,7 @@ public class HistoryDBAdapter {
 	private final Context context;
 	
 	private static final String DB_NAME = "His.db";
-    private static final int DB_VERSION = 12;
+    private static final int DB_VERSION = 14;
     
     private static final String H_TABLE = "His";
     public static final String H_ID = "H_id";   // column 0
