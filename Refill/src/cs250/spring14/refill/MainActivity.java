@@ -183,6 +183,28 @@ public class MainActivity extends ActionBarActivity implements
 		
 		}
 	}
+	
+	/**
+	 * Helper method to create AlertDialogs given a title, message, positive OnClickListner, and negative OnClickListener
+	 * Deprecation warnings suppressed because the code still works on all versions of Android we tested
+	 * @param title the alert dialog's desired title
+	 * @param message the alert dialog's desired message
+	 * @param b2Text the alert dialog's b2 text
+	 * @param b2OCL the alert dialog's positive OnClickListener, b2
+	 * @param b1Text the alert dialog's b1 text
+	 * @param b1OCL the alert dialog's negative OnClickListener, b1
+	 * Code adapted from Matt's ARK AlertDialog
+	 */
+	@SuppressWarnings("deprecation")
+	public static void alertMessage(Context context, String title, String message, String b2Text, DialogInterface.OnClickListener b2OCL, String b1Text, DialogInterface.OnClickListener b1OCL) {
+		AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+		alertDialog.setTitle(title);
+		alertDialog.setMessage(message);
+		alertDialog.setButton2(b2Text, b2OCL);
+		alertDialog.setButton(b1Text, b1OCL);				
+		alertDialog.show();
+	}
+	
 	/**
 	 * Used to create the Dialog box which appears when one hits the + button.
 	 * @param context the application context where the dialog should be displayeed
@@ -596,7 +618,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 	
 	protected void makePharmacyDialog(Context context,final View v) {
-		ArrayList<Pharmacy> phs = phAdapter.getAllDrs();
+		ArrayList<Pharmacy> phs = phAdapter.getAllPhs();
 		if (phs.size() == 0) {
 			//Dummy pharmacy in first spot for the spinner
 			Pharmacy adding = new Pharmacy("","","","Select a Pharmacy or Add One");
@@ -635,7 +657,7 @@ public class MainActivity extends ActionBarActivity implements
 					hAdapter.insertHis(new HistoryItem(nameStr,message,"P"));
 					//Better way to do it, but just wanted to get functionality
 					aa.clear();
-					aa.addAll(phAdapter.getAllDrs());
+					aa.addAll(phAdapter.getAllPhs());
 					name.setText("");
 					email.setText("");
 					phone.setText("");

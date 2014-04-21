@@ -75,7 +75,18 @@ public class DoctorDBAdapter {
     }
     
     /**
-     * Method to update a Doctor
+     * Method to remove a Doctor from the DB given Name
+     * @param name the Doctor's name
+     * @return true if success, false otherwise
+     */
+    public boolean removeDrByName(String name) {
+    	db = dbHelper.getWritableDatabase();
+    	return db.delete(DR_TABLE,DR_NAME + "= ?",
+    			new String[] {name}) > 0;
+    }
+    
+    /**
+     * Method to update a Doctor given a ri
      * @param ri the row in the DB where this Doctor lives
      * @param name the Doctor's name
      * @param email the Doctor's email
@@ -89,6 +100,23 @@ public class DoctorDBAdapter {
         cvalues.put(DR_PHONE, phone);
         return db.update(DR_TABLE, cvalues, DR_ID + " = ?", new String[] {String.valueOf(ri)}) > 0;
 	}
+    
+    /**
+     * Method to update a Doctor given Name
+     * @param dname the Doctor's name
+     * @param name the Doctor's name
+     * @param email the Doctor's email
+     * @param phone the Doctor's phone
+     * @return true if update successful; false otherwise
+     */
+    public boolean updateDrByName(String dname, String name, String email, String phone) {
+		ContentValues cvalues = new ContentValues();
+		cvalues.put(DR_NAME, name);
+        cvalues.put(DR_EMAIL, email);
+        cvalues.put(DR_PHONE, phone);
+        return db.update(DR_TABLE, cvalues, DR_NAME + " = ?", new String[] {String.valueOf(dname)}) > 0;
+	}
+    
     /**
      * Method to remove a Doctor from the DB
      * @param ri the row to remove

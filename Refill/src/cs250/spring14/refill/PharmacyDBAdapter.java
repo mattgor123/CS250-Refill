@@ -92,17 +92,48 @@ public class PharmacyDBAdapter {
         cvalues.put(PH_STR, street);
         return db.update(PH_TABLE, cvalues, PH_ID + " = ?", new String[] {String.valueOf(ri)}) > 0;
 	}
+    
     /**
-     * Method to remove a Pharmacy from the DB
+     * Method to update a Pharmacy given a Name
+     * @param pname the name of the Pharmacy
+     * @param name the Pharmacy's name
+     * @param email the Pharmacy's email
+     * @param phone the Pharmacy's phone
+     * @param street the Pharamcy's street address
+     * @return true if update successful; false otherwise
+     */
+    public boolean updatePhByName(String pname, String name, String email, String phone, String street) {
+		ContentValues cvalues = new ContentValues();
+		cvalues.put(PH_NAME, name);
+        cvalues.put(PH_EMAIL, email);
+        cvalues.put(PH_PHONE, phone);
+        cvalues.put(PH_STR, street);
+        return db.update(PH_TABLE, cvalues, PH_NAME + " = ?", new String[] {String.valueOf(pname)}) > 0;
+	}
+    
+    
+    /**
+     * Method to remove a Pharmacy from the DB given ID
      * @param ri the row to remove
      * @return the # of affected rows
      */
-    public int removeDr(long ri)
+    public int removePh(long ri)
     {
     	db = dbHelper.getWritableDatabase();
     	return db.delete(PH_TABLE, PH_ID + " = ?",
     		new String[] { String.valueOf(ri) });
     }
+    /**
+     * Method to remove a Pharmacy from the DB given Name
+     * @param name the Pharmacy to delete's name
+     * @return true if success, false otherwise
+     */
+    public boolean removePhByName(String name) {
+    	db = dbHelper.getWritableDatabase();
+    	return db.delete(PH_TABLE,PH_NAME + "= ?",
+    			new String[] {name}) > 0;
+    }
+    
     /**
      * Method to get a cursor for all the Pharmacies
      * @return the Cursor
@@ -114,7 +145,7 @@ public class PharmacyDBAdapter {
      * Method to get all the Pharmacies from the DB
      * @return an ArrayList<Pharmacy> with all the Doctors
      */
-    public ArrayList<Pharmacy> getAllDrs() {
+    public ArrayList<Pharmacy> getAllPhs() {
     	ArrayList<Pharmacy> phs = new ArrayList<Pharmacy>();
     	Cursor c = this.getAllPhsCursor();
     	if (c.moveToFirst())
@@ -140,7 +171,7 @@ public class PharmacyDBAdapter {
     public Cursor getPhCursor(long ri) throws SQLException {
         Cursor result = db.query(true, PH_TABLE, PH_COLS, PH_ID+"="+ri, null, null, null, null, null);
         if ((result.getCount() == 0) || !result.moveToFirst()) {
-            throw new SQLException("No Dr items found for row: " + ri);
+            throw new SQLException("No Ph items found for row: " + ri);
         }
         return result;
     }

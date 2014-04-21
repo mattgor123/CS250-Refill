@@ -1,6 +1,8 @@
 package cs250.spring14.refill;
 
 import java.util.List;
+
+import cs250.spring14.refill.HistoryItem.HistoryType;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,9 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 	//We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
-		return super.isEnabled(position) && false;
+		return super.isEnabled(position) && 
+				(items.get(position).getH() == HistoryType.D ||
+				items.get(position).getH() == HistoryType.P);
 	}
 	
 	@Override

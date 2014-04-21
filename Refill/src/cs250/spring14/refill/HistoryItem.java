@@ -3,8 +3,10 @@ package cs250.spring14.refill;
 public class HistoryItem {
 
 	public enum HistoryType {
-		P("P"), //pharm 
+		P("P"),//pharm
+		PD("PD"),//pharm delete
 		D("D"), //doctor
+		DD("DD"), //doctor delete
 		R("R"), //prescription
 		U("U"); //User
 	 
@@ -80,7 +82,11 @@ public class HistoryItem {
 			return R.drawable.user;
 		case D:
 			return R.drawable.doctor;
+		case DD:
+			return R.drawable.doctor;
 		case P:
+			return R.drawable.pharmacy;
+		case PD:
 			return R.drawable.pharmacy;
 		default:
 			return R.drawable.default_pill;
