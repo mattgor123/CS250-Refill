@@ -2,7 +2,11 @@ package cs250.spring14.refill;
 
 import java.util.Calendar;
 
-import cs250.spring14.refill.HistoryItem.HistoryType;
+import cs250.spring14.refill.core.Doctor;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.Pharmacy;
+import cs250.spring14.refill.core.HistoryItem.HistoryType;
+import cs250.spring14.refill.view.HistoryWrapper;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,7 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements RefreshableFragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
 
@@ -66,13 +70,16 @@ public class HistoryFragment extends Fragment {
 														.format(Calendar
 																.getInstance()
 																.getTime());
+										HistoryItem his = new HistoryItem(hi
+												.getOwner(), message,
+												"DD");
 										MainActivity.hAdapter
-												.insertHis(new HistoryItem(hi
-														.getOwner(), message,
-														"DD"));
-										onResume();
+												.insertHis(his);
+										//hisAdap.add(his);
+										//hisAdap.notifyDataSetChanged();
+										repopulateAdapter();
 									} else {
-										// Pharmacy has already been deleted
+										// Doctor has already been deleted
 										Toast.makeText(
 												getActivity(),
 												"Sorry, we couldn't delete this Doctor. Are you sure you haven't edited or already removed this Doctor?",
@@ -117,11 +124,14 @@ public class HistoryFragment extends Fragment {
 														.format(Calendar
 																.getInstance()
 																.getTime());
+										HistoryItem his = new HistoryItem(hi
+												.getOwner(), message,
+												"PD");
 										MainActivity.hAdapter
-												.insertHis(new HistoryItem(hi
-														.getOwner(), message,
-														"PD"));
-										onResume();
+												.insertHis(his);
+										//hisAdap.add(his);
+										//hisAdap.notifyDataSetChanged();
+										repopulateAdapter();
 									} else {
 										// Pharmacy has already been deleted
 										Toast.makeText(
@@ -154,8 +164,6 @@ public class HistoryFragment extends Fragment {
 			}
 
 		});
-
-		hisAdap.notifyDataSetChanged();
 		return rootView;
 	}
 
@@ -247,10 +255,13 @@ public class HistoryFragment extends Fragment {
 						String message = "Updated in Pharmacy DB on "
 								+ MainActivity.df.format(Calendar.getInstance()
 										.getTime());
-						MainActivity.hAdapter.insertHis(new HistoryItem(
-								nameStr, message, "P"));
+						HistoryItem his = new HistoryItem(
+								nameStr, message, "P");
+						MainActivity.hAdapter.insertHis(his);
+						//hisAdap.add(his);
+						//hisAdap.notifyDataSetChanged();
+						repopulateAdapter();
 						d.dismiss();
-						onResume();
 					} else {
 						// We didn't actually successfully update the Doctor
 						String message = "Something went wrong updating your Pharmacy. Perhaps a Pharmacy with the name already exists?";
@@ -338,10 +349,14 @@ public class HistoryFragment extends Fragment {
 						String message = "Updated in Doctors DB on "
 								+ MainActivity.df.format(Calendar.getInstance()
 										.getTime());
-						MainActivity.hAdapter.insertHis(new HistoryItem(
-								nameStr, message, "D"));
+						HistoryItem his = new HistoryItem(
+								nameStr, message, "D");
+						MainActivity.hAdapter.insertHis(his);
+						//hisAdap.add(his);
+						//hisAdap.notifyDataSetChanged();
+						repopulateAdapter();
 						d.dismiss();
-						onResume();
+						//onResume();
 					} else {
 						// We didn't actually successfully update the Doctor
 						String message = "Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";
@@ -373,6 +388,11 @@ public class HistoryFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		repopulateAdapter();
+	}
+
+	@Override
+	public void repopulateAdapter() {
 		hisAdap.clear();
 		hisAdap.addAll(MainActivity.hAdapter.getAllHis());
 	}

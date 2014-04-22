@@ -1,4 +1,4 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.core;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class RxItem {
 	}
 
 	public double getDose() {
-		return this.dose;
+		return (double) Math.round(this.dose*1000)/1000;
 	}
 
 	public int getPillsPerDay() {

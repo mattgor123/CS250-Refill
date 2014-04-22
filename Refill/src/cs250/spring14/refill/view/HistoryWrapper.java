@@ -1,8 +1,10 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.view;
 
 import java.util.List;
 
-import cs250.spring14.refill.HistoryItem.HistoryType;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.HistoryItem.HistoryType;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

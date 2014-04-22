@@ -8,6 +8,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import cs250.spring14.refill.core.Doctor;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.Pharmacy;
+import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.db.DoctorDBAdapter;
+import cs250.spring14.refill.db.HistoryDBAdapter;
+import cs250.spring14.refill.db.PharmacyDBAdapter;
+import cs250.spring14.refill.db.RxDBAdapter;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -58,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	protected static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy",
+	public static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy",
 			Locale.US);
 	private final String[] tabs = new String[] { "Prescriptions", "History" };
 	private Fragment[] frags;
@@ -109,7 +118,11 @@ public class MainActivity extends ActionBarActivity implements
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
 						MainActivity.currFrag = position;
-						//frags[currFrag].onResume();
+						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+						if (f!=null) {
+							//Should never be null, but just in case...
+							f.repopulateAdapter();
+						}
 					}
 				});
 
@@ -404,7 +417,6 @@ public class MainActivity extends ActionBarActivity implements
 						hAdapter.insertHis(new HistoryItem(nameStr, message,
 								"D"));
 						d.dismiss();
-						frags[currFrag].onResume();
 						MainActivity.getInstance().mViewPager.setCurrentItem(1);
 					} else {
 						// We didn't actually add the Doctor; ID = 0
@@ -487,7 +499,7 @@ public class MainActivity extends ActionBarActivity implements
 						email.setText("");
 						phone.setText("");
 						spinner.setSelection(aa.getCount());
-						frags[currFrag].onResume();
+						//frags[currFrag].onResume();
 					} else {
 						String message = "Couldn't add your Doctor. Please ensure each Doctor's name is unique.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
@@ -617,8 +629,13 @@ public class MainActivity extends ActionBarActivity implements
 						hAdapter.insertHis(new HistoryItem(nameStr, message,
 								"P"));
 						d.dismiss();
-						frags[currFrag].onResume();
-						MainActivity.getInstance().mViewPager.setCurrentItem(1);
+						currFrag = 1;
+						MainActivity.getInstance().mViewPager.setCurrentItem(currFrag);
+						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+						if (f!=null) {
+							//Should never be null, but just in case...
+							f.repopulateAdapter();
+						}
 					} else {
 						String message = "Couldn't add your Pharmacy to the DB. Please ensure all Pharmacy names are unique";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
@@ -707,7 +724,7 @@ public class MainActivity extends ActionBarActivity implements
 						phone.setText("");
 						street.setText("");
 						spinner.setSelection(aa.getCount());
-						frags[currFrag].onResume();
+						//frags[currFrag].onResume();
 					} else {
 						String message = "Couldn't add your Pharmacy. Please ensure all Pharmacys have unique name.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
@@ -1126,15 +1143,14 @@ public class MainActivity extends ActionBarActivity implements
 											.setCurrentItem(0);
 
 								}
-								// Toast.makeText(getApplicationContext(),
-								// "Added " + nameET.getText().toString() +
-								// " to the Rx Database, now " +
-								// rxAdapter.getAllRxs().size() +
-								// " items in the DB",
-								// Toast.LENGTH_SHORT).show();
-								// Manually call onResume to ensure that we
 								// update the view
-								frags[currFrag].onResume();
+								currFrag = 0;
+								MainActivity.getInstance().mViewPager.setCurrentItem(currFrag);
+								RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+								if (f!=null) {
+									//Should never be null, but just in case...
+									f.repopulateAdapter();
+								}
 							} catch (NumberFormatException e) {
 								Toast.makeText(
 										getApplicationContext(),

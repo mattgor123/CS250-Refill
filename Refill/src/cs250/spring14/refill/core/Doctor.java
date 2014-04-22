@@ -1,4 +1,4 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.core;
 
 public class Doctor {
 

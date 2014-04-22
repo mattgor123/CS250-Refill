@@ -1,8 +1,11 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.db;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.core.RxItem;
 
 import android.content.ContentValues;
 import android.content.Context;

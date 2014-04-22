@@ -2,6 +2,10 @@ package cs250.spring14.refill;
 
 import java.text.ParseException;
 import java.util.Calendar;
+
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.view.RxWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +18,7 @@ import android.widget.ListView;
 
 import android.widget.AdapterView.OnItemClickListener;
 
-public class RxFragment extends Fragment {
+public class RxFragment extends Fragment implements RefreshableFragment {
 	ListView rxList;
 	ArrayAdapter<RxItem> rxAdap;
 
@@ -56,7 +60,8 @@ public class RxFragment extends Fragment {
 								MainActivity.hAdapter
 										.insertHis(new HistoryItem(
 												rx.getName(), msg, "R"));
-								onResume();
+								//rxAdap.notifyDataSetChanged();
+								repopulateAdapter();
 							}
 						}, "View/Edit",
 						// Edit
@@ -78,7 +83,6 @@ public class RxFragment extends Fragment {
 			}
 
 		});
-		rxAdap.notifyDataSetChanged();
 		return rootView;
 	}
 
@@ -87,6 +91,11 @@ public class RxFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		repopulateAdapter();
+	}
+
+	@Override	
+	public void repopulateAdapter() {
 		rxAdap.clear();
 		try {
 			rxAdap.addAll(MainActivity.rxAdapter.getAllRxs());

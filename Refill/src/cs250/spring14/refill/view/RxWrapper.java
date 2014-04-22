@@ -1,7 +1,11 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.view;
 
 import java.util.List;
 import java.util.Locale;
+
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.RxItem;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -3,6 +3,8 @@ package cs250.spring14.refill;
 import java.util.Calendar;
 import java.util.Locale;
 
+import cs250.spring14.refill.core.HistoryItem;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;

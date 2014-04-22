@@ -1,6 +1,8 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.db;
 
 import java.util.ArrayList;
+
+import cs250.spring14.refill.core.HistoryItem;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
