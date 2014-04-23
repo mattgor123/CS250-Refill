@@ -10,10 +10,12 @@ import java.util.Locale;
 
 import cs250.spring14.refill.core.Doctor;
 import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.Patient;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.db.DoctorDBAdapter;
 import cs250.spring14.refill.db.HistoryDBAdapter;
+import cs250.spring14.refill.db.PatientDBAdapter;
 import cs250.spring14.refill.db.PharmacyDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
 
@@ -31,6 +33,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
@@ -44,8 +47,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -75,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements
 	public static DoctorDBAdapter drAdapter;
 	public static PharmacyDBAdapter phAdapter;
 	public static HistoryDBAdapter hAdapter;
+	public static PatientDBAdapter paAdapter;
 	public static int currFrag;
 	private boolean shouldLogin;
 	protected static final int LOGIN = 3;
@@ -139,15 +143,34 @@ public class MainActivity extends ActionBarActivity implements
 		// Rx adapter stuff
 		rxAdapter = new RxDBAdapter(this);
 		rxAdapter.open();
+		
 		// Dr adapter stuff
 		drAdapter = new DoctorDBAdapter(this);
 		drAdapter.open();
+		if (drAdapter.getAllDrs().size() == 0) {
+			// Dummy doctor in first spot for the spinner
+			Doctor adding = new Doctor("", "", "Select a Doctor or Add One");
+			adding.setId(drAdapter.insertDr(adding));
+		}
 		// Ph adapter stuff
 		phAdapter = new PharmacyDBAdapter(this);
 		phAdapter.open();
+		if (phAdapter.getAllPhs().size() == 0) {
+			// Dummy pharmacy in first spot for the spinner
+			Pharmacy adding = new Pharmacy("", "", "",
+					"Select a Pharmacy or Add One");
+			adding.setId(phAdapter.insertPh(adding));
+		}
 		// History adapter stuff
 		hAdapter = new HistoryDBAdapter(this);
 		hAdapter.open();
+		//Patient adapter stuff
+		paAdapter = new PatientDBAdapter(this);
+		paAdapter.open();
+		if (paAdapter.getAllPats().size() == 0) {
+			Patient adding = new Patient("Select a Patient!",0);
+			adding.setId(paAdapter.insertPa(adding));
+		}
 		_instance = this;
 	}
 
@@ -164,10 +187,10 @@ public class MainActivity extends ActionBarActivity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
-		case R.id.action_add:
-			// openAddDialog(this,null);
-			openCustomDialog(this);
-			return true;
+		case R.id.action_add: {
+				openCustomDialog(this);
+				return true;
+			}
 		case R.id.action_settings:
 			return true;
 		default:
@@ -191,6 +214,7 @@ public class MainActivity extends ActionBarActivity implements
 				Toast.makeText(this,
 						"First time logging in with e-mail: " + email,
 						Toast.LENGTH_SHORT).show();
+				//HERE IS WHERE WE ASK THEM IF WE WANT TO MAKE A NEW PATIENT
 				break;
 			} else if (resultCode == LoginActivity.KILLED) {
 				// We hit the back button
@@ -208,6 +232,7 @@ public class MainActivity extends ActionBarActivity implements
 		drAdapter.open();
 		phAdapter.open();
 		hAdapter.open();
+		paAdapter.open();
 	}
 
 	@Override
@@ -217,6 +242,7 @@ public class MainActivity extends ActionBarActivity implements
 		drAdapter.close();
 		phAdapter.close();
 		hAdapter.close();
+		paAdapter.close();
 	}
 
 	@Override
@@ -244,35 +270,6 @@ public class MainActivity extends ActionBarActivity implements
 				|| (!rx.getPhString().equals(pharm))
 				|| (!rx.getDocString().equals(doc)) || !(rx.getRxNumb()
 				.equals(rxnumb)));
-	}
-
-	public static String makeStringFromDoc(Doctor dr) {
-		return dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone();
-	}
-
-	public static String makeStringFromPharm(Pharmacy ph) {
-		return ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone()
-				+ " :: " + ph.getStreetAddress();
-	}
-
-	public static Doctor makeDocFromString(String string) {
-		String[] tokens = string.split(" :: ");
-		if (tokens.length != 3) {
-			// Something got screwed up
-			return null;
-		} else {
-			return new Doctor(tokens[0], tokens[1], tokens[2]);
-		}
-	}
-
-	public static Pharmacy makePharmFromString(String string) {
-		String[] tokens = string.split(" :: ");
-		if (tokens.length != 4) {
-			// Something got screwed up
-			return null;
-		} else {
-			return new Pharmacy(tokens[0], tokens[1], tokens[2], tokens[3]);
-		}
 	}
 
 	protected static boolean isValidInt(EditText et) {
@@ -352,11 +349,6 @@ public class MainActivity extends ActionBarActivity implements
 	 *            the context for the dialog
 	 */
 	protected void openAddDoctorDialog(final Context context) {
-		if (drAdapter.getAllDrs().size() == 0) {
-			// Dummy doctor in first spot for the spinner
-			Doctor adding = new Doctor("", "", "Select a Doctor or Add One");
-			adding.setId(drAdapter.insertDr(adding));
-		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(1);
@@ -430,6 +422,104 @@ public class MainActivity extends ActionBarActivity implements
 		d.show();
 	}
 
+	protected void openAddPatientDialog(final Context context) {
+		final Dialog dialog = new Dialog(context);
+		dialog.setTitle("Please add a patient");
+		dialog.setContentView(R.layout.patient_dialog);
+		final EditText et = (EditText) dialog.findViewById(R.id.patient);
+		final RadioGroup colors = (RadioGroup) dialog.findViewById(R.id.colors);
+		Button ok = (Button) dialog.findViewById(R.id.ok);
+		ok.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				//Step 1) Make sure we have a valid name
+				String str = et.getText().toString().trim();
+				if (!(str.length() > 0)) {
+					Toast.makeText(context, "Please ensure you've entered a valid patient name", Toast.LENGTH_SHORT).show();
+				}
+				//Step 2) Make sure patient doesn't already exist 
+				else if (paAdapter.getPatientByName(str) != null) {
+					Toast.makeText(context, "A patient with this name already exists!", Toast.LENGTH_SHORT).show();
+				}
+				//Step 3) Add the patient with the selected color!
+				else {
+					int color = colors.getCheckedRadioButtonId();
+					String message;
+					switch(color) {
+					case R.id.w:
+						paAdapter.insertPa(new Patient(str,Color.WHITE));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;						
+					case R.id.lb:
+						paAdapter.insertPa(new Patient(str,Color.parseColor("#94FFFF")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					case R.id.lo:
+						paAdapter.insertPa(new Patient(str,Color.parseColor("#FFCC99")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					case R.id.ly:
+						paAdapter.insertPa(new Patient(str, Color.parseColor("#FFFF99")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					case R.id.lg:
+						paAdapter.insertPa(new Patient(str, Color.parseColor("#85FF85")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					case R.id.lpu:
+						paAdapter.insertPa(new Patient(str, Color.parseColor("#CCCCFF")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					case R.id.lpi:
+						paAdapter.insertPa(new Patient(str,Color.parseColor("#FFCCFF")));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message,
+								"PA"));
+						dialog.dismiss();
+						break;
+					default:
+						//We really shouldn't be here
+						return;
+					}
+					//We've done our adding stuff, let's refresh & go to history
+					currFrag = 1;
+					MainActivity.getInstance().mViewPager.setCurrentItem(currFrag);
+					RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+					if (f!=null) {
+						//Should never be null, but just in case...
+						f.repopulateAdapter();
+					}		
+				}
+			}
+		});
+		dialog.show();		
+	}
 	/**
 	 * Helper method to make the doctor dialog from the adding Rx This has the
 	 * spinner to make a selection amongst doctors
@@ -537,7 +627,7 @@ public class MainActivity extends ActionBarActivity implements
 					// We hit our Dummy Doctor, do nothing.
 				} else {
 					EditText et = (EditText) v;
-					et.setText(makeStringFromDoc(dr));
+					et.setText(Doctor.makeStringFromDoc(dr));
 					d.dismiss();
 				}
 
@@ -554,12 +644,6 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	protected void openAddPharmacyDialog(final Context context) {
-		if (phAdapter.getAllPhs().size() == 0) {
-			// Dummy pharmacy in first spot for the spinner
-			Pharmacy adding = new Pharmacy("", "", "",
-					"Select a Pharmacy or Add One");
-			adding.setId(phAdapter.insertPh(adding));
-		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(1);
@@ -647,6 +731,43 @@ public class MainActivity extends ActionBarActivity implements
 		d.show();
 	}
 
+	protected void openPatientSelectDialog(final Context context, final View v) {
+		ArrayList<Patient> pats = paAdapter.getAllPats();
+		if (pats.size() == 0 || pats.size() == 1) {
+			Toast.makeText(context, "Please add a patient; this must be done before adding an Rx", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			final ArrayAdapter<Patient> aa = new ArrayAdapter<Patient> (
+					getApplicationContext(), android.R.layout.simple_spinner_item, pats);
+			final Spinner spinner = new Spinner(getApplicationContext());
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder.setView(spinner);
+			final Dialog d = builder.create();
+			spinner.setAdapter(aa);
+			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					Patient pa = (Patient) spinner.getSelectedItem();
+					if (pa.getId() == 1) {
+						// We hit our Dummy Pharmacy, do nothing.
+					} else {
+						EditText et = (EditText) v;
+						et.setText(Patient.makeStringFromPatient(pa));
+						d.dismiss();
+					}
+
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+					// Nothing selected; do nothing
+				}
+
+			});
+			d.show();					
+		}
+	}
 	/**
 	 * Helper method to make the select a pharmacy or add one
 	 * 
@@ -767,7 +888,7 @@ public class MainActivity extends ActionBarActivity implements
 					// We hit our Dummy Pharmacy, do nothing.
 				} else {
 					EditText et = (EditText) v;
-					et.setText(makeStringFromPharm(ph));
+					et.setText(Pharmacy.makeStringFromPharm(ph));
 					d.dismiss();
 				}
 
@@ -787,15 +908,20 @@ public class MainActivity extends ActionBarActivity implements
 		final Dialog dialog = new Dialog(context);
 		dialog.setContentView(R.layout.select_dialog);
 		dialog.setTitle("Please choose what to add");
-		ImageButton pill = (ImageButton) dialog.findViewById(R.id.imageButton1);
-		ImageButton doc = (ImageButton) dialog.findViewById(R.id.imageButton2);
-		ImageButton pharm = (ImageButton) dialog
-				.findViewById(R.id.imageButton3);
+		LinearLayout pill = (LinearLayout) dialog.findViewById(R.id.ll1);
+		LinearLayout doc = (LinearLayout) dialog.findViewById(R.id.ll2);
+		LinearLayout pharm = (LinearLayout) dialog.findViewById(R.id.ll3);
+		LinearLayout patient = (LinearLayout) dialog.findViewById(R.id.ll4);
 		pill.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openAddOrEditRxDialog(context, null);
-				dialog.dismiss();
+				if (paAdapter.getAllPats().size() < 2) {
+					Toast.makeText(context, "Please add a patient first!", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					openAddOrEditRxDialog(context, null);
+					dialog.dismiss();
+				}
 			}
 		});
 
@@ -810,6 +936,13 @@ public class MainActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				openAddPharmacyDialog(context);
+				dialog.dismiss();
+			}
+		});
+		patient.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openAddPatientDialog(context);
 				dialog.dismiss();
 			}
 		});
@@ -849,7 +982,7 @@ public class MainActivity extends ActionBarActivity implements
 		final EditText physET = new EditText(this);
 		final EditText rxnumbET = new EditText(this);
 		nameET.setHint("   Prescription Name: ");
-		patientET.setHint("   Patient Name: ");
+		patientET.setHint("   Patient: ");
 		sympET.setHint("   For treating:  ");
 		sideEffectsET.setHint("   Side effects: ");
 		doseET.setHint("   Dose: (mg) ");
@@ -860,7 +993,16 @@ public class MainActivity extends ActionBarActivity implements
 		physET.setHint("   Doctor (Click to Pick/Add): ");
 		rxnumbET.setHint("   RX Number: ");
 		nameET.setSingleLine();
+		//To avoid having to deal with keyboard input when you want to pick patient
+		patientET.setFocusable(false);
+		patientET.setFocusableInTouchMode(false);
 		patientET.setSingleLine();
+		patientET.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openPatientSelectDialog(context, v);
+			}
+		});
 		sympET.setSingleLine();
 		sideEffectsET.setSingleLine();
 		doseET.setSingleLine();
@@ -941,8 +1083,6 @@ public class MainActivity extends ActionBarActivity implements
 		rxnumbET.setSingleLine();
 		nameET.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-		patientET.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		physET.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		rxnumbET.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -954,7 +1094,7 @@ public class MainActivity extends ActionBarActivity implements
 		// This means we are editing an existing Rx
 		if (rx != null) {
 			nameET.setText(rx.getName());
-			patientET.setText(rx.getPatient());
+			patientET.setText(rx.getPatientString());
 			sympET.setText(rx.getSymptoms());
 			sideEffectsET.setText(rx.getSideEffects());
 			doseET.setText(Double.toString(rx.getDose()));
@@ -1127,10 +1267,10 @@ public class MainActivity extends ActionBarActivity implements
 								else {
 									lastRefillDate = start;
 									rxAdapter.insertRx(new RxItem(name,
-											patient, symp, sideEffects, dose,
+											Patient.makePatientFromString(patient), symp, sideEffects, dose,
 											ppd, start, dbr,
-											makePharmFromString(pharm),
-											makeDocFromString(doc), rxnumb,
+											Pharmacy.makePharmFromString(pharm),
+											Doctor.makeDocFromString(doc), rxnumb,
 											lastRefillDate));
 									String message = "Added to Prescriptions DB on "
 											+ df.format(Calendar.getInstance()

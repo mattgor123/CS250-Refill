@@ -5,33 +5,99 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:orientation="horizontal" >
-
+    android:orientation="horizontal"
+    android:baselineAligned="false" >
+	
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
     <ImageButton
         android:id="@+id/imageButton1"
+        android:clickable="false"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
         android:background="@drawable/default_pill"
         android:contentDescription="@string/rxicon"
         android:scaleType="fitXY" />
-
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"        
+        android:gravity="center"
+        android:text="@string/prescription"
+        android:scaleType="fitXY" />
+	</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
     <ImageButton
         android:id="@+id/imageButton2"
+        android:clickable="false"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
         android:background="@drawable/doctor"
         android:contentDescription="@string/pharmicon"
         android:scaleType="fitXY" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
+	<TextView
+        android:id="@+id/textView2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/doctor"
+        android:scaleType="fitXY" />
+	</LinearLayout>
+	<LinearLayout
+        android:id="@+id/ll3"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:clickable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:background="@drawable/pharmacy"
         android:contentDescription="@string/docicon"
         android:scaleType="fitXY" />
-
+	<TextView
+        android:id="@+id/textView3"
+        android:text="@string/pharmacy"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"        
+        android:scaleType="fitXY" />
+	</LinearLayout>
+	<LinearLayout
+        android:id="@+id/ll4"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:clickable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/patient"
+        android:contentDescription="@string/paticon"
+        android:scaleType="fitXY" />
+	<TextView
+        android:id="@+id/textView4"
+        android:text="@string/patient"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"        
+        android:scaleType="fitXY" />
+	</LinearLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@ import java.util.Date;
 public class RxItem {
 
 	private String name;
-	private String patient;
+	private Patient patient;
 	private String symptoms;
 	private String sideEffects;
 	private double dose;
@@ -20,7 +20,7 @@ public class RxItem {
 	private Date lastrefill;
 	private long id;
 
-	public RxItem(String name, String patient, String symptoms,
+	public RxItem(String name, Patient patient, String symptoms,
 			String sideEffects, double dose, int pillsPerDay, Date start,
 			int daysBetweenRefills, Pharmacy pharmacy, Doctor doc,
 			String rxNumb, Date lastrefill) {
@@ -54,7 +54,7 @@ public class RxItem {
 		return this.name;
 	}
 
-	public String getPatient() {
+	public Patient getPatient() {
 		return this.patient;
 	}
 
@@ -95,14 +95,15 @@ public class RxItem {
 	}
 
 	public String getDocString() {
-		return this.doc.getName() + " :: " + this.doc.getEmail() + " :: "
-				+ this.doc.getPhone();
+		return Doctor.makeStringFromDoc(this.doc);
 	}
 
 	public String getPhString() {
-		return this.pharmacy.getName() + " :: " + this.pharmacy.getEmail()
-				+ " :: " + this.pharmacy.getPhone() + " :: "
-				+ this.pharmacy.getStreetAddress();
+		return Pharmacy.makeStringFromPharm(this.pharmacy);
+	}
+	
+	public String getPatientString() {
+		return Patient.makeStringFromPatient(this.patient);
 	}
 
 	public String getRxNumb() {

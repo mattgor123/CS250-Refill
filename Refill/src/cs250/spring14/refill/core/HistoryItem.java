@@ -10,7 +10,8 @@ public class HistoryItem {
 		D("D"), // doctor
 		DD("DD"), // doctor delete
 		R("R"), // prescription
-		U("U"); // User
+		PA("PA"), //patient
+		U("U"); // User Created
 
 		private String type;
 
@@ -97,6 +98,8 @@ public class HistoryItem {
 			return R.drawable.pharmacy;
 		case PD:
 			return R.drawable.pharmacy;
+		case PA:
+			return R.drawable.patient;
 		default:
 			return R.drawable.default_pill;
 		}

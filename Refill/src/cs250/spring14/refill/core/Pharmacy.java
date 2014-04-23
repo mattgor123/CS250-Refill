@@ -100,4 +100,20 @@ public class Pharmacy {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public static String makeStringFromPharm(Pharmacy ph) {
+		return ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone()
+				+ " :: " + ph.getStreetAddress();
+	}
+	
+	public static Pharmacy makePharmFromString(String string) {
+		String[] tokens = string.split(" :: ");
+		if (tokens.length != 4) {
+			// Something got screwed up
+			return null;
+		} else {
+			return new Pharmacy(tokens[0], tokens[1], tokens[2], tokens[3]);
+		}
+	}
+
 }

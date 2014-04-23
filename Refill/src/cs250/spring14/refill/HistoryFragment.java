@@ -244,12 +244,12 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 					if (MainActivity.phAdapter.updatePh(ph.getId(), nameStr,
 							emailStr, phoneStr, addressStr)) {
 						// We successfully updated the Doctor
-						String oldPharm = MainActivity.makeStringFromPharm(ph);
+						String oldPharm = Pharmacy.makeStringFromPharm(ph);
 						ph.setName(nameStr);
 						ph.setEmail(emailStr);
 						ph.setPhone(phoneStr);
 						ph.setStreetAddress(addressStr);
-						String newPharm = MainActivity.makeStringFromPharm(ph);
+						String newPharm = Pharmacy.makeStringFromPharm(ph);
 						MainActivity.rxAdapter.updateAllRxWithPharmacy(
 								oldPharm, newPharm);
 						String message = "Updated in Pharmacy DB on "
@@ -339,11 +339,11 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 					if (MainActivity.drAdapter.updateDr(dr.getId(), nameStr,
 							emailStr, phoneStr)) {
 						// We successfully updated the Doctor
-						String oldStr = MainActivity.makeStringFromDoc(dr);
+						String oldStr = Doctor.makeStringFromDoc(dr);
 						dr.setName(nameStr);
 						dr.setEmail(emailStr);
 						dr.setPhone(phoneStr);
-						String newStr = MainActivity.makeStringFromDoc(dr);
+						String newStr = Doctor.makeStringFromDoc(dr);
 						MainActivity.rxAdapter.updateAllRxWithDoctor(oldStr,
 								newStr);
 						String message = "Updated in Doctors DB on "

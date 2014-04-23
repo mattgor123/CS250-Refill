@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.core.Doctor;
+import cs250.spring14.refill.core.Patient;
+import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.RxItem;
 
 import android.content.ContentValues;
@@ -24,7 +27,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 18; // dose -> real
+	private static final int DB_VERSION = 19; //Patient Str -> Patient class
 
 	private static final String RX_TABLE = "Rxs";
 	public static final String RX_ID = "Rx_id"; // column 0
@@ -73,7 +76,7 @@ public class RxDBAdapter {
 		ContentValues cvalues = new ContentValues();
 		// assign values for each col
 		cvalues.put(RX_NAME, rx.getName());
-		cvalues.put(RX_PT, rx.getPatient());
+		cvalues.put(RX_PT, rx.getPatientString());
 		cvalues.put(RX_SYMPT, rx.getSymptoms());
 		cvalues.put(RX_SFECT, rx.getSideEffects());
 		cvalues.put(RX_DOSE, rx.getDose());
@@ -140,15 +143,15 @@ public class RxDBAdapter {
 		if (c.moveToFirst())
 			do {
 				RxItem result = new RxItem(c.getString(1), // name
-						c.getString(2), // patient
+						Patient.makePatientFromString(c.getString(2)), // patient
 						c.getString(3), // symptoms
 						c.getString(4), // sideEffects
 						c.getFloat(5), // dose
 						c.getInt(6), // pillsPerDay
 						MainActivity.df.parse(c.getString(11)), // startDate
 						c.getInt(7), // daysBetween
-						MainActivity.makePharmFromString(c.getString(8)), // pharmacy
-						MainActivity.makeDocFromString(c.getString(9)), // physician
+						Pharmacy.makePharmFromString(c.getString(8)), // pharmacy
+						Doctor.makeDocFromString(c.getString(9)), // physician
 						c.getString(10), // RX Number
 						MainActivity.df.parse(c.getString(12)) // last refill
 				);

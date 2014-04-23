@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/patient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/patientname"
+        android:inputType="text"
+        android:maxLines="1"
+        android:singleLine="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"        
+        android:layout_gravity="center" >
+		<RadioGroup
+		    android:id="@+id/colors"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"		    
+            android:layout_gravity="center_vertical"
+            android:checkedButton="@+id/w">
+        <RadioButton
+            android:id="@+id/w"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/white"
+            android:clickable="true"
+            android:contentDescription="@string/w"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/lb"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightblue"
+            android:clickable="true"
+            android:contentDescription="@string/lb"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/lo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightorange"
+            android:clickable="true"
+            android:contentDescription="@string/lo"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/ly"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightyellow"
+            android:clickable="true"
+            android:contentDescription="@string/ly"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/lg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightgreen"
+            android:clickable="true"
+            android:contentDescription="@string/lg"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/lpu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightpurple"
+            android:clickable="true"
+            android:contentDescription="@string/lpu"
+            android:scaleType="fitXY" />
+
+        <RadioButton
+            android:id="@+id/lpi"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/lightpink"
+            android:clickable="true"
+            android:contentDescription="@string/lpi"
+            android:scaleType="fitXY" />
+        </RadioGroup>
+        <Button
+            android:id="@+id/ok"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -82,6 +82,8 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 						.toLowerCase(Locale.US)));
 			}
 		}
+		//Set the view's color based on the RxItem Patient's color
+		v.setBackgroundColor(i.getPatient().getColor());
 		// the view must be returned to our activity
 		return v;
 	}

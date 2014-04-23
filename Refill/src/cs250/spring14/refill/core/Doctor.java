@@ -82,4 +82,19 @@ public class Doctor {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public static String makeStringFromDoc(Doctor dr) {
+		return dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone();
+	}
+	
+	public static Doctor makeDocFromString(String string) {
+		String[] tokens = string.split(" :: ");
+		if (tokens.length != 3) {
+			// Something got screwed up
+			return null;
+		} else {
+			return new Doctor(tokens[0], tokens[1], tokens[2]);
+		}
+	}
+
 }

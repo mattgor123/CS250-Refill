@@ -21,12 +21,38 @@
 	<string name="welcome">The welcome image</string>
 	<!-- The 'display next time' checkbox -->
 	<string name="checkbox">Display Login screen next time?</string>
-	<!-- The rx image on login activity -->
+	<!-- The rx image on select dialog -->
 	<string name="rxicon">The rx image selection</string>
-	<!-- The pharmacy image on login activity -->
+	<!-- The pharmacy image on select dialog -->
 	<string name="pharmicon">The pharmacy image selection</string>
-	<!-- The doctor image on login activity -->
+	<!-- The doctor image on select dialog -->
 	<string name="docicon">The doctor image selection</string>
-	
-
+	<!-- The patient image on select dialog -->
+	<string name="paticon">The patient image selection</string>
+	<!-- The pharmacy on select dialog -->
+	<string name="pharmacy">Pharmacy</string>
+	<!-- The prescription on select dialog -->
+	<string name="prescription">Prescription</string>
+	<!-- The doctor on select dialog -->
+	<string name="doctor">Doctor</string>
+	<!-- The patient on select dialog -->
+	<string name="patient">Patient</string>
+	<!-- The patient on patient dialog -->
+	<string name="patientname">Patient Name: </string>
+	<!-- The white on patient dialog -->
+	<string name="w">white</string>
+    <!-- The light blue on patient dialog -->
+	<string name="lb">lightblue</string>
+	<!-- The light orange on patient dialog -->
+	<string name="lo">lightorange</string>
+	<!-- The light yellow on patient dialog -->
+	<string name="ly">lightyellow</string>
+	<!-- The light green on patient dialog -->
+	<string name="lg">lightgreen</string>
+	<!-- The light purple on patient dialog -->
+	<string name="lpu">lightpurple</string>
+	<!-- The light pink on patient dialog -->
+	<string name="lpi">lightpink</string>
+	<!-- The OK on patient dialog -->
+	<string name="ok">OK</string>
 </resources>
