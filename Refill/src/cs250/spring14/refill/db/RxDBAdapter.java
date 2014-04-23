@@ -27,7 +27,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 20; //Patient Str -> Patient class
+	private static final int DB_VERSION = 21; //Patient Str -> Patient class
 
 	private static final String RX_TABLE = "Rxs";
 	public static final String RX_ID = "Rx_id"; // column 0
@@ -90,6 +90,26 @@ public class RxDBAdapter {
 		long row = db.insert(RX_TABLE, null, cvalues);
 		rx.setId(row);
 		return row;
+	}
+
+	public boolean existsRxWithDoc(String name) throws SQLException {
+		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
+				new String[] { String.valueOf(name) }, null, null, null, null);
+		if ((c.getCount() == 0) || !c.moveToFirst()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean existsRxWithPharm(String name) throws SQLException {
+		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PHRM + "=?",
+				new String[] { String.valueOf(name) }, null, null, null, null);
+		if ((c.getCount() == 0) || !c.moveToFirst()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public boolean updateAllRxWithDoctor(String oldDoctor, String newDoctor) {

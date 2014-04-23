@@ -20,7 +20,7 @@ public class PharmacyDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Ph.db";
-	private static final int DB_VERSION = 14; // all pharmacies must have unique
+	private static final int DB_VERSION = 15; // all pharmacies must have unique
 												// name
 
 	private static final String PH_TABLE = "phs";

@@ -62,7 +62,11 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									if (MainActivity.drAdapter
+									Doctor d = MainActivity.drAdapter.getDocByName(hi.getOwner());
+									if (d!=null && MainActivity.rxAdapter.existsRxWithDoc(Doctor.makeStringFromDoc(d))) {
+										Toast.makeText(getActivity(), "Can't delete this Doctor because an Rx with this Doctor already exists!",Toast.LENGTH_SHORT).show();
+									}
+									else if (MainActivity.drAdapter
 											.removeDrByName(hi.getOwner())) {
 										// We were able to remove the pharmacy
 										String message = "Removed from Doctor DB on "
@@ -77,6 +81,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 												.insertHis(his);
 										//hisAdap.add(his);
 										//hisAdap.notifyDataSetChanged();
+										Toast.makeText(getActivity(), "Deleted Doctor " + hi.getOwner() + " from the Doctor DB", Toast.LENGTH_SHORT).show();
 										repopulateAdapter();
 									} else {
 										// Doctor has already been deleted
@@ -116,7 +121,11 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									if (MainActivity.phAdapter
+									Pharmacy p = MainActivity.phAdapter.getPharmByName(hi.getOwner());
+									if (p!=null && MainActivity.rxAdapter.existsRxWithPharm(Pharmacy.makeStringFromPharm(p))) {
+										Toast.makeText(getActivity(), "Can't delete this Pharmacy because an Rx with this Doctor already exists!",Toast.LENGTH_SHORT).show();
+									}
+									else if (MainActivity.phAdapter
 											.removePhByName(hi.getOwner())) {
 										// We were able to remove the pharmacy
 										String message = "Removed from Pharmacy DB on "
@@ -129,6 +138,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 												"PD");
 										MainActivity.hAdapter
 												.insertHis(his);
+										Toast.makeText(getActivity(), "Deleted Pharmacy " + hi.getOwner() + " from the Pharmacy DB", Toast.LENGTH_SHORT).show();
 										//hisAdap.add(his);
 										//hisAdap.notifyDataSetChanged();
 										repopulateAdapter();

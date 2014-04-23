@@ -20,7 +20,7 @@ public class PatientDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Pa.db";
-	private static final int DB_VERSION = 3;
+	private static final int DB_VERSION = 4;
 
 	private static final String PA_TABLE = "Pats";
 	public static final String PA_ID = "Pa_id"; // column 0

@@ -409,7 +409,12 @@ public class MainActivity extends ActionBarActivity implements
 						hAdapter.insertHis(new HistoryItem(nameStr, message,
 								"D"));
 						d.dismiss();
-						MainActivity.getInstance().mViewPager.setCurrentItem(1);
+						MainActivity.getInstance().mViewPager.setCurrentItem(currFrag);
+						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+						if (f!=null) {
+							//Should never be null, but just in case...
+							f.repopulateAdapter();
+						}
 					} else {
 						// We didn't actually add the Doctor; ID = 0
 						String message = "All Doctors must have unique names. Please try again.";
