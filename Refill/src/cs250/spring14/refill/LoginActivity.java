@@ -10,6 +10,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ public class LoginActivity extends Activity {
 	private static String credentials;
 	private static SharedPreferences prefs;
 	public static final String RESULT_STRING = "result";
+	private static final String firstRunKey = "refill.firstrun";
 	private static final String credKey = "refill.credentials";
 	protected static final String nextKey = "refill.next";
 	protected static final int FAILED = 10;
@@ -70,6 +72,13 @@ public class LoginActivity extends Activity {
 		// Get the shared preferences with the log-in details
 		prefs = this.getSharedPreferences("refill", Context.MODE_PRIVATE);
 		credentials = prefs.getString(credKey, "");
+		boolean firstRun = prefs.getBoolean(firstRunKey, true);
+		if (firstRun) {
+			//Make the first run dialog
+			prefs.edit()
+			.putBoolean(firstRunKey, false).commit();
+			makeFirstRunDialog();
+		}
 		setContentView(R.layout.activity_login);
 		checkBox = (CheckedTextView) findViewById(R.id.checkedTextView1);
 		checkBox.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +117,10 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
+	}
+	
+	public void makeFirstRunDialog() {
+		new AlertDialog.Builder(this).setTitle("Welcome to Refill!").setIcon(R.drawable.ic_launcher).setMessage("It seems as though this is your first time launching Refill! Please enter the credentials you would like associated with your account. Please note that we do not store this data anywhere, so if you forget, you will have to clear Refill's data or Reinstall the app to allow you to recreate your credentials. This means you will lose all of your prescription information").setNeutralButton("I understand", null).show();
 	}
 
 	@Override
