@@ -262,7 +262,7 @@ public class MainActivity extends ActionBarActivity implements
 			String symp, String sideEffects, double dose, int ppd, int dbr,
 			String pharm, String doc, String rxnumb) {
 		return ((!rx.getName().equals(name))
-				|| (!rx.getPatient().equals(patient))
+				|| (!rx.getPatientString().equals(patient))
 				|| (!rx.getSymptoms().equals(symp))
 				|| (!rx.getSideEffects().equals(sideEffects))
 				|| !(rx.getDose() == dose) || !(rx.getPillsPerDay() == ppd)

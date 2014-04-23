@@ -27,7 +27,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 19; //Patient Str -> Patient class
+	private static final int DB_VERSION = 20; //Patient Str -> Patient class
 
 	private static final String RX_TABLE = "Rxs";
 	public static final String RX_ID = "Rx_id"; // column 0
