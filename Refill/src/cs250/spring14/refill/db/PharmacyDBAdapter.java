@@ -217,7 +217,14 @@ public class PharmacyDBAdapter {
 		}
 		return result;
 	}
-
+	/**
+	 * Method to get a Pharmacy given a name
+	 * 
+	 * @param name
+	 * 			the pharmacy's name
+	 * @return the requested Pharmacy object
+	 * @throws SQLException
+	 */
 	public Pharmacy getPharmByName(String name) throws SQLException {
 		Cursor c = db.query(true, PH_TABLE, PH_COLS, PH_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);

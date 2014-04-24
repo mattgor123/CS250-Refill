@@ -113,7 +113,14 @@ public class PatientDBAdapter {
 		return db.update(PA_TABLE, cvalues, PA_ID + " = ?",
 				new String[] { String.valueOf(ri) }) > 0;
 	}
-
+	/**
+	 * Method to get a Patient given Name
+	 * 
+	 * @param name
+	 * 			the Patient's name
+	 * @return the requested Patient object
+	 * @throws SQLException
+	 */
 	public Patient getPatientByName(String name) throws SQLException {
 		Cursor c = db.query(true, PA_TABLE, DR_COLS, PA_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
@@ -123,7 +130,7 @@ public class PatientDBAdapter {
 			return null;
 		} else {
 			Patient result = new Patient(c.getString(1), // name
-					Integer.valueOf(c.getString(2)) // phone
+					Integer.valueOf(c.getString(2)) // color
 			);
 			// Set the ID to the row in the DB
 			result.setId(c.getInt(0));

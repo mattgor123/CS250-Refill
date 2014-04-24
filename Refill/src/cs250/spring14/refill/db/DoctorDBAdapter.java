@@ -13,6 +13,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
+/**
+ * 
+ * @author Fernando
+ *
+ */
 public class DoctorDBAdapter {
 
 	private SQLiteDatabase db;
@@ -119,7 +124,14 @@ public class DoctorDBAdapter {
 		return db.update(DR_TABLE, cvalues, DR_ID + " = ?",
 				new String[] { String.valueOf(ri) }) > 0;
 	}
-
+	/**
+	 * Method to get a Doctor given a name
+	 * 
+	 * @param name
+	 * 			the Doctor's name
+	 * @return the requested Doctor object
+	 * @throws SQLException
+	 */
 	public Doctor getDocByName(String name) throws SQLException {
 		Cursor c = db.query(true, DR_TABLE, DR_COLS, DR_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);

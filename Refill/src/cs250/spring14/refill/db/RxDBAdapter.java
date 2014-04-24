@@ -54,11 +54,21 @@ public class RxDBAdapter {
 			RX_SFECT, RX_DOSE, RX_PRD, RX_DBR, RX_PHRM, RX_MD, RX_NMB, RX_STD,
 			RX_LAST };
 
+	/**
+	 * Constructor given a Context for this DBAdapter
+	 * 
+	 * @param ctx
+	 */
 	public RxDBAdapter(Context ctx) {
 		context = ctx;
 		dbHelper = new RxdbHelper(context, DB_NAME, null, DB_VERSION);
 	}
-
+	
+	/**
+	 * Method to open the database
+	 * 
+	 * @throws SQLiteException
+	 */
 	public void open() throws SQLiteException {
 		try {
 			db = dbHelper.getWritableDatabase();
@@ -66,11 +76,20 @@ public class RxDBAdapter {
 			db = dbHelper.getReadableDatabase();
 		}
 	}
-
+	/**
+	 * Method to close the database
+	 */
 	public void close() {
 		db.close();
 	}
-
+	
+	/**
+	 * Method to insert a new Rx to the database
+	 * 
+	 * @param rx
+	 * 			the Rx to be inserted
+	 * @return the row # of the Rx DB to which we just inserted
+	 */
 	public long insertRx(RxItem rx) {
 		// create a new row of values to insert
 		ContentValues cvalues = new ContentValues();
@@ -91,7 +110,15 @@ public class RxDBAdapter {
 		rx.setId(row);
 		return row;
 	}
-
+	
+	/**
+	 * Method to check if exists Rx's for a given Doctor
+	 * 
+	 * @param name
+	 * 			the Doctor's name
+	 * @return true if exists, false otherwise
+	 * @throws SQLException
+	 */
 	public boolean existsRxWithDoc(String name) throws SQLException {
 		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
@@ -102,6 +129,14 @@ public class RxDBAdapter {
 		}
 	}
 	
+	/**
+	 * Method to check if exists Rx's for a given Pharmacy
+	 * 
+	 * @param name
+	 * 			the Pharmacy's name
+	 * @return true if exists, false otherwise
+	 * @throws SQLException
+	 */
 	public boolean existsRxWithPharm(String name) throws SQLException {
 		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PHRM + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
@@ -111,7 +146,16 @@ public class RxDBAdapter {
 			return true;
 		}
 	}
-
+	
+	/**
+	 * Method to update all Rx's from a Doctor to another
+	 * 
+	 * @param oldDoctor
+	 * 				the old doctor's name
+	 * @param newDoctor
+	 * 				the new doctor's name
+	 * @return true if update successful, false otherwise
+	 */
 	public boolean updateAllRxWithDoctor(String oldDoctor, String newDoctor) {
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_MD, newDoctor);
@@ -119,6 +163,15 @@ public class RxDBAdapter {
 				new String[] { oldDoctor }) > 0;
 	}
 
+	/**
+	 * Method to update all Rx's from a pharmacy to another
+	 * 
+	 * @param oldPharm
+	 * 				the old pharmacy's name
+	 * @param newPharm
+	 * 				the new pharmacy's name
+	 * @return true if update successful, false otherwise
+	 */
 	public boolean updateAllRxWithPharmacy(String oldPharm, String newPharm) {
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_PHRM, newPharm);
@@ -126,6 +179,38 @@ public class RxDBAdapter {
 				new String[] { oldPharm }) > 0;
 	}
 
+	/**
+	 * Method to update a Rx
+	 * 
+	 * @param ri
+	 * 			the Rx ID
+	 * @param name
+	 * 			the Rx name
+	 * @param patient
+	 * 			the Rx patient
+	 * @param symptoms
+	 * 			the Rx's symptoms
+	 * @param sideEffects
+	 * 			the Rx's side effects
+	 * @param dose
+	 * 			the Rx's dosage
+	 * @param pillsPerDay
+	 * 			the Rx's amount of pills per day
+	 * @param start
+	 * 			the Rx's start date
+	 * @param daysBetweenRefills
+	 * 			the Rx's number of days between refills
+	 * @param pharmacy
+	 * 			the Rx's pharmacy
+	 * @param physician
+	 * 			the Rx's doctor
+	 * @param rxNumb
+	 * 			the Rx's number
+	 * @param lastrefill
+	 * 			the Rx's last refill date
+	 * @return true if update successful, false otherwise
+	 */
+	
 	public boolean updateRx(long ri, String name, String patient,
 			String symptoms, String sideEffects, double dose, int pillsPerDay,
 			Date start, int daysBetweenRefills, String pharmacy,
@@ -147,16 +232,34 @@ public class RxDBAdapter {
 				new String[] { String.valueOf(ri) }) > 0;
 	}
 
+	/**
+	 * Method to remove a Rx from the database given a ri
+	 * 
+	 * @param ri
+	 * 			the Rx's ID (row to be removed)
+	 * @return the # of affected rows
+	 */
 	public int removeRx(long ri) {
 		db = dbHelper.getWritableDatabase();
 		return db.delete(RX_TABLE, RX_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
-
+	
+	/**
+	 * Method to get a cursor for all the Rx
+	 * 
+	 * @return the cursos
+	 */
 	public Cursor getAllRxsCursor() {
 		return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
 	}
 
+	/**
+	 * Method to get all Rx's from the database
+	 * 
+	 * @return an ArrayList<RxItem> with all the Rx's
+	 * @throws ParseException
+	 */
 	public ArrayList<RxItem> getAllRxs() throws ParseException {
 		ArrayList<RxItem> rxs = new ArrayList<RxItem>();
 		Cursor c = this.getAllRxsCursor();
@@ -181,6 +284,14 @@ public class RxDBAdapter {
 		return rxs;
 	}
 
+	/**
+	 * Method to get the cursor for a Rx given a RxId (row number)
+	 * 
+	 * @param ri
+	 * 			the row number of the Rx
+	 * @return the cursor
+	 * @throws SQLException
+	 */
 	public Cursor getRxCursor(long ri) throws SQLException {
 		Cursor result = db.query(true, RX_TABLE, RX_COLS, RX_ID + "=" + ri,
 				null, null, null, null, null);
@@ -190,6 +301,11 @@ public class RxDBAdapter {
 		return result;
 	}
 
+	/**
+	 * 
+	 * Static inner helper DBHelper class
+	 *
+	 */
 	private static class RxdbHelper extends SQLiteOpenHelper {
 
 		// SQL statement to create a new database
