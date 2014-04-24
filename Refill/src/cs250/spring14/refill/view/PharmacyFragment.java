@@ -95,8 +95,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (ph != null) {
-									openEditPharmacyDialog(getActivity(), ph);
-									repopulateAdapter();
+									openEditPharmacyDialog(getActivity(), ph, PharmacyFragment.this);
 								} 
 							}
 						});
@@ -123,7 +122,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 	 *            the pharmacy to edit
 	 */
 	public static void openEditPharmacyDialog(final Context context,
-			final Pharmacy ph) {
+			final Pharmacy ph, final RefreshableFragment fr) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(context);
 		layout.setOrientation(1);
@@ -207,6 +206,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 						MainActivity.hAdapter.insertHis(his);
 						//hisAdap.add(his);
 						//hisAdap.notifyDataSetChanged();
+						fr.repopulateAdapter();
 						d.dismiss();
 					} else {
 						// We didn't actually successfully update the Doctor

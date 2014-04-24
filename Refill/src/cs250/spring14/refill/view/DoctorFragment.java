@@ -95,8 +95,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (doc != null) {
-									openEditDoctorDialog(getActivity(), doc);
-									repopulateAdapter();
+									openEditDoctorDialog(getActivity(), doc,DoctorFragment.this);
 								} 
 							}
 						});
@@ -128,7 +127,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 	 * @param dr
 	 *            the doctor to edit
 	 */
-	public static void openEditDoctorDialog(final Context context, final Doctor dr) {
+	public static void openEditDoctorDialog(final Context context, final Doctor dr, final RefreshableFragment fr) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(context);
 		layout.setOrientation(1);
@@ -196,7 +195,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 								nameStr, message, "D");
 						MainActivity.hAdapter.insertHis(his);
 						d.dismiss();
-						//onResume();
+						fr.repopulateAdapter();
 					} else {
 						// We didn't actually successfully update the Doctor
 						String message = "Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";

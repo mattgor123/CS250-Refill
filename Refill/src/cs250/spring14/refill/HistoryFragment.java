@@ -95,7 +95,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 									Doctor dr = MainActivity.drAdapter
 											.getDocByName(hi.getOwner());
 									if (dr != null) {
-										DoctorFragment.openEditDoctorDialog(getActivity(), dr);
+										DoctorFragment.openEditDoctorDialog(getActivity(), dr,HistoryFragment.this);
 										repopulateAdapter();
 									} else {
 										Toast.makeText(
@@ -156,7 +156,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 											.getPharmByName(hi.getOwner());
 									if (ph != null) {
 										PharmacyFragment.openEditPharmacyDialog(getActivity(),
-												ph);
+												ph,HistoryFragment.this);
 										repopulateAdapter();
 									} else {
 										Toast.makeText(
