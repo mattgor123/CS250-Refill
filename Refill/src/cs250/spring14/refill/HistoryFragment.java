@@ -1,22 +1,13 @@
 package cs250.spring14.refill;
 
-import java.util.Calendar;
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import cs250.spring14.refill.core.Doctor;
 import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.HistoryItem.HistoryType;
-import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.view.HistoryWrapper;
 import cs250.spring14.refill.view.RefreshableFragment;
 
@@ -34,6 +25,9 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 		hisAdap = new HistoryWrapper(rootView.getContext(), 0,
 				MainActivity.hAdapter.getAllHis());
 		historyList.setAdapter(hisAdap);
+		//Disabling clicking on historyList for consistency: all functionality
+		//Can be found in the Pharmacy/Doctor/Patient Overflow Menu
+		/**
 		historyList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -186,7 +180,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 
 			}
 
-		});
+		});*/
 		return rootView;
 	}
 

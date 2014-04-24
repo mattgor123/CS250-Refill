@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,6 +44,20 @@ public class PharmacyFragment extends DialogFragment implements
 		phAdap = new PharmacyWrapper(rootView.getContext(), 0,
 				MainActivity.phAdapter.getAllPhs());
 		phList.setAdapter(phAdap);
+		phList.setLongClickable(true);
+		phList.setOnItemLongClickListener(new OnItemLongClickListener () {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final Pharmacy ph = (Pharmacy) parent.getItemAtPosition(position);
+				//We implement our long-press action soon.
+				Toast.makeText(getActivity(), "This is a long press on " + ph.getName(), Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			
+		});
+
 		phList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

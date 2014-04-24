@@ -26,6 +26,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -786,6 +787,8 @@ public class MainActivity extends ActionBarActivity implements
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setView(spinner);
 			final Dialog d = builder.create();
+			//Making the dialog appear at the top rather than center; looks better imo
+			d.getWindow().setGravity(Gravity.TOP);
 			spinner.setAdapter(aa);
 			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 				@Override

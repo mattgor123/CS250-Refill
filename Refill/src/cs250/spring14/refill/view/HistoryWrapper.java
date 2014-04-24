@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.HistoryItem.HistoryType;
 
 public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 	private List<HistoryItem> items;
@@ -35,12 +34,9 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 	 * @param position
 	 *            a List<HistoryItem> index for a History Item
 	 */
-	// We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
-		return super.isEnabled(position)
-				&& (items.get(position).getH() == HistoryType.D || items.get(
-						position).getH() == HistoryType.P);
+		return super.isEnabled(position) && false;
 	}
 
 	/**

@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.view.RefreshableFragment;
@@ -82,6 +84,19 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 						});
 			}
 
+		});
+		rxList.setLongClickable(true);
+		rxList.setOnItemLongClickListener(new OnItemLongClickListener () {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final RxItem rx = (RxItem) parent.getItemAtPosition(position);
+				//We implement our long-press action soon.
+				Toast.makeText(getActivity(), "This is a long press on " + rx.getName(), Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			
 		});
 		return rootView;
 	}

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,6 +44,19 @@ public class DoctorFragment extends DialogFragment implements
 		docAdap = new DoctorWrapper(rootView.getContext(), 0,
 				MainActivity.drAdapter.getAllDrs());
 		docList.setAdapter(docAdap);
+		docList.setLongClickable(true);
+		docList.setOnItemLongClickListener(new OnItemLongClickListener () {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final Doctor doc = (Doctor) parent.getItemAtPosition(position);
+				//We implement our long-press action soon.
+				Toast.makeText(getActivity(), "This is a long press on " + doc.getName(), Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			
+		});
 		docList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
