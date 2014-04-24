@@ -3,10 +3,6 @@ package cs250.spring14.refill.view;
 import java.util.List;
 import java.util.Locale;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.RxItem;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.RxItem;
 
 public class RxWrapper extends ArrayAdapter<RxItem> {
 	private List<RxItem> items;
@@ -23,7 +22,8 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 	 * 
 	 * @param context
 	 * @param resource
-	 * @param objects list of Rx's
+	 * @param objects
+	 *            list of Rx's
 	 */
 	public RxWrapper(Context context, int resource, List<RxItem> objects) {
 		super(context, resource, objects);
@@ -34,11 +34,12 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 	 * Method to populate the view with a given Rx position (List<RxItem> index)
 	 * 
 	 * @param pos
-	 * 			the RxItem that will be pushed to the RxFragment (List<RxItem> number)
+	 *            the RxItem that will be pushed to the RxFragment (List<RxItem>
+	 *            number)
 	 * @param convertView
-	 * 			the old view that will be updated
+	 *            the old view that will be updated
 	 * @param parent
-	 * 			the parent that this view will be attached to
+	 *            the parent that this view will be attached to
 	 * @return a View corresponding to the Rx at the specified position.
 	 */
 	@Override
@@ -100,7 +101,7 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
 						.toLowerCase(Locale.US)));
 			}
 		}
-		//Set the view's color based on the RxItem Patient's color
+		// Set the view's color based on the RxItem Patient's color
 		v.setBackgroundColor(i.getPatient().getColor());
 		// the view must be returned to our activity
 		return v;

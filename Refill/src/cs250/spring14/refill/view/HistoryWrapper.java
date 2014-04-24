@@ -2,9 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.List;
 
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.HistoryItem.HistoryType;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.HistoryItem.HistoryType;
 
 public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 	private List<HistoryItem> items;
-	
+
 	/**
 	 * Constructor given a Context, resource and a History list
+	 * 
 	 * @param context
 	 * @param resource
 	 * @param objects
@@ -27,12 +28,12 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 		super(context, resource, objects);
 		this.items = objects;
 	}
-	
+
 	/**
 	 * Method to ensure that HistoryItems are not clickable
 	 * 
 	 * @param position
-	 * 				a List<HistoryItem> index for a History Item
+	 *            a List<HistoryItem> index for a History Item
 	 */
 	// We don't want to be able to click on a HistoryItem
 	@Override
@@ -41,16 +42,18 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 				&& (items.get(position).getH() == HistoryType.D || items.get(
 						position).getH() == HistoryType.P);
 	}
-	
+
 	/**
-	 * Method to populate the view with a given History event position (List<HistoryItem> index)
+	 * Method to populate the view with a given History event position
+	 * (List<HistoryItem> index)
 	 * 
 	 * @param pos
-	 * 			the HistoryItem that will be pushed to the HistoryFragment (List<HistoryItem> number)
+	 *            the HistoryItem that will be pushed to the HistoryFragment
+	 *            (List<HistoryItem> number)
 	 * @param convertView
-	 * 			the old view that will be updated
+	 *            the old view that will be updated
 	 * @param parent
-	 * 			the parent that this view will be attached to
+	 *            the parent that this view will be attached to
 	 * @return a View corresponding to the Rx at the specified position.
 	 */
 	@Override

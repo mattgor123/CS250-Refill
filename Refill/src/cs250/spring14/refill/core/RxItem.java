@@ -67,7 +67,7 @@ public class RxItem {
 	}
 
 	public double getDose() {
-		return (double) Math.round(this.dose*1000)/1000;
+		return (double) Math.round(this.dose * 1000) / 1000;
 	}
 
 	public int getPillsPerDay() {
@@ -101,7 +101,7 @@ public class RxItem {
 	public String getPhString() {
 		return Pharmacy.makeStringFromPharm(this.pharmacy);
 	}
-	
+
 	public String getPatientString() {
 		return Patient.makeStringFromPatient(this.patient);
 	}
@@ -118,7 +118,9 @@ public class RxItem {
 		return this.id;
 	}
 
-	public boolean shouldUpdateRx(String name, String patient, String symp, String sideEffects, double dose, int ppd, int dbr, String pharm, String doc, String rxnumb) {
+	public boolean shouldUpdateRx(String name, String patient, String symp,
+			String sideEffects, double dose, int ppd, int dbr, String pharm,
+			String doc, String rxnumb) {
 		return ((!getName().equals(name))
 				|| (!getPatientString().equals(patient))
 				|| (!getSymptoms().equals(symp))
@@ -127,6 +129,6 @@ public class RxItem {
 				|| !(getDaysBetweenRefills() == dbr)
 				|| (!getPhString().equals(pharm))
 				|| (!getDocString().equals(doc)) || !(getRxNumb()
-				.equals(rxnumb)));
+					.equals(rxnumb)));
 	}
 }

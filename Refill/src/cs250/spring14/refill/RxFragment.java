@@ -3,10 +3,6 @@ package cs250.spring14.refill;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.RxItem;
-import cs250.spring14.refill.view.RefreshableFragment;
-import cs250.spring14.refill.view.RxWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import android.widget.AdapterView.OnItemClickListener;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.view.RefreshableFragment;
+import cs250.spring14.refill.view.RxWrapper;
 
 public class RxFragment extends Fragment implements RefreshableFragment {
 	ListView rxList;
@@ -61,7 +60,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 								MainActivity.hAdapter
 										.insertHis(new HistoryItem(
 												rx.getName(), msg, "R"));
-								//phAdap.notifyDataSetChanged();
+								// phAdap.notifyDataSetChanged();
 								repopulateAdapter();
 							}
 						}, "View/Edit",
@@ -95,7 +94,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 		repopulateAdapter();
 	}
 
-	@Override	
+	@Override
 	public void repopulateAdapter() {
 		rxAdap.clear();
 		try {

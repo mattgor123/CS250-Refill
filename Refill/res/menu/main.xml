@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/action_patient"
                 android:icon="@drawable/ic_action_patient"
-                android:title="@string/patient"
+                android:title="@string/pat"
                 app:showAsAction="never"/>
             <item
                 android:id="@+id/action_settings"

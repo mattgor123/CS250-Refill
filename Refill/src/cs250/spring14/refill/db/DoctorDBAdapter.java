@@ -2,16 +2,16 @@ package cs250.spring14.refill.db;
 
 import java.util.ArrayList;
 
-import cs250.spring14.refill.core.Doctor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
+import cs250.spring14.refill.core.Doctor;
 
 public class DoctorDBAdapter {
 
@@ -119,11 +119,12 @@ public class DoctorDBAdapter {
 		return db.update(DR_TABLE, cvalues, DR_ID + " = ?",
 				new String[] { String.valueOf(ri) }) > 0;
 	}
+
 	/**
 	 * Method to get a Doctor given a name
 	 * 
 	 * @param name
-	 * 			the Doctor's name
+	 *            the Doctor's name
 	 * @return the requested Doctor object
 	 * @throws SQLException
 	 */

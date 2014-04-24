@@ -2,10 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.Doctor;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,22 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.Doctor;
+import cs250.spring14.refill.core.HistoryItem;
 
-public class DoctorFragment extends DialogFragment implements RefreshableFragment {
+public class DoctorFragment extends DialogFragment implements
+		RefreshableFragment {
 	ListView docList;
 	ArrayAdapter<Doctor> docAdap;
-	
+
 	/**
-	 * Method to create the Doctor's dialog, inflate the dialog and attach to the parent view
+	 * Method to create the Doctor's dialog, inflate the dialog and attach to
+	 * the parent view
 	 * 
 	 * @param inflater
 	 * @param container
 	 * @param savedInstanceState
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,8 +97,9 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (doc != null) {
-									Doctor.openEditDoctorDialog(getActivity(), doc,DoctorFragment.this);
-								} 
+									Doctor.openEditDoctorDialog(getActivity(),
+											doc, DoctorFragment.this);
+								}
 							}
 						});
 			}
@@ -112,9 +115,10 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 		super.onResume();
 		repopulateAdapter();
 	}
-	
+
 	/**
-	 * Method to repopulate the Doctor's array adapter with changes produced in the edit dialog
+	 * Method to repopulate the Doctor's array adapter with changes produced in
+	 * the edit dialog
 	 */
 	@Override
 	public void repopulateAdapter() {

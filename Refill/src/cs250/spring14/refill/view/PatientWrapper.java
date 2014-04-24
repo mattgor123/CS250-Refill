@@ -2,14 +2,14 @@ package cs250.spring14.refill.view;
 
 import java.util.List;
 
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.Patient;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.Patient;
 
 public class PatientWrapper extends ArrayAdapter<Patient> {
 	private List<Patient> items;
@@ -17,12 +17,6 @@ public class PatientWrapper extends ArrayAdapter<Patient> {
 	public PatientWrapper(Context context, int resource, List<Patient> objects) {
 		super(context, resource, objects);
 		this.items = objects;
-	}
-
-	// We don't want to be able to click on a HistoryItem
-	@Override
-	public boolean isEnabled(int position) {
-		return super.isEnabled(position);
 	}
 
 	@Override
@@ -46,16 +40,22 @@ public class PatientWrapper extends ArrayAdapter<Patient> {
 		 * Therefore, i refers to the current Item object.
 		 */
 		Patient i = items.get(pos);
-
+		v.setVisibility(View.VISIBLE);
 		TextView name = (TextView) v.findViewById(R.id.name);
-			// This is how you obtain a reference to the TextViews.
-			// These TextViews are created in the XML files we defined.
-			String nstr = i.getName();
+		if (i.getId() == 1) {
+			// This is our dummy Pharmacy
+			name.setVisibility(View.GONE);
+			v.setVisibility(View.GONE);
+			return v;
+		} else {
+			name.setVisibility(View.VISIBLE);
+			v.setVisibility(View.VISIBLE);
+			String str = i.getName();
 			if (name != null) {
-				String str = nstr;
 				name.setText(str);
 			}
 			v.setBackgroundColor(i.getColor());
+		}
 		// the view must be returned to our activity
 		return v;
 	}

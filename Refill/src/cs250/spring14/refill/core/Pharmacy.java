@@ -115,7 +115,7 @@ public class Pharmacy {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Helper method to open edit pharmacy dialog
 	 * 
@@ -163,7 +163,7 @@ public class Pharmacy {
 		builder.setView(layout);
 		final Dialog d = builder.create();
 		add.setOnClickListener(new OnClickListener() {
-	
+
 			@Override
 			public void onClick(View v) {
 				// Basic input checking; will get better with time
@@ -204,11 +204,10 @@ public class Pharmacy {
 						String message = "Updated in Pharmacy DB on "
 								+ MainActivity.df.format(Calendar.getInstance()
 										.getTime());
-						HistoryItem his = new HistoryItem(
-								nameStr, message, "P");
+						HistoryItem his = new HistoryItem(nameStr, message, "P");
 						MainActivity.hAdapter.insertHis(his);
-						//hisAdap.add(his);
-						//hisAdap.notifyDataSetChanged();
+						// hisAdap.add(his);
+						// hisAdap.notifyDataSetChanged();
 						fr.repopulateAdapter();
 						d.dismiss();
 					} else {
@@ -230,7 +229,7 @@ public class Pharmacy {
 		return ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone()
 				+ " :: " + ph.getStreetAddress();
 	}
-	
+
 	public static Pharmacy makePharmFromString(String string) {
 		String[] tokens = string.split(" :: ");
 		if (tokens.length != 4) {
@@ -240,9 +239,9 @@ public class Pharmacy {
 			return new Pharmacy(tokens[0], tokens[1], tokens[2], tokens[3]);
 		}
 	}
-	
-	public static boolean shouldUpdatePharm(Pharmacy ph, String name, String email,
-			String phone, String address) {
+
+	public static boolean shouldUpdatePharm(Pharmacy ph, String name,
+			String email, String phone, String address) {
 		return ((!ph.getName().equals(name)) || (!ph.getEmail().equals(email))
 				|| (!ph.getPhone().equals(phone)) || (!ph.getStreetAddress()
 				.equals(address)));

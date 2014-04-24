@@ -2,10 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.Pharmacy;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,22 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.Pharmacy;
 
-public class PharmacyFragment extends DialogFragment implements RefreshableFragment {
+public class PharmacyFragment extends DialogFragment implements
+		RefreshableFragment {
 	ListView phList;
 	ArrayAdapter<Pharmacy> phAdap;
-	
+
 	/**
-	 * Method to create the Pharmacy's dialog, inflate the dialog and attach to the parent view
+	 * Method to create the Pharmacy's dialog, inflate the dialog and attach to
+	 * the parent view
 	 * 
 	 * @param inflater
 	 * @param container
 	 * @param savedInstanceState
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,12 +44,13 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 				MainActivity.phAdapter.getAllPhs());
 		phList.setAdapter(phAdap);
 		phList.setOnItemClickListener(new OnItemClickListener() {
-			
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// This is where we will add functionality to edit the Rx
-				final Pharmacy ph = (Pharmacy) parent.getItemAtPosition(position);
+				final Pharmacy ph = (Pharmacy) parent
+						.getItemAtPosition(position);
 				MainActivity.alertMessage(getActivity(),
 						"Please select an action",
 						"Would you like to Remove or View/Edit details for "
@@ -94,8 +97,10 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (ph != null) {
-									Pharmacy.openEditPharmacyDialog(getActivity(), ph, PharmacyFragment.this);
-								} 
+									Pharmacy.openEditPharmacyDialog(
+											getActivity(), ph,
+											PharmacyFragment.this);
+								}
 							}
 						});
 			}
@@ -111,9 +116,10 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 		super.onResume();
 		repopulateAdapter();
 	}
-	
+
 	/**
-	 * Method to repopulate the array adapter with changes produced in the edit dialog
+	 * Method to repopulate the array adapter with changes produced in the edit
+	 * dialog
 	 */
 	@Override
 	public void repopulateAdapter() {

@@ -4,21 +4,20 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.core.Doctor;
-import cs250.spring14.refill.core.Patient;
-import cs250.spring14.refill.core.Pharmacy;
-import cs250.spring14.refill.core.RxItem;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.core.Doctor;
+import cs250.spring14.refill.core.Patient;
+import cs250.spring14.refill.core.Pharmacy;
+import cs250.spring14.refill.core.RxItem;
 
 public class RxDBAdapter {
 
@@ -27,7 +26,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 21; //Patient Str -> Patient class
+	private static final int DB_VERSION = 21; // Patient Str -> Patient class
 
 	private static final String RX_TABLE = "Rxs";
 	public static final String RX_ID = "Rx_id"; // column 0
@@ -63,7 +62,7 @@ public class RxDBAdapter {
 		context = ctx;
 		dbHelper = new RxdbHelper(context, DB_NAME, null, DB_VERSION);
 	}
-	
+
 	/**
 	 * Method to open the database
 	 * 
@@ -76,18 +75,19 @@ public class RxDBAdapter {
 			db = dbHelper.getReadableDatabase();
 		}
 	}
+
 	/**
 	 * Method to close the database
 	 */
 	public void close() {
 		db.close();
 	}
-	
+
 	/**
 	 * Method to insert a new Rx to the database
 	 * 
 	 * @param rx
-	 * 			the Rx to be inserted
+	 *            the Rx to be inserted
 	 * @return the row # of the Rx DB to which we just inserted
 	 */
 	public long insertRx(RxItem rx) {
@@ -110,48 +110,52 @@ public class RxDBAdapter {
 		rx.setId(row);
 		return row;
 	}
-	
+
 	/**
 	 * Method to check if exists Rx's for a given Patient
 	 * 
 	 * @param patStr
-	 * 			the string representation of a Patient
+	 *            the string representation of a Patient
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
 	public boolean existsRxWithPat(String patStr) throws SQLException {
-		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PT + "=?",
-				new String[] { String.valueOf(patStr) }, null, null, null, null);
+		Cursor c = db
+				.query(true, RX_TABLE, RX_COLS, RX_PT + "=?",
+						new String[] { String.valueOf(patStr) }, null, null,
+						null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Method to check if exists Rx's for a given Doctor
 	 * 
 	 * @param docStr
-	 * 			the string representation of a Doctor
+	 *            the string representation of a Doctor
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
 	public boolean existsRxWithDoc(String docStr) throws SQLException {
-		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
-				new String[] { String.valueOf(docStr) }, null, null, null, null);
+		Cursor c = db
+				.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
+						new String[] { String.valueOf(docStr) }, null, null,
+						null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Method to check if exists Rx's for a given Pharmacy
 	 * 
 	 * @param phStr
-	 * 			the string representation of a Pharmacy
+	 *            the string representation of a Pharmacy
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
@@ -164,14 +168,14 @@ public class RxDBAdapter {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Method to update all Rx's from a patient to another
 	 * 
 	 * @param oldPatient
-	 * 				the old patient's string representation
+	 *            the old patient's string representation
 	 * @param newPatient
-	 * 				the new patient's string representation
+	 *            the new patient's string representation
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithPatient(String oldPatient, String newPatient) {
@@ -180,14 +184,14 @@ public class RxDBAdapter {
 		return db.update(RX_TABLE, cvalues, RX_PT + " = ?",
 				new String[] { oldPatient }) > 0;
 	}
-	
+
 	/**
 	 * Method to update all Rx's from a Doctor to another
 	 * 
 	 * @param oldDoctor
-	 * 				the old doctor's string representation
+	 *            the old doctor's string representation
 	 * @param newDoctor
-	 * 				the new doctor's string representation
+	 *            the new doctor's string representation
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithDoctor(String oldDoctor, String newDoctor) {
@@ -201,9 +205,9 @@ public class RxDBAdapter {
 	 * Method to update all Rx's from a pharmacy to another
 	 * 
 	 * @param oldPharm
-	 * 				the old pharmacy's string representation
+	 *            the old pharmacy's string representation
 	 * @param newPharm
-	 * 				the new pharmacy's string representation
+	 *            the new pharmacy's string representation
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithPharmacy(String oldPharm, String newPharm) {
@@ -217,34 +221,34 @@ public class RxDBAdapter {
 	 * Method to update a Rx
 	 * 
 	 * @param ri
-	 * 			the Rx ID
+	 *            the Rx ID
 	 * @param name
-	 * 			the Rx name
+	 *            the Rx name
 	 * @param patient
-	 * 			the Rx patient
+	 *            the Rx patient
 	 * @param symptoms
-	 * 			the Rx's symptoms
+	 *            the Rx's symptoms
 	 * @param sideEffects
-	 * 			the Rx's side effects
+	 *            the Rx's side effects
 	 * @param dose
-	 * 			the Rx's dosage
+	 *            the Rx's dosage
 	 * @param pillsPerDay
-	 * 			the Rx's amount of pills per day
+	 *            the Rx's amount of pills per day
 	 * @param start
-	 * 			the Rx's start date
+	 *            the Rx's start date
 	 * @param daysBetweenRefills
-	 * 			the Rx's number of days between refills
+	 *            the Rx's number of days between refills
 	 * @param pharmacy
-	 * 			the Rx's pharmacy
+	 *            the Rx's pharmacy
 	 * @param physician
-	 * 			the Rx's doctor
+	 *            the Rx's doctor
 	 * @param rxNumb
-	 * 			the Rx's number
+	 *            the Rx's number
 	 * @param lastrefill
-	 * 			the Rx's last refill date
+	 *            the Rx's last refill date
 	 * @return true if update successful, false otherwise
 	 */
-	
+
 	public boolean updateRx(long ri, String name, String patient,
 			String symptoms, String sideEffects, double dose, int pillsPerDay,
 			Date start, int daysBetweenRefills, String pharmacy,
@@ -270,7 +274,7 @@ public class RxDBAdapter {
 	 * Method to remove a Rx from the database given a ri
 	 * 
 	 * @param ri
-	 * 			the Rx's ID (row to be removed)
+	 *            the Rx's ID (row to be removed)
 	 * @return the # of affected rows
 	 */
 	public int removeRx(long ri) {
@@ -278,7 +282,7 @@ public class RxDBAdapter {
 		return db.delete(RX_TABLE, RX_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
-	
+
 	/**
 	 * Method to get a cursor for all the Rx
 	 * 
@@ -322,7 +326,7 @@ public class RxDBAdapter {
 	 * Method to get the cursor for a Rx given a RxId (row number)
 	 * 
 	 * @param ri
-	 * 			the row number of the Rx
+	 *            the row number of the Rx
 	 * @return the cursor
 	 * @throws SQLException
 	 */
@@ -338,7 +342,7 @@ public class RxDBAdapter {
 	/**
 	 * 
 	 * Static inner helper DBHelper class
-	 *
+	 * 
 	 */
 	private static class RxdbHelper extends SQLiteOpenHelper {
 

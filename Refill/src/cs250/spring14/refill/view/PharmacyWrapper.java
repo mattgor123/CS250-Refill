@@ -2,8 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.List;
 
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.Pharmacy;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.Pharmacy;
 
 public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 	private List<Pharmacy> items;
-	
+
 	/**
 	 * Constructor given a Context, resource and a Pharmacy's list
+	 * 
 	 * @param context
 	 * @param resource
 	 * @param objects
@@ -26,21 +27,17 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 		this.items = objects;
 	}
 
-	// We don't want to be able to click on a HistoryItem
-	@Override
-	public boolean isEnabled(int position) {
-		return super.isEnabled(position);
-	}
-	
 	/**
-	 * Method to populate the view with a given Pharmacy position (List<Pharmacy> index)
+	 * Method to populate the view with a given Pharmacy position
+	 * (List<Pharmacy> index)
 	 * 
 	 * @param pos
-	 * 			the Pharmacy that will be pushed to the PharmacyFragment (List<Pharmacy> index)
+	 *            the Pharmacy that will be pushed to the PharmacyFragment
+	 *            (List<Pharmacy> index)
 	 * @param convertView
-	 * 			the old view that will be updated
+	 *            the old view that will be updated
 	 * @param parent
-	 * 			the parent that this view will be attached to
+	 *            the parent that this view will be attached to
 	 * @return a View corresponding to the Pharmacy at the specified position.
 	 */
 	@Override

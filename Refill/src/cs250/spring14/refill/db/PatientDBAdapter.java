@@ -7,9 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 import cs250.spring14.refill.core.Patient;
 
@@ -113,11 +113,12 @@ public class PatientDBAdapter {
 		return db.update(PA_TABLE, cvalues, PA_ID + " = ?",
 				new String[] { String.valueOf(ri) }) > 0;
 	}
+
 	/**
 	 * Method to get a Patient given Name
 	 * 
 	 * @param name
-	 * 			the Patient's name
+	 *            the Patient's name
 	 * @return the requested Patient object
 	 * @throws SQLException
 	 */

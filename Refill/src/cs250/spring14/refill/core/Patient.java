@@ -2,9 +2,6 @@ package cs250.spring14.refill.core;
 
 import java.util.Calendar;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.view.PatientFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.view.PatientFragment;
 
 public class Patient {
 	private String name;

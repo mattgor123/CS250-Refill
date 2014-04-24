@@ -10,8 +10,8 @@ public class HistoryItem {
 		D("D"), // doctor
 		DD("DD"), // doctor delete
 		R("R"), // prescription
-		PA("PA"), //patient
-		PAD("PAD"), //patient deleted
+		PA("PA"), // patient
+		PAD("PAD"), // patient deleted
 		U("U"); // User Created
 
 		private String type;

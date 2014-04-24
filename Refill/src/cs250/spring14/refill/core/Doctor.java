@@ -97,7 +97,7 @@ public class Doctor {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Helper method to open edit doctor dialog
 	 * 
@@ -106,7 +106,8 @@ public class Doctor {
 	 * @param dr
 	 *            the doctor to edit
 	 */
-	public static void openEditDoctorDialog(final Context context, final Doctor dr, final RefreshableFragment fr) {
+	public static void openEditDoctorDialog(final Context context,
+			final Doctor dr, final RefreshableFragment fr) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(context);
 		layout.setOrientation(1);
@@ -137,7 +138,7 @@ public class Doctor {
 		builder.setView(layout);
 		final Dialog d = builder.create();
 		add.setOnClickListener(new OnClickListener() {
-	
+
 			@Override
 			public void onClick(View v) {
 				// Basic input checking; will get better with time
@@ -170,8 +171,7 @@ public class Doctor {
 						String message = "Updated in Doctors DB on "
 								+ MainActivity.df.format(Calendar.getInstance()
 										.getTime());
-						HistoryItem his = new HistoryItem(
-								nameStr, message, "D");
+						HistoryItem his = new HistoryItem(nameStr, message, "D");
 						MainActivity.hAdapter.insertHis(his);
 						d.dismiss();
 						fr.repopulateAdapter();
@@ -193,7 +193,7 @@ public class Doctor {
 	public static String makeStringFromDoc(Doctor dr) {
 		return dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone();
 	}
-	
+
 	public static Doctor makeDocFromString(String string) {
 		String[] tokens = string.split(" :: ");
 		if (tokens.length != 3) {
@@ -203,13 +203,11 @@ public class Doctor {
 			return new Doctor(tokens[0], tokens[1], tokens[2]);
 		}
 	}
-	
 
 	public static boolean shouldUpdateDr(Doctor dr, String name, String email,
 			String phone) {
 		return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) || (!dr
 				.getPhone().equals(phone)));
 	}
-
 
 }

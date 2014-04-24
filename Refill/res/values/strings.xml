@@ -17,6 +17,8 @@
 	<string name="doc">Doctors</string>
 	<!-- The pharmacy button name -->
 	<string name="pharm">Pharmacies</string>
+	<!-- The patient button name -->
+	<string name="pat">Patients</string>
 	<!-- The overflow button name -->
 	<string name="overflow">overflow</string>
 	<!-- The historyitem's icon -->

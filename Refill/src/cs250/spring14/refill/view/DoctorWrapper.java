@@ -2,8 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.List;
 
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.Doctor;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.Doctor;
 
 public class DoctorWrapper extends ArrayAdapter<Doctor> {
 	private List<Doctor> items;
 
 	/**
 	 * Constructor given a Context, resource and a Doctor's list
+	 * 
 	 * @param context
 	 * @param resource
 	 * @param objects
@@ -26,21 +27,17 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 		this.items = objects;
 	}
 
-	// We don't want to be able to click on a HistoryItem
-	@Override
-	public boolean isEnabled(int position) {
-		return super.isEnabled(position);
-	}
-
 	/**
-	 * Method to populate the view with a given Doctor position (List<Doctor> index)
+	 * Method to populate the view with a given Doctor position (List<Doctor>
+	 * index)
 	 * 
 	 * @param pos
-	 * 			the Doctor that will be pushed to the DoctorFragment (List<Doctor> index)
+	 *            the Doctor that will be pushed to the DoctorFragment
+	 *            (List<Doctor> index)
 	 * @param convertView
-	 * 			the old view that will be updated
+	 *            the old view that will be updated
 	 * @param parent
-	 * 			the parent that this view will be attached to
+	 *            the parent that this view will be attached to
 	 * @return a View corresponding to the Doctor at the specified position.
 	 */
 	@Override
@@ -64,7 +61,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 		 * Therefore, i refers to the current Item object.
 		 */
 		Doctor i = items.get(pos);
-		
+
 		// This is how you obtain a reference to the TextViews.
 		// These TextViews are created in the XML files we defined.
 		if (i != null) {

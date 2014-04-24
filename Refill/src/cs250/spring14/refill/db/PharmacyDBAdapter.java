@@ -2,16 +2,16 @@ package cs250.spring14.refill.db;
 
 import java.util.ArrayList;
 
-import cs250.spring14.refill.core.Pharmacy;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
+import cs250.spring14.refill.core.Pharmacy;
 
 public class PharmacyDBAdapter {
 
@@ -217,11 +217,12 @@ public class PharmacyDBAdapter {
 		}
 		return result;
 	}
+
 	/**
 	 * Method to get a Pharmacy given a name
 	 * 
 	 * @param name
-	 * 			the pharmacy's name
+	 *            the pharmacy's name
 	 * @return the requested Pharmacy object
 	 * @throws SQLException
 	 */

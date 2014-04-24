@@ -2,10 +2,6 @@ package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
-import cs250.spring14.refill.MainActivity;
-import cs250.spring14.refill.R;
-import cs250.spring14.refill.core.HistoryItem;
-import cs250.spring14.refill.core.Patient;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,17 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.HistoryItem;
+import cs250.spring14.refill.core.Patient;
 
 public class PatientFragment extends DialogFragment implements
 		RefreshableFragment {
 	ListView patList;
 	ArrayAdapter<Patient> patAdap;
 	private OnCompleteListener mListener;
-	
+
 	public OnCompleteListener getmListener() {
 		return mListener;
 	}
@@ -36,23 +36,24 @@ public class PatientFragment extends DialogFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-	        this.setmListener((OnCompleteListener)activity);
-	    }
-	    catch (final ClassCastException e) {
-	        throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
-	    }
+			this.setmListener((OnCompleteListener) activity);
+		} catch (final ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnCompleteListener");
+		}
 	}
-	//To communicate with MainActivity (to refresh view)
-	//Code adapted from http://stackoverflow.com/questions/15121373/returning-string-from-dialog-fragment-back-to-activity
+
+	// To communicate with MainActivity (to refresh view)
+	// Code adapted from
+	// http://stackoverflow.com/questions/15121373/returning-string-from-dialog-fragment-back-to-activity
 	public static interface OnCompleteListener {
-	    public abstract void onComplete(boolean b);
+		public abstract void onComplete(boolean b);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		getDialog().setTitle("Patients");
-
+		getDialog().setTitle("Select a Patient!");
 		View rootView = inflater.inflate(R.layout.fragment_pat, container,
 				false);
 		patList = (ListView) rootView.findViewById(R.id.listView1);
