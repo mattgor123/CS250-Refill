@@ -63,6 +63,11 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 	public static CheckedTextView checkBox;
 
+	/**
+	 * Method to create the Login page
+	 * 
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,6 +122,9 @@ public class LoginActivity extends Activity {
 				});
 	}
 
+	/**
+	 * Method to create the Welcome (first time on app) dialog
+	 */
 	public void makeFirstRunDialog() {
 		new AlertDialog.Builder(this)
 				.setTitle("Welcome to Refill!")
@@ -126,6 +134,9 @@ public class LoginActivity extends Activity {
 				.setNeutralButton("I understand", null).show();
 	}
 
+	/**
+	 * Method to return KILLED to MainActivity in case the Back Button is pressed (thus killing the app)
+	 */
 	@Override
 	public void onBackPressed() {
 		Intent returnIntent = new Intent();
@@ -133,6 +144,12 @@ public class LoginActivity extends Activity {
 		finish();
 	}
 
+	/**
+	 * Method to inflate the options menu
+	 * 
+	 * @param menu
+	 * 			the menu that will be inflated
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -140,6 +157,12 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Method to handle click on options menu items
+	 * 
+	 * @param item
+	 * 			the clicked item
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -305,20 +328,34 @@ public class LoginActivity extends Activity {
 			return FAILED;
 		}
 
+		/**
+		 * Method to handle the result of LoginTask
+		 * 
+		 * @param success
+		 * 			integer representing the result of the login attempt operation
+		 */
 		@Override
 		protected void onPostExecute(final Integer success) {
 			mAuthTask = null;
 			showProgress(false);
+			// Successful login -> returning OK to MainActivity
+			// Also returns the e-mail
+			// Kills LoginActivity
 			if (success == Activity.RESULT_OK) {
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra(RESULT_STRING, mEmail);
 				setResult(Activity.RESULT_OK, returnIntent);
 				finish();
+			// User signed up successfully -> returning FIRST_USER to MainActivity
+			// Also returns the e-mail
+			// Kills LoginActivity
 			} else if (success == Activity.RESULT_FIRST_USER) {
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra(RESULT_STRING, mEmail);
 				setResult(Activity.RESULT_FIRST_USER, returnIntent);
 				finish();
+			// Login unsuccessful -> informs user of wrong password
+			// Requests new password for user
 			} else if (success == FAILED) {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
@@ -328,6 +365,9 @@ public class LoginActivity extends Activity {
 			}
 		}
 
+		/**
+		 * Method to handle cancellation of login
+		 */
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;

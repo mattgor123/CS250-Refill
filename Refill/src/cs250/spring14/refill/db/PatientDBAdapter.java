@@ -60,7 +60,7 @@ public class PatientDBAdapter {
 	}
 
 	/**
-	 * Method to insert a Doctor into the database
+	 * Method to insert a Patient into the database
 	 * 
 	 * @param pa
 	 *            The Patient to insert

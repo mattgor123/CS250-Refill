@@ -24,10 +24,21 @@ import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.view.RefreshableFragment;
 import cs250.spring14.refill.view.RxWrapper;
 
+/**
+ * Tab that displays Prescriptions information
+ */
 public class RxFragment extends Fragment implements RefreshableFragment {
 	ListView rxList;
 	ArrayAdapter<RxItem> rxAdap;
 
+	/**
+	 * Method to create the Prescriptions tab, inflate the tab and attach to the parent view
+	 * 
+	 * @param inflater
+	 * @param container
+	 * @param savedInstanceState
+	 * @return 
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -234,12 +245,18 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 
 	// We will manually call this to ensure the Prescriptions view is always
 	// current
+	/**
+	 * Method to manually resume the Prescription tab
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
 		repopulateAdapter();
 	}
 
+	/**
+	 * Method to repopulate the Rx array adapter with changes produced in the edit Pharmacy/Dr dialog
+	 */
 	@Override
 	public void repopulateAdapter() {
 		rxAdap.clear();

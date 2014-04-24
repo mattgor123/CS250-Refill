@@ -14,7 +14,15 @@ import cs250.spring14.refill.view.RefreshableFragment;
 public class HistoryFragment extends Fragment implements RefreshableFragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
-
+	
+	/**
+	 * Method to create the History tab, inflate the tab and attach to the parent view
+	 * 
+	 * @param inflater
+	 * @param container
+	 * @param savedInstanceState
+	 * @return 
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -184,12 +192,18 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 		return rootView;
 	}
 
+	/**
+	 * Method to manually resume the History tab
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
 		repopulateAdapter();
 	}
 
+	/**
+	 * Method to repopulate the History array adapter with changes produced in the edit Pharmacy/Dr dialog
+	 */
 	@Override
 	public void repopulateAdapter() {
 		hisAdap.clear();
