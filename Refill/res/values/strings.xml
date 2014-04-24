@@ -5,6 +5,8 @@
     <string name="app_name">Refill</string>
     <!-- The settings button name -->
     <string name="action_settings">Settings</string>
+    <!--  The history count setting -->
+    <string name="history">History items to display</string>
     <!-- The pill's icon in overflow menu-->
     <string name="pillicon">The pill\'s icon</string>
     <!-- The pharmacy's icon in overflow menu -->
@@ -27,6 +29,10 @@
 	<string name="username">E-mail address</string>
 	<!--  The password input -->
     <string name="password">Password</string>
+    <!--  The history count textView -->
+    <string name="histCount">How many history items to show?</string>
+    <!--  The shouldLogin preference -->
+    <string name="shouldLogin">Do you want to show the login screen?</string>
     <!-- The registration input -->
     <string name="register">Login or Sign Up Now!</string>
     <!-- The welcome image on login activity -->

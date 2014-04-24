@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -58,9 +58,10 @@ import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.PatientFragment;
 import cs250.spring14.refill.view.PharmacyFragment;
 import cs250.spring14.refill.view.RefreshableFragment;
+import cs250.spring14.refill.view.SettingsFragment;
 
 public class MainActivity extends ActionBarActivity implements
-ActionBar.TabListener, PatientFragment.OnCompleteListener {
+ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceChangeListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -86,7 +87,6 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener {
 	public static PatientDBAdapter paAdapter;
 	public static int currFrag;
 	private boolean shouldLogin;
-
 	private Menu menu;
 	protected static final int LOGIN = 3;
 	private static MainActivity _instance;
@@ -97,7 +97,9 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener {
 		// Get whether the log-in screen should be displayed from SharedPrefs
 		SharedPreferences prefs = this.getSharedPreferences("refill",
 				Context.MODE_PRIVATE);
+		prefs.registerOnSharedPreferenceChangeListener(this);
 		shouldLogin = prefs.getBoolean(LoginActivity.nextKey, true);
+		HistoryDBAdapter.histCount = prefs.getInt(HistoryDBAdapter.histKey, 100);
 		if (shouldLogin) {
 			// Show the log-in screen
 			Intent login = new Intent(this, LoginActivity.class);
@@ -170,6 +172,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener {
 		}
 		// History adapter stuff
 		hAdapter = new HistoryDBAdapter(this);
+		HistoryDBAdapter.histCount = prefs.getInt(HistoryDBAdapter.histKey, 100);
 		hAdapter.open();
 		// Patient adapter stuff
 		paAdapter = new PatientDBAdapter(this);
@@ -227,7 +230,8 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener {
 			}
 			return true;
 		case R.id.action_settings:
-			Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+			SettingsFragment settingFrag = new SettingsFragment();
+			settingFrag.show(getSupportFragmentManager(),"SettingsFragment");
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -1452,5 +1456,19 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener {
 				f.repopulateAdapter();
 			}
 		}
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		if (key.equals(HistoryDBAdapter.histKey)) {
+			Toast.makeText(this, "Updated hist key", Toast.LENGTH_SHORT).show();
+			HistoryDBAdapter.histCount = sharedPreferences.getInt(key, 100);
+			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+			if (f!=null) {
+				f.repopulateAdapter();
+			}
+		}
+		
 	}
 }

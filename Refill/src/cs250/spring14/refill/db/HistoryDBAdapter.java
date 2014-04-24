@@ -18,6 +18,8 @@ public class HistoryDBAdapter {
 	private SQLiteDatabase db;
 	private HisDBHelper dbHelper;
 	private final Context context;
+	public static final String histKey = "refill.hist";
+	public static int histCount;
 
 	private static final String DB_NAME = "His.db";
 	private static final int DB_VERSION = 16;
@@ -142,6 +144,26 @@ public class HistoryDBAdapter {
 				result.setId(c.getInt(0));
 				his.add(result);
 			} while (c.moveToNext());
+		return his;
+	}
+	
+	/**
+	 * Method to get the right number of history items from the DB
+	 * 
+	 * @return an ArrayList<HistoryItem> with no more than histCount HistoryItems
+	 */
+	public ArrayList<HistoryItem> getHisForDisplay() {
+		ArrayList<HistoryItem> his = new ArrayList<HistoryItem>();
+		Cursor c = this.getAllHisCursor();
+		if (c.moveToFirst())
+			do {
+				HistoryItem result = new HistoryItem(c.getString(1), // owner
+						c.getString(2), // message
+						c.getString(3)); // type
+				// Set the ID to the row in the DB
+				result.setId(c.getInt(0));
+				his.add(result);
+			} while (c.getPosition() < histCount-1 && c.moveToNext());
 		return his;
 	}
 
