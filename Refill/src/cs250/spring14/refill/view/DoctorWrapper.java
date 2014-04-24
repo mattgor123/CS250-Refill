@@ -24,7 +24,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 	// We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
-		return super.isEnabled(position);
+		return super.isEnabled(position) && items.get(position).getId() != 1;
 	}
 
 	@Override
@@ -50,10 +50,14 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 		Doctor i = items.get(pos);
 
 		if (i != null) {
-			v.setVisibility(View.VISIBLE);
+			TextView name = (TextView) v.findViewById(R.id.name);
+			TextView phone = (TextView) v.findViewById(R.id.phone);
+			TextView email = (TextView) v.findViewById(R.id.email);
 			if (i.getId() == 1){
-				//This is our dummy Doctor; his view shouldn't be populated
-				v.setVisibility(View.GONE);
+				//This is our dummy Doctor
+				name.setText("Viewing Doctors");
+				phone.setText("");
+				email.setText("");
 				ImageView iv = (ImageView) v.findViewById(R.id.dr_ico);
 				iv.setVisibility(View.GONE);
 				return v;
@@ -62,9 +66,6 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 			// This is how you obtain a reference to the TextViews.
 			// These TextViews are created in the XML files we defined.
 
-			TextView name = (TextView) v.findViewById(R.id.name);
-			TextView phone = (TextView) v.findViewById(R.id.phone);
-			TextView email = (TextView) v.findViewById(R.id.email);
 			String nstr = i.getName();
 			if (name != null) {
 				String str = nstr;

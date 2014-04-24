@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,7 +34,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		getDialog().setTitle("Pharmacies");
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
 		View rootView = inflater.inflate(R.layout.fragment_pharm, container,
 				false);
