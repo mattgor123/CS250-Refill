@@ -1077,11 +1077,71 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int ic_action_new=0x7f020057;
-        public static final int ic_launcher=0x7f020058;
+        public static final int adderall=0x7f020057;
+        public static final int albuterol=0x7f020058;
+        public static final int ambien=0x7f020059;
+        public static final int aspirin=0x7f02005a;
+        public static final int atenolol=0x7f02005b;
+        public static final int cymbalta=0x7f02005c;
+        public static final int darvocet=0x7f02005d;
+        public static final int default_pill=0x7f02005e;
+        public static final int diovan=0x7f02005f;
+        public static final int doctor=0x7f020060;
+        public static final int doctor_db=0x7f020061;
+        public static final int effexor=0x7f020062;
+        public static final int hydrocodone=0x7f020063;
+        public static final int ic_action_doctor=0x7f020064;
+        public static final int ic_action_new=0x7f020065;
+        public static final int ic_action_patient=0x7f020066;
+        public static final int ic_action_pharmacy=0x7f020067;
+        public static final int ic_action_settings=0x7f020068;
+        public static final int ic_launcher=0x7f020069;
+        public static final int ic_menu_overflow=0x7f02006a;
+        public static final int lexapro=0x7f02006b;
+        public static final int lightblue=0x7f02006c;
+        public static final int lightgreen=0x7f02006d;
+        public static final int lightorange=0x7f02006e;
+        public static final int lightpink=0x7f02006f;
+        public static final int lightpurple=0x7f020070;
+        public static final int lightyellow=0x7f020071;
+        public static final int lipitor=0x7f020072;
+        public static final int lisinopril=0x7f020073;
+        public static final int lyrica=0x7f020074;
+        public static final int metformin=0x7f020075;
+        public static final int morphine=0x7f020076;
+        public static final int naproxen=0x7f020077;
+        public static final int neurontin=0x7f020078;
+        public static final int nexium=0x7f020079;
+        public static final int norvasc=0x7f02007a;
+        public static final int oxycontin=0x7f02007b;
+        public static final int patient=0x7f02007c;
+        public static final int paxil=0x7f02007d;
+        public static final int percocet=0x7f02007e;
+        public static final int pharmacy=0x7f02007f;
+        public static final int pharmacy_db=0x7f020080;
+        public static final int phentermine=0x7f020081;
+        public static final int prednisone=0x7f020082;
+        public static final int protonix=0x7f020083;
+        public static final int seroquel=0x7f020084;
+        public static final int soma=0x7f020085;
+        public static final int synthroid=0x7f020086;
+        public static final int toprol=0x7f020087;
+        public static final int tramadol=0x7f020088;
+        public static final int tylenol=0x7f020089;
+        public static final int ultram=0x7f02008a;
+        public static final int user=0x7f02008b;
+        public static final int valium=0x7f02008c;
+        public static final int vicodin=0x7f02008d;
+        public static final int welcome=0x7f02008e;
+        public static final int wellbutrin=0x7f02008f;
+        public static final int white=0x7f020090;
+        public static final int xanax=0x7f020091;
+        public static final int zestril=0x7f020092;
+        public static final int zocor=0x7f020093;
+        public static final int zoloft=0x7f020094;
     }
     public static final class id {
-        public static final int action_add=0x7f05003f;
+        public static final int action_add=0x7f050069;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
@@ -1090,35 +1150,75 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
         public static final int action_context_bar=0x7f05001d;
+        public static final int action_doc=0x7f05006b;
+        public static final int action_forgot_password=0x7f050068;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05003e;
+        public static final int action_overflow=0x7f05006a;
+        public static final int action_pharm=0x7f05006c;
+        public static final int action_settings=0x7f05006d;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
+        public static final int checkedTextView1=0x7f050043;
         public static final int collapseActionView=0x7f05000d;
+        public static final int colors=0x7f05004f;
         public static final int default_activity_button=0x7f050028;
+        public static final int details=0x7f050059;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
+        public static final int dr_ico=0x7f050048;
         public static final int dropdown=0x7f05000f;
         public static final int edit_query=0x7f050030;
+        public static final int email=0x7f050040;
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
+        public static final int his_ico=0x7f05004d;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int imageButton1=0x7f05005d;
+        public static final int imageButton2=0x7f050060;
+        public static final int imageButton3=0x7f050063;
+        public static final int imageButton4=0x7f050066;
+        public static final int imageView1=0x7f05003f;
+        public static final int lb=0x7f050051;
+        public static final int lg=0x7f050054;
         public static final int listMode=0x7f050001;
+        public static final int listView1=0x7f050049;
         public static final int list_item=0x7f050029;
+        public static final int ll1=0x7f05005c;
+        public static final int ll2=0x7f05005f;
+        public static final int ll3=0x7f050062;
+        public static final int ll4=0x7f050065;
+        public static final int lo=0x7f050052;
+        public static final int login=0x7f050042;
+        public static final int login_form=0x7f05003e;
+        public static final int login_status=0x7f05003c;
+        public static final int login_status_message=0x7f05003d;
+        public static final int lpi=0x7f050056;
+        public static final int lpu=0x7f050055;
+        public static final int ly=0x7f050053;
         public static final int middle=0x7f050012;
+        public static final int msg=0x7f05004c;
+        public static final int name=0x7f050046;
         public static final int never=0x7f050009;
+        public static final int next=0x7f05005a;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
-        public static final int pager=0x7f05003c;
+        public static final int ok=0x7f050057;
+        public static final int owner=0x7f05004b;
+        public static final int pager=0x7f050045;
+        public static final int password=0x7f050041;
+        public static final int patient=0x7f05004e;
+        public static final int ph_ico=0x7f050058;
+        public static final int phone=0x7f050047;
+        public static final int pill_ico=0x7f05005b;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
@@ -1132,18 +1232,24 @@ containing a value of this type.
         public static final int search_plate=0x7f050036;
         public static final int search_src_text=0x7f050037;
         public static final int search_voice_btn=0x7f05003b;
-        public static final int section_label=0x7f05003d;
+        public static final int section_label=0x7f05004a;
         public static final int shortcut=0x7f05002e;
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
+        public static final int sign_in_button=0x7f050044;
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
+        public static final int textView1=0x7f05005e;
+        public static final int textView2=0x7f050061;
+        public static final int textView3=0x7f050064;
+        public static final int textView4=0x7f050067;
         public static final int title=0x7f05002b;
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
+        public static final int w=0x7f050050;
         public static final int withText=0x7f05000c;
     }
     public static final class integer {
@@ -1196,12 +1302,26 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030015;
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
-        public static final int activity_main=0x7f030018;
-        public static final int fragment_main=0x7f030019;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
+        public static final int activity_login=0x7f030018;
+        public static final int activity_main=0x7f030019;
+        public static final int doctor_schema=0x7f03001a;
+        public static final int fragment_doc=0x7f03001b;
+        public static final int fragment_his=0x7f03001c;
+        public static final int fragment_main=0x7f03001d;
+        public static final int fragment_pat=0x7f03001e;
+        public static final int fragment_pharm=0x7f03001f;
+        public static final int fragment_rx=0x7f030020;
+        public static final int hislist_schema=0x7f030021;
+        public static final int patient_dialog=0x7f030022;
+        public static final int patient_schema=0x7f030023;
+        public static final int pharmacy_schema=0x7f030024;
+        public static final int rxlist_schema=0x7f030025;
+        public static final int select_dialog=0x7f030026;
+        public static final int support_simple_spinner_dropdown_item=0x7f030027;
     }
     public static final class menu {
-        public static final int main=0x7f0c0000;
+        public static final int login=0x7f0c0000;
+        public static final int main=0x7f0c0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1244,22 +1364,127 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int action_settings=0x7f0a0011;
+        public static final int action_forgot_password=0x7f0a0032;
+        /**  The settings button name 
+         */
+        public static final int action_settings=0x7f0a000e;
+        public static final int action_sign_in_register=0x7f0a0030;
+        public static final int action_sign_in_short=0x7f0a0031;
+        /**  The add button name 
+         */
         public static final int add=0x7f0a0012;
+        /**  The app's name 
+         */
         public static final int app_name=0x7f0a000d;
-        public static final int title_section1=0x7f0a000e;
-        public static final int title_section2=0x7f0a000f;
-        public static final int title_section3=0x7f0a0010;
+        /**  The 'display next time' checkbox 
+         */
+        public static final int checkbox=0x7f0a001b;
+        /**  The doc button name 
+         */
+        public static final int doc=0x7f0a0013;
+        /**  The doctor image on select dialog 
+         */
+        public static final int docicon=0x7f0a001e;
+        /**  The doctor's icon in overflow menu 
+         */
+        public static final int docmenuicon=0x7f0a0011;
+        /**  The doctor on select dialog 
+         */
+        public static final int doctor=0x7f0a0022;
+        public static final int error_field_required=0x7f0a0037;
+        public static final int error_incorrect_password=0x7f0a0036;
+        public static final int error_invalid_email=0x7f0a0034;
+        public static final int error_invalid_password=0x7f0a0035;
+        /**  The historyitem's icon 
+         */
+        public static final int historyicon=0x7f0a0016;
+        /**  The light blue on patient dialog 
+         */
+        public static final int lb=0x7f0a0026;
+        /**  The light green on patient dialog 
+         */
+        public static final int lg=0x7f0a0029;
+        /**  The light orange on patient dialog 
+         */
+        public static final int lo=0x7f0a0027;
+        public static final int login_progress_signing_in=0x7f0a0033;
+        /**  The light pink on patient dialog 
+         */
+        public static final int lpi=0x7f0a002b;
+        /**  The light purple on patient dialog 
+         */
+        public static final int lpu=0x7f0a002a;
+        /**  The light yellow on patient dialog 
+         */
+        public static final int ly=0x7f0a0028;
+        /**  The OK on patient dialog 
+         */
+        public static final int ok=0x7f0a002c;
+        /**  The overflow button name 
+         */
+        public static final int overflow=0x7f0a0015;
+        /**   The password input 
+         */
+        public static final int password=0x7f0a0018;
+        /**  The patient image on select dialog 
+         */
+        public static final int paticon=0x7f0a001f;
+        /**  The patient on select dialog 
+         */
+        public static final int patient=0x7f0a0023;
+        /**  The patient on patient dialog 
+         */
+        public static final int patientname=0x7f0a0024;
+        /**  The pharmacy button name 
+         */
+        public static final int pharm=0x7f0a0014;
+        /**  The pharmacy on select dialog 
+         */
+        public static final int pharmacy=0x7f0a0020;
+        /**  The pharmacy image on select dialog 
+         */
+        public static final int pharmicon=0x7f0a001d;
+        /**  The pharmacy's icon in overflow menu 
+         */
+        public static final int phmenuicon=0x7f0a0010;
+        /**  The pill's icon in overflow menu
+         */
+        public static final int pillicon=0x7f0a000f;
+        /**  The prescription on select dialog 
+         */
+        public static final int prescription=0x7f0a0021;
+        /**  Strings related to login 
+         */
+        public static final int prompt_email=0x7f0a002e;
+        public static final int prompt_password=0x7f0a002f;
+        /**  The registration input 
+         */
+        public static final int register=0x7f0a0019;
+        /**  The rx image on select dialog 
+         */
+        public static final int rxicon=0x7f0a001c;
+        public static final int title_activity_login=0x7f0a002d;
+        /**  The username input 
+         */
+        public static final int username=0x7f0a0017;
+        /**  The white on patient dialog 
+         */
+        public static final int w=0x7f0a0025;
+        /**  The welcome image on login activity 
+         */
+        public static final int welcome=0x7f0a001a;
     }
     public static final class style {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -1278,6 +1503,7 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b008c;
+        public static final int LoginFormContainer=0x7f0b008d;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;
