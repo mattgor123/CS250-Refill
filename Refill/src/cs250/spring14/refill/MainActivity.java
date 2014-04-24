@@ -19,6 +19,7 @@ import cs250.spring14.refill.db.PatientDBAdapter;
 import cs250.spring14.refill.db.PharmacyDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
 import cs250.spring14.refill.view.DoctorFragment;
+import cs250.spring14.refill.view.PatientFragment;
 import cs250.spring14.refill.view.PharmacyFragment;
 import cs250.spring14.refill.view.RefreshableFragment;
 
@@ -59,7 +60,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener, PatientFragment.OnCompleteListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -205,6 +206,10 @@ public class MainActivity extends ActionBarActivity implements
 		case R.id.action_pharm:
 			PharmacyFragment pharmFrag = new PharmacyFragment();
 			pharmFrag.show(getSupportFragmentManager(), "PharmacyFragment");
+			return true;
+		case R.id.action_patient:
+			PatientFragment patientFrag = new PatientFragment();
+			patientFrag.show(getSupportFragmentManager(), "PatientFragment");
 			return true;
 		case R.id.action_settings:
 			Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
@@ -1393,6 +1398,17 @@ public class MainActivity extends ActionBarActivity implements
 		public int getCount() {
 			// Show 2 total pages.
 			return 2;
+		}
+	}
+
+	@Override
+	public void onComplete(boolean b) {
+		if (b) {
+			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+			if (f!=null) {
+				//Should never be null, but just in case...
+				f.repopulateAdapter();
+			}
 		}
 	}
 }

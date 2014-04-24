@@ -3,7 +3,6 @@ package cs250.spring14.refill.core;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.InputType;

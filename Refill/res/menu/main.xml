@@ -27,6 +27,11 @@
                 android:title="@string/pharm"
                 app:showAsAction="never"/>
             <item
+                android:id="@+id/action_patient"
+                android:icon="@drawable/ic_action_patient"
+                android:title="@string/patient"
+                app:showAsAction="never"/>
+            <item
                 android:id="@+id/action_settings"
                 android:icon="@drawable/ic_action_settings"
                 android:title="@string/action_settings"

@@ -176,7 +176,7 @@ public class RxDBAdapter {
 	 */
 	public boolean updateAllRxWithPatient(String oldPatient, String newPatient) {
 		ContentValues cvalues = new ContentValues();
-		cvalues.put(RX_PHRM, newPatient);
+		cvalues.put(RX_PT, newPatient);
 		return db.update(RX_TABLE, cvalues, RX_PT + " = ?",
 				new String[] { oldPatient }) > 0;
 	}
