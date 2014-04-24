@@ -215,7 +215,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 													+ "&body="
 													+ Uri.encode("Dear "
 															+ ph.getName()
-															+ ",\n\n");
+															+ ",\n\n"); 
 									intent.setData(Uri
 											.parse(uriText));
 									startActivity(intent);
