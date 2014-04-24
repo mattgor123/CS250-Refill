@@ -18,6 +18,9 @@ import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.PatientDBAdapter;
 import cs250.spring14.refill.db.PharmacyDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
+import cs250.spring14.refill.view.DoctorFragment;
+import cs250.spring14.refill.view.PharmacyFragment;
+import cs250.spring14.refill.view.RefreshableFragment;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -287,21 +290,7 @@ public class MainActivity extends ActionBarActivity implements
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	private boolean shouldUpdateRx(RxItem rx, String name, String patient,
-			String symp, String sideEffects, double dose, int ppd, int dbr,
-			String pharm, String doc, String rxnumb) {
-		return ((!rx.getName().equals(name))
-				|| (!rx.getPatientString().equals(patient))
-				|| (!rx.getSymptoms().equals(symp))
-				|| (!rx.getSideEffects().equals(sideEffects))
-				|| !(rx.getDose() == dose) || !(rx.getPillsPerDay() == ppd)
-				|| !(rx.getDaysBetweenRefills() == dbr)
-				|| (!rx.getPhString().equals(pharm))
-				|| (!rx.getDocString().equals(doc)) || !(rx.getRxNumb()
-				.equals(rxnumb)));
-	}
-
-	protected static boolean isValidInt(EditText et) {
+	public static boolean isValidInt(EditText et) {
 		String str = et.getText().toString().trim();
 		if (str.length() > 0) {
 			return Integer.valueOf(str) > 0;
@@ -309,7 +298,7 @@ public class MainActivity extends ActionBarActivity implements
 			return false;
 	}
 
-	protected static boolean isValidDouble(EditText et) {
+	public static boolean isValidDouble(EditText et) {
 		String str = et.getText().toString().trim();
 		if (str.length() > 0 && !str.equals(".")) {
 			return Double.valueOf(str) > 0;
@@ -317,7 +306,7 @@ public class MainActivity extends ActionBarActivity implements
 			return false;
 	}
 
-	protected static boolean isValidName(String str) {
+	public static boolean isValidName(String str) {
 		if (str.length() > 2) {
 			String[] name = str.split(" ");
 			if (name.length < 2) {
@@ -332,21 +321,21 @@ public class MainActivity extends ActionBarActivity implements
 		return false;
 	}
 
-	protected static boolean isValidPhone(String str) {
+	public static boolean isValidPhone(String str) {
 		if (str.length() >= 10) {
 			return android.util.Patterns.PHONE.matcher(str).matches();
 		} else
 			return false;
 	}
 
-	protected static boolean isValidEmail(String str) {
+	public static boolean isValidEmail(String str) {
 		if (str.length() >= 5) {
 			return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches();
 		} else
 			return false;
 	}
 
-	protected static boolean isValidStreet(String str) {
+	public static boolean isValidStreet(String str) {
 		if (str.length() > 0) {
 			String[] address = str.split(" ");
 			if (address.length < 2) {
@@ -1278,7 +1267,7 @@ public class MainActivity extends ActionBarActivity implements
 										dateChanged = false;
 									}
 									// Check if we should update
-									if (shouldUpdateRx(rx, name, patient, symp,
+									if (rx.shouldUpdateRx(name, patient, symp,
 											sideEffects, dose, ppd, dbr, pharm,
 											doc, rxnumb)
 											|| dateChanged) {

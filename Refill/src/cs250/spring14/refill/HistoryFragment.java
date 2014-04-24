@@ -6,7 +6,10 @@ import cs250.spring14.refill.core.Doctor;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.HistoryItem.HistoryType;
+import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.HistoryWrapper;
+import cs250.spring14.refill.view.PharmacyFragment;
+import cs250.spring14.refill.view.RefreshableFragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

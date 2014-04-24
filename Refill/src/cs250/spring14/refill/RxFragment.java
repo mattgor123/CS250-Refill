@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.view.RefreshableFragment;
 import cs250.spring14.refill.view.RxWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;

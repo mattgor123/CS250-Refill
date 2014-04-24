@@ -1,10 +1,11 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Doctor;
-import cs250.spring14.refill.view.DoctorWrapper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -127,7 +128,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 	 * @param dr
 	 *            the doctor to edit
 	 */
-	protected static void openEditDoctorDialog(final Context context, final Doctor dr) {
+	public static void openEditDoctorDialog(final Context context, final Doctor dr) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(context);
 		layout.setOrientation(1);

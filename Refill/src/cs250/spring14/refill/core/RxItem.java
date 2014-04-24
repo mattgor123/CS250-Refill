@@ -117,4 +117,16 @@ public class RxItem {
 	public long getId() {
 		return this.id;
 	}
+
+	public boolean shouldUpdateRx(String name, String patient, String symp, String sideEffects, double dose, int ppd, int dbr, String pharm, String doc, String rxnumb) {
+		return ((!getName().equals(name))
+				|| (!getPatientString().equals(patient))
+				|| (!getSymptoms().equals(symp))
+				|| (!getSideEffects().equals(sideEffects))
+				|| !(getDose() == dose) || !(getPillsPerDay() == ppd)
+				|| !(getDaysBetweenRefills() == dbr)
+				|| (!getPhString().equals(pharm))
+				|| (!getDocString().equals(doc)) || !(getRxNumb()
+				.equals(rxnumb)));
+	}
 }

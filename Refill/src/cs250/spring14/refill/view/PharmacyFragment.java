@@ -1,10 +1,11 @@
-package cs250.spring14.refill;
+package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
+import cs250.spring14.refill.MainActivity;
+import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Pharmacy;
-import cs250.spring14.refill.view.PharmacyWrapper;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -121,7 +122,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 	 * @param ph
 	 *            the pharmacy to edit
 	 */
-	protected static void openEditPharmacyDialog(final Context context,
+	public static void openEditPharmacyDialog(final Context context,
 			final Pharmacy ph) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		LinearLayout layout = new LinearLayout(context);
