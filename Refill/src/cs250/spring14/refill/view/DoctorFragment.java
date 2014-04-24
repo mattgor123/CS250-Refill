@@ -3,6 +3,8 @@ package cs250.spring14.refill.view;
 import java.util.Calendar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -52,7 +54,40 @@ public class DoctorFragment extends DialogFragment implements
 					int position, long id) {
 				final Doctor doc = (Doctor) parent.getItemAtPosition(position);
 				//We implement our long-press action soon.
-				Toast.makeText(getActivity(), "This is a long press on " + doc.getName(), Toast.LENGTH_SHORT).show();
+				MainActivity.alertMessage(getActivity(),
+						"Please select an action",
+						"Would you like to Call or E-mail "
+								+ doc.getName() + "?", "Call",
+						// Call
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// Remove functionality must be added here
+								if (doc != null) {
+									//Populate the Dialer with Phone #
+									getDialog().dismiss();
+									Intent intent = new Intent(Intent.ACTION_DIAL);
+									intent.setData(Uri.parse("tel:"+doc.getPhone()));
+									startActivity(intent);
+								}
+							}
+						}, "E-mail",
+						// Edit
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (doc != null) {
+									//Populate the E-mail intent with E-mail address
+									getDialog().dismiss();
+									Intent intent = new Intent(Intent.ACTION_SENDTO);
+									String uriText = "mailto:" + Uri.encode(doc.getEmail()) + "?subject=" + Uri.encode("Question about a prescription") + "&body=" + Uri.encode("Dr. " + doc.getName() + ",\n\n");
+									intent.setData(Uri.parse(uriText));
+									startActivity(intent);								
+								}
+							}
+						});
 				return true;
 			}
 			

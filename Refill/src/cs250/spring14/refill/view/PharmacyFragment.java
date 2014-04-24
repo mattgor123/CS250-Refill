@@ -3,6 +3,8 @@ package cs250.spring14.refill.view;
 import java.util.Calendar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -52,12 +54,43 @@ public class PharmacyFragment extends DialogFragment implements
 					int position, long id) {
 				final Pharmacy ph = (Pharmacy) parent.getItemAtPosition(position);
 				//We implement our long-press action soon.
-				Toast.makeText(getActivity(), "This is a long press on " + ph.getName(), Toast.LENGTH_SHORT).show();
+				MainActivity.alertMessage(getActivity(),
+						"Please select an action",
+						"Would you like to Call or E-mail "
+								+ ph.getName() + "?", "Call",
+						// Call
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// Remove functionality must be added here
+								if (ph != null) {
+									//Populate the Dialer with Phone #
+									getDialog().dismiss();
+									Intent intent = new Intent(Intent.ACTION_DIAL);
+									intent.setData(Uri.parse("tel:"+ph.getPhone()));
+									startActivity(intent);
+								}
+							}
+						}, "E-mail",
+						// Edit
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (ph != null) {
+									//Populate the E-mail intent with E-mail address
+									Toast.makeText(getActivity(), "Emailing " + ph.getName(), Toast.LENGTH_SHORT).show();
+									Intent intent = new Intent(Intent.ACTION_SENDTO);
+									String uriText = "mailto:" + Uri.encode(ph.getEmail()) + "?subject=" + Uri.encode("Question about a prescription") + "&body=" + Uri.encode("Dear " + ph.getName() + ",\n\n");
+									intent.setData(Uri.parse(uriText));
+									startActivity(intent);								
+								}
+							}
+						});
 				return true;
-			}
-			
+			}			
 		});
-
 		phList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
