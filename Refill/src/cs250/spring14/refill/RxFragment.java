@@ -146,7 +146,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 											+ Uri.encode(doc
 													.getEmail())
 													+ "?subject="
-													+ Uri.encode("Question about a prescription")
+													+ Uri.encode("Question about Rx " + rx.getName() + "-#" + rx.getRxNumb())
 													+ "&body="
 													+ Uri.encode("Dr. "
 															+ doc.getName()
@@ -211,7 +211,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 											+ Uri.encode(ph
 													.getEmail())
 													+ "?subject="
-													+ Uri.encode("Question about a prescription")
+													+ Uri.encode("Question about Rx " + rx.getName() + "-#" + rx.getRxNumb())
 													+ "&body="
 													+ Uri.encode("Dear "
 															+ ph.getName()
