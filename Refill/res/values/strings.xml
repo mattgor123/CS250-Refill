@@ -5,10 +5,20 @@
     <string name="app_name">Refill</string>
     <!-- The settings button name -->
     <string name="action_settings">Settings</string>
-    <!-- The pill's icon -->
+    <!-- The pill's icon in overflow menu-->
     <string name="pillicon">The pill\'s icon</string>
+    <!-- The pharmacy's icon in overflow menu -->
+    <string name="phmenuicon">The pharmacy\'s icon</string>
+    <!-- The doctor's icon in overflow menu -->
+    <string name="docmenuicon">The doctor\'s icon</string>
     <!-- The add button name -->
 	<string name="add">add</string>
+	<!-- The doc button name -->
+	<string name="doc">Doctors</string>
+	<!-- The pharmacy button name -->
+	<string name="pharm">Pharmacies</string>
+	<!-- The overflow button name -->
+	<string name="overflow">overflow</string>
 	<!-- The historyitem's icon -->
 	<string name="historyicon">The HistoryItem\'s icon</string>
 	<!-- The username input -->

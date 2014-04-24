@@ -37,6 +37,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,6 +82,8 @@ public class MainActivity extends ActionBarActivity implements
 	public static PatientDBAdapter paAdapter;
 	public static int currFrag;
 	private boolean shouldLogin;
+
+	private Menu menu;
 	protected static final int LOGIN = 3;
 	private static MainActivity _instance;
 
@@ -178,9 +181,10 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		this.menu = menu;
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -191,11 +195,36 @@ public class MainActivity extends ActionBarActivity implements
 				openCustomDialog(this);
 				return true;
 			}
+		case R.id.action_doc:
+			DoctorFragment docFrag = new DoctorFragment();
+			docFrag.show(getSupportFragmentManager(),"DoctorFragment");
+			return true;
+		case R.id.action_pharm:
+			PharmacyFragment pharmFrag = new PharmacyFragment();
+			pharmFrag.show(getSupportFragmentManager(), "PharmacyFragment");
+			return true;
 		case R.id.action_settings:
+			Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	/**
+	 * Method to override standard menu button behavior to make it open our overflow menu
+	 * @param keyCode The key
+	 * @param event The event
+	 * @return true if opened menu, false otherwise
+	 */
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_MENU) {
+	        openOptionsMenu();
+	        menu.performIdentifierAction(R.id.action_overflow, 0);
+	    	return true;
+	    }
+	    return super.onKeyUp(keyCode, event);
 	}
 
 	@Override

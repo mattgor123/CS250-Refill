@@ -60,7 +60,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 								MainActivity.hAdapter
 										.insertHis(new HistoryItem(
 												rx.getName(), msg, "R"));
-								//rxAdap.notifyDataSetChanged();
+								//phAdap.notifyDataSetChanged();
 								repopulateAdapter();
 							}
 						}, "View/Edit",

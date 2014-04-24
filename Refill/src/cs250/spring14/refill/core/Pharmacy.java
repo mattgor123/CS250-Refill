@@ -115,5 +115,12 @@ public class Pharmacy {
 			return new Pharmacy(tokens[0], tokens[1], tokens[2], tokens[3]);
 		}
 	}
+	
+	public static boolean shouldUpdatePharm(Pharmacy ph, String name, String email,
+			String phone, String address) {
+		return ((!ph.getName().equals(name)) || (!ph.getEmail().equals(email))
+				|| (!ph.getPhone().equals(phone)) || (!ph.getStreetAddress()
+				.equals(address)));
+	}
 
 }

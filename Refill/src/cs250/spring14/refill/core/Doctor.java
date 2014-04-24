@@ -96,5 +96,13 @@ public class Doctor {
 			return new Doctor(tokens[0], tokens[1], tokens[2]);
 		}
 	}
+	
+
+	public static boolean shouldUpdateDr(Doctor dr, String name, String email,
+			String phone) {
+		return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) || (!dr
+				.getPhone().equals(phone)));
+	}
+
 
 }
