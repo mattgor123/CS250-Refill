@@ -15,13 +15,25 @@ import android.widget.TextView;
 
 public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 	private List<HistoryItem> items;
-
+	
+	/**
+	 * Constructor given a Context, resource and a History list
+	 * @param context
+	 * @param resource
+	 * @param objects
+	 */
 	public HistoryWrapper(Context context, int resource,
 			List<HistoryItem> objects) {
 		super(context, resource, objects);
 		this.items = objects;
 	}
-
+	
+	/**
+	 * Method to ensure that HistoryItems are not clickable
+	 * 
+	 * @param position
+	 * 				a List<HistoryItem> index for a History Item
+	 */
 	// We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
@@ -29,7 +41,18 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
 				&& (items.get(position).getH() == HistoryType.D || items.get(
 						position).getH() == HistoryType.P);
 	}
-
+	
+	/**
+	 * Method to populate the view with a given History event position (List<HistoryItem> index)
+	 * 
+	 * @param pos
+	 * 			the HistoryItem that will be pushed to the HistoryFragment (List<HistoryItem> number)
+	 * @param convertView
+	 * 			the old view that will be updated
+	 * @param parent
+	 * 			the parent that this view will be attached to
+	 * @return a View corresponding to the Rx at the specified position.
+	 */
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// assign the view we are converting to a local variable

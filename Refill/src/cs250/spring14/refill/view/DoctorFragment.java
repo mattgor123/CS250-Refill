@@ -29,7 +29,15 @@ import android.widget.AdapterView.OnItemClickListener;
 public class DoctorFragment extends DialogFragment implements RefreshableFragment {
 	ListView docList;
 	ArrayAdapter<Doctor> docAdap;
-
+	
+	/**
+	 * Method to create the Doctor's dialog, inflate the dialog and attach to the parent view
+	 * 
+	 * @param inflater
+	 * @param container
+	 * @param savedInstanceState
+	 * @return 
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -46,7 +54,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// This is where we will add functionality to edit the Rx
+				// This is where we will add functionality to edit the doctor
 				final Doctor doc = (Doctor) parent.getItemAtPosition(position);
 				MainActivity.alertMessage(getActivity(),
 						"Please select an action",
@@ -112,7 +120,10 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 		super.onResume();
 		repopulateAdapter();
 	}
-
+	
+	/**
+	 * Method to repopulate the Doctor's array adapter with changes produced in the edit dialog
+	 */
 	@Override
 	public void repopulateAdapter() {
 		docAdap.clear();

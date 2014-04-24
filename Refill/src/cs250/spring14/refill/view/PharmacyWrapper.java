@@ -14,7 +14,13 @@ import android.widget.TextView;
 
 public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 	private List<Pharmacy> items;
-
+	
+	/**
+	 * Constructor given a Context, resource and a Pharmacy's list
+	 * @param context
+	 * @param resource
+	 * @param objects
+	 */
 	public PharmacyWrapper(Context context, int resource, List<Pharmacy> objects) {
 		super(context, resource, objects);
 		this.items = objects;
@@ -25,7 +31,18 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 	public boolean isEnabled(int position) {
 		return super.isEnabled(position);
 	}
-
+	
+	/**
+	 * Method to populate the view with a given Pharmacy position (List<Pharmacy> index)
+	 * 
+	 * @param pos
+	 * 			the Pharmacy that will be pushed to the PharmacyFragment (List<Pharmacy> index)
+	 * @param convertView
+	 * 			the old view that will be updated
+	 * @param parent
+	 * 			the parent that this view will be attached to
+	 * @return a View corresponding to the Pharmacy at the specified position.
+	 */
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// assign the view we are converting to a local variable
@@ -49,6 +66,8 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 		Pharmacy i = items.get(pos);
 
 		if (i != null) {
+			// This is how you obtain a reference to the TextViews.
+			// These TextViews are created in the XML files we defined.
 			v.setVisibility(View.VISIBLE);
 			TextView name = (TextView) v.findViewById(R.id.name);
 			TextView phone = (TextView) v.findViewById(R.id.phone);
@@ -63,8 +82,7 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 				v.setVisibility(View.GONE);
 				return v;
 			} else {
-				// This is how you obtain a reference to the TextViews.
-				// These TextViews are created in the XML files we defined.
+				// Not dummy, actual pharmacy
 				name.setVisibility(View.VISIBLE);
 				phone.setVisibility(View.VISIBLE);
 				email.setVisibility(View.VISIBLE);
@@ -82,7 +100,6 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 					phone.setText(str);
 				}
 				if (email != null) {
-					// Here we handle finding the image from the name
 					String str = i.getEmail();
 					email.setText(str);
 				}

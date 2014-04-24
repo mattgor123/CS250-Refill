@@ -18,11 +18,29 @@ import android.widget.TextView;
 public class RxWrapper extends ArrayAdapter<RxItem> {
 	private List<RxItem> items;
 
+	/**
+	 * Constructor given a Context, resource and a RxItem list
+	 * 
+	 * @param context
+	 * @param resource
+	 * @param objects list of Rx's
+	 */
 	public RxWrapper(Context context, int resource, List<RxItem> objects) {
 		super(context, resource, objects);
 		this.items = objects;
 	}
 
+	/**
+	 * Method to populate the view with a given Rx position (List<RxItem> index)
+	 * 
+	 * @param pos
+	 * 			the RxItem that will be pushed to the RxFragment (List<RxItem> number)
+	 * @param convertView
+	 * 			the old view that will be updated
+	 * @param parent
+	 * 			the parent that this view will be attached to
+	 * @return a View corresponding to the Rx at the specified position.
+	 */
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// assign the view we are converting to a local variable

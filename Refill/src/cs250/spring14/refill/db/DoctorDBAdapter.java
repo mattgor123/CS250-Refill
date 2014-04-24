@@ -13,11 +13,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
-/**
- * 
- * @author Fernando
- *
- */
 public class DoctorDBAdapter {
 
 	private SQLiteDatabase db;

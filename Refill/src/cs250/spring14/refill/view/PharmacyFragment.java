@@ -29,7 +29,15 @@ import android.widget.AdapterView.OnItemClickListener;
 public class PharmacyFragment extends DialogFragment implements RefreshableFragment {
 	ListView phList;
 	ArrayAdapter<Pharmacy> phAdap;
-
+	
+	/**
+	 * Method to create the Pharmacy's dialog, inflate the dialog and attach to the parent view
+	 * 
+	 * @param inflater
+	 * @param container
+	 * @param savedInstanceState
+	 * @return 
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 				MainActivity.phAdapter.getAllPhs());
 		phList.setAdapter(phAdap);
 		phList.setOnItemClickListener(new OnItemClickListener() {
-
+			
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -223,7 +231,9 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 		d.show();
 	}
 
-
+	/**
+	 * Method to repopulate the array adapter with changes produced in the edit dialog
+	 */
 	@Override
 	public void repopulateAdapter() {
 		phAdap.clear();
