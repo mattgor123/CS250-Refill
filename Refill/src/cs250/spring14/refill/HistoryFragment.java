@@ -6,9 +6,7 @@ import cs250.spring14.refill.core.Doctor;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.HistoryItem.HistoryType;
-import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.HistoryWrapper;
-import cs250.spring14.refill.view.PharmacyFragment;
 import cs250.spring14.refill.view.RefreshableFragment;
 
 import android.content.DialogInterface;
@@ -95,7 +93,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 									Doctor dr = MainActivity.drAdapter
 											.getDocByName(hi.getOwner());
 									if (dr != null) {
-										DoctorFragment.openEditDoctorDialog(getActivity(), dr,HistoryFragment.this);
+										Doctor.openEditDoctorDialog(getActivity(), dr,HistoryFragment.this);
 										repopulateAdapter();
 									} else {
 										Toast.makeText(
@@ -155,7 +153,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 									Pharmacy ph = MainActivity.phAdapter
 											.getPharmByName(hi.getOwner());
 									if (ph != null) {
-										PharmacyFragment.openEditPharmacyDialog(getActivity(),
+										Pharmacy.openEditPharmacyDialog(getActivity(),
 												ph,HistoryFragment.this);
 										repopulateAdapter();
 									} else {

@@ -112,16 +112,34 @@ public class RxDBAdapter {
 	}
 	
 	/**
-	 * Method to check if exists Rx's for a given Doctor
+	 * Method to check if exists Rx's for a given Patient
 	 * 
-	 * @param name
-	 * 			the Doctor's name
+	 * @param patStr
+	 * 			the string representation of a Patient
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
-	public boolean existsRxWithDoc(String name) throws SQLException {
+	public boolean existsRxWithPat(String patStr) throws SQLException {
+		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PT + "=?",
+				new String[] { String.valueOf(patStr) }, null, null, null, null);
+		if ((c.getCount() == 0) || !c.moveToFirst()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * Method to check if exists Rx's for a given Doctor
+	 * 
+	 * @param docStr
+	 * 			the string representation of a Doctor
+	 * @return true if exists, false otherwise
+	 * @throws SQLException
+	 */
+	public boolean existsRxWithDoc(String docStr) throws SQLException {
 		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
-				new String[] { String.valueOf(name) }, null, null, null, null);
+				new String[] { String.valueOf(docStr) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return false;
 		} else {
@@ -132,14 +150,14 @@ public class RxDBAdapter {
 	/**
 	 * Method to check if exists Rx's for a given Pharmacy
 	 * 
-	 * @param name
-	 * 			the Pharmacy's name
+	 * @param phStr
+	 * 			the string representation of a Pharmacy
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
-	public boolean existsRxWithPharm(String name) throws SQLException {
+	public boolean existsRxWithPharm(String phStr) throws SQLException {
 		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PHRM + "=?",
-				new String[] { String.valueOf(name) }, null, null, null, null);
+				new String[] { String.valueOf(phStr) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return false;
 		} else {
@@ -148,12 +166,28 @@ public class RxDBAdapter {
 	}
 	
 	/**
+	 * Method to update all Rx's from a patient to another
+	 * 
+	 * @param oldPatient
+	 * 				the old patient's string representation
+	 * @param newPatient
+	 * 				the new patient's string representation
+	 * @return true if update successful, false otherwise
+	 */
+	public boolean updateAllRxWithPatient(String oldPatient, String newPatient) {
+		ContentValues cvalues = new ContentValues();
+		cvalues.put(RX_PHRM, newPatient);
+		return db.update(RX_TABLE, cvalues, RX_PT + " = ?",
+				new String[] { oldPatient }) > 0;
+	}
+	
+	/**
 	 * Method to update all Rx's from a Doctor to another
 	 * 
 	 * @param oldDoctor
-	 * 				the old doctor's name
+	 * 				the old doctor's string representation
 	 * @param newDoctor
-	 * 				the new doctor's name
+	 * 				the new doctor's string representation
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithDoctor(String oldDoctor, String newDoctor) {
@@ -167,9 +201,9 @@ public class RxDBAdapter {
 	 * Method to update all Rx's from a pharmacy to another
 	 * 
 	 * @param oldPharm
-	 * 				the old pharmacy's name
+	 * 				the old pharmacy's string representation
 	 * @param newPharm
-	 * 				the new pharmacy's name
+	 * 				the new pharmacy's string representation
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithPharmacy(String oldPharm, String newPharm) {

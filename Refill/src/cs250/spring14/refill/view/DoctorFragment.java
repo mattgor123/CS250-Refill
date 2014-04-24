@@ -6,22 +6,14 @@ import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Doctor;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -103,7 +95,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (doc != null) {
-									openEditDoctorDialog(getActivity(), doc,DoctorFragment.this);
+									Doctor.openEditDoctorDialog(getActivity(), doc,DoctorFragment.this);
 								} 
 							}
 						});
@@ -128,97 +120,5 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 	public void repopulateAdapter() {
 		docAdap.clear();
 		docAdap.addAll(MainActivity.drAdapter.getAllDrs());
-	}
-	
-	/**
-	 * Helper method to open edit doctor dialog
-	 * 
-	 * @param context
-	 *            the context for the dialog
-	 * @param dr
-	 *            the doctor to edit
-	 */
-	public static void openEditDoctorDialog(final Context context, final Doctor dr, final RefreshableFragment fr) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		LinearLayout layout = new LinearLayout(context);
-		layout.setOrientation(1);
-		// TODO Auto-generated method stub
-		final EditText name = new EditText(context);
-		final EditText email = new EditText(context);
-		final EditText phone = new EditText(context);
-		Button add = new Button(context);
-		add.setText("Update This Doctor/Exit Dialog");
-		name.setSingleLine();
-		email.setSingleLine();
-		phone.setSingleLine();
-		name.setHint("    Name (must be unique): ");
-		email.setHint("    Email: ");
-		phone.setHint("    Phone: ");
-		name.setText(dr.getName());
-		email.setText(dr.getEmail());
-		phone.setText(dr.getPhone());
-		name.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-		email.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		phone.setInputType(InputType.TYPE_CLASS_NUMBER);
-		layout.addView(name);
-		layout.addView(email);
-		layout.addView(phone);
-		layout.addView(add);
-		builder.setView(layout);
-		final Dialog d = builder.create();
-		add.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// Basic input checking; will get better with time
-				String nameStr = name.getText().toString().trim();
-				String emailStr = email.getText().toString().trim();
-				String phoneStr = phone.getText().toString().trim();
-				if (!MainActivity.isValidName(nameStr)) {
-					Toast.makeText(context,
-							"Please ensure you've entered a valid name",
-							Toast.LENGTH_SHORT).show();
-				} else if (!MainActivity.isValidEmail(emailStr)) {
-					Toast.makeText(context,
-							"Please ensure you've entered a valid email",
-							Toast.LENGTH_SHORT).show();
-				} else if (!MainActivity.isValidPhone(phoneStr)) {
-					Toast.makeText(context,
-							"Please ensure you've entered a valid phone",
-							Toast.LENGTH_SHORT).show();
-				} else if (Doctor.shouldUpdateDr(dr, nameStr, emailStr, phoneStr)) {
-					if (MainActivity.drAdapter.updateDr(dr.getId(), nameStr,
-							emailStr, phoneStr)) {
-						// We successfully updated the Doctor
-						String oldStr = Doctor.makeStringFromDoc(dr);
-						dr.setName(nameStr);
-						dr.setEmail(emailStr);
-						dr.setPhone(phoneStr);
-						String newStr = Doctor.makeStringFromDoc(dr);
-						MainActivity.rxAdapter.updateAllRxWithDoctor(oldStr,
-								newStr);
-						String message = "Updated in Doctors DB on "
-								+ MainActivity.df.format(Calendar.getInstance()
-										.getTime());
-						HistoryItem his = new HistoryItem(
-								nameStr, message, "D");
-						MainActivity.hAdapter.insertHis(his);
-						d.dismiss();
-						fr.repopulateAdapter();
-					} else {
-						// We didn't actually successfully update the Doctor
-						String message = "Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";
-						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-								.show();
-					}
-				} else {
-					// Nothing to update
-					d.dismiss();
-				}
-			}
-		});
-		d.show();
 	}
 }

@@ -458,7 +458,7 @@ public class MainActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				//Step 1) Make sure we have a valid name
 				String str = et.getText().toString().trim();
-				if (!(str.length() > 0)) {
+				if (str.length() == 0) {
 					Toast.makeText(context, "Please ensure you've entered a valid patient name", Toast.LENGTH_SHORT).show();
 				}
 				//Step 2) Make sure patient doesn't already exist 
