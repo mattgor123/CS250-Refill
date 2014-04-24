@@ -16,7 +16,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +33,7 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().setTitle("Doctors");
 
 		View rootView = inflater.inflate(R.layout.fragment_doc, container,
 				false);

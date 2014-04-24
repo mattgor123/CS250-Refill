@@ -15,8 +15,7 @@ import android.widget.TextView;
 public class DoctorWrapper extends ArrayAdapter<Doctor> {
 	private List<Doctor> items;
 
-	public DoctorWrapper(Context context, int resource,
-			List<Doctor> objects) {
+	public DoctorWrapper(Context context, int resource, List<Doctor> objects) {
 		super(context, resource, objects);
 		this.items = objects;
 	}
@@ -24,7 +23,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 	// We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
-		return super.isEnabled(position) && items.get(position).getId() != 1;
+		return super.isEnabled(position);
 	}
 
 	@Override
@@ -49,23 +48,27 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 		 */
 		Doctor i = items.get(pos);
 
-		if (i != null) {
-			TextView name = (TextView) v.findViewById(R.id.name);
-			TextView phone = (TextView) v.findViewById(R.id.phone);
-			TextView email = (TextView) v.findViewById(R.id.email);
-			if (i.getId() == 1){
-				//This is our dummy Doctor
-				name.setText("Viewing Doctors");
-				phone.setText("");
-				email.setText("");
-				ImageView iv = (ImageView) v.findViewById(R.id.dr_ico);
-				iv.setVisibility(View.GONE);
-				return v;
-			}
-			else {
+		v.setVisibility(View.VISIBLE);
+		TextView name = (TextView) v.findViewById(R.id.name);
+		TextView phone = (TextView) v.findViewById(R.id.phone);
+		TextView email = (TextView) v.findViewById(R.id.email);
+		ImageView iv = (ImageView) v.findViewById(R.id.dr_ico);
+		if (i.getId() == 1) {
+			// This is our dummy Pharmacy
+			name.setVisibility(View.GONE);
+			phone.setVisibility(View.GONE);
+			email.setVisibility(View.GONE);
+			iv.setVisibility(View.GONE);
+			v.setVisibility(View.GONE);
+			return v;
+		} else {
+			name.setVisibility(View.VISIBLE);
+			phone.setVisibility(View.VISIBLE);
+			email.setVisibility(View.VISIBLE);
+			iv.setVisibility(View.VISIBLE);
+			v.setVisibility(View.VISIBLE);
 			// This is how you obtain a reference to the TextViews.
 			// These TextViews are created in the XML files we defined.
-
 			String nstr = i.getName();
 			if (name != null) {
 				String str = nstr;
@@ -82,7 +85,6 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
 				String str = i.getEmail();
 				email.setText(str);
 			}
-		}
 		}
 		// the view must be returned to our activity
 		return v;

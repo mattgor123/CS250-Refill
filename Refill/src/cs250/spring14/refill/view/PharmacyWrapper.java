@@ -15,8 +15,7 @@ import android.widget.TextView;
 public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 	private List<Pharmacy> items;
 
-	public PharmacyWrapper(Context context, int resource,
-			List<Pharmacy> objects) {
+	public PharmacyWrapper(Context context, int resource, List<Pharmacy> objects) {
 		super(context, resource, objects);
 		this.items = objects;
 	}
@@ -24,7 +23,7 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 	// We don't want to be able to click on a HistoryItem
 	@Override
 	public boolean isEnabled(int position) {
-		return super.isEnabled(position)  && items.get(position).getId() != 1 ;
+		return super.isEnabled(position);
 	}
 
 	@Override
@@ -50,38 +49,43 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
 		Pharmacy i = items.get(pos);
 
 		if (i != null) {
+			v.setVisibility(View.VISIBLE);
 			TextView name = (TextView) v.findViewById(R.id.name);
 			TextView phone = (TextView) v.findViewById(R.id.phone);
 			TextView email = (TextView) v.findViewById(R.id.email);
-			if (i.getId() == 1){
-				//This is our dummy Pharmacy
-				name.setText("Viewing Pharmacies");
-				phone.setText("");
-				email.setText("");
-				ImageView iv = (ImageView) v.findViewById(R.id.ph_ico);
+			ImageView iv = (ImageView) v.findViewById(R.id.ph_ico);
+			if (i.getId() == 1) {
+				// This is our dummy Pharmacy
+				name.setVisibility(View.GONE);
+				phone.setVisibility(View.GONE);
+				email.setVisibility(View.GONE);
 				iv.setVisibility(View.GONE);
+				v.setVisibility(View.GONE);
 				return v;
-			}
-			else {
-			// This is how you obtain a reference to the TextViews.
-			// These TextViews are created in the XML files we defined.
-
-			String nstr = i.getName();
-			if (name != null) {
-				String str = nstr;
-				if (str.length() > 17)
-					str = (String) str.subSequence(0, 15) + "...";
-				name.setText(str);
-			}
-			if (phone != null) {
-				String str = i.getPhone();
-				phone.setText(str);
-			}
-			if (email != null) {
-				// Here we handle finding the image from the name
-				String str = i.getEmail();
-				email.setText(str);
-			}
+			} else {
+				// This is how you obtain a reference to the TextViews.
+				// These TextViews are created in the XML files we defined.
+				name.setVisibility(View.VISIBLE);
+				phone.setVisibility(View.VISIBLE);
+				email.setVisibility(View.VISIBLE);
+				iv.setVisibility(View.VISIBLE);
+				v.setVisibility(View.VISIBLE);
+				String nstr = i.getName();
+				if (name != null) {
+					String str = nstr;
+					if (str.length() > 17)
+						str = (String) str.subSequence(0, 15) + "...";
+					name.setText(str);
+				}
+				if (phone != null) {
+					String str = i.getPhone();
+					phone.setText(str);
+				}
+				if (email != null) {
+					// Here we handle finding the image from the name
+					String str = i.getEmail();
+					email.setText(str);
+				}
 			}
 		}
 		// the view must be returned to our activity
