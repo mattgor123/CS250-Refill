@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cs250.spring14.refill.LoginActivity"
+            android:name="LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
