@@ -60,7 +60,7 @@ import cs250.spring14.refill.view.PharmacyFragment;
 import cs250.spring14.refill.view.RefreshableFragment;
 
 public class MainActivity extends ActionBarActivity implements
-		ActionBar.TabListener, PatientFragment.OnCompleteListener {
+ActionBar.TabListener, PatientFragment.OnCompleteListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -124,18 +124,18 @@ public class MainActivity extends ActionBarActivity implements
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-						MainActivity.currFrag = position;
-						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-						if (f != null) {
-							// Should never be null, but just in case...
-							f.repopulateAdapter();
-						}
-					}
-				});
+		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+				MainActivity.currFrag = position;
+				RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+				if (f != null) {
+					// Should never be null, but just in case...
+					f.repopulateAdapter();
+				}
+			}
+		});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (String tName : tabs) {
@@ -200,16 +200,31 @@ public class MainActivity extends ActionBarActivity implements
 			return true;
 		}
 		case R.id.action_doc:
-			DoctorFragment docFrag = new DoctorFragment();
-			docFrag.show(getSupportFragmentManager(), "DoctorFragment");
+			if (drAdapter.getAllDrs().size() == 1) {
+				Toast.makeText(this, "You haven't added any Doctors yet!", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				DoctorFragment docFrag = new DoctorFragment();
+				docFrag.show(getSupportFragmentManager(), "DoctorFragment");
+			}
 			return true;
 		case R.id.action_pharm:
-			PharmacyFragment pharmFrag = new PharmacyFragment();
-			pharmFrag.show(getSupportFragmentManager(), "PharmacyFragment");
+			if (phAdapter.getAllPhs().size() == 1){
+				Toast.makeText(this, "You haven't added any Pharmacies yet!", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				PharmacyFragment pharmFrag = new PharmacyFragment();
+				pharmFrag.show(getSupportFragmentManager(), "PharmacyFragment");
+			}
 			return true;
 		case R.id.action_patient:
-			PatientFragment patientFrag = new PatientFragment();
-			patientFrag.show(getSupportFragmentManager(), "PatientFragment");
+			if (paAdapter.getAllPats().size() == 1) {
+				Toast.makeText(this, "You haven't added any Patients yet!", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				PatientFragment patientFrag = new PatientFragment();
+				patientFrag.show(getSupportFragmentManager(), "PatientFragment");
+			}
 			return true;
 		case R.id.action_settings:
 			Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
@@ -437,7 +452,7 @@ public class MainActivity extends ActionBarActivity implements
 								"D"));
 						d.dismiss();
 						MainActivity.getInstance().mViewPager
-								.setCurrentItem(currFrag);
+						.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 						if (f != null) {
 							// Should never be null, but just in case...
@@ -447,7 +462,7 @@ public class MainActivity extends ActionBarActivity implements
 						// We didn't actually add the Doctor; ID = 0
 						String message = "All Doctors must have unique names. Please try again.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-								.show();
+						.show();
 					}
 				}
 			}
@@ -548,7 +563,7 @@ public class MainActivity extends ActionBarActivity implements
 					// history
 					currFrag = 1;
 					MainActivity.getInstance().mViewPager
-							.setCurrentItem(currFrag);
+					.setCurrentItem(currFrag);
 					RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 					if (f != null) {
 						// Should never be null, but just in case...
@@ -633,7 +648,7 @@ public class MainActivity extends ActionBarActivity implements
 					} else {
 						String message = "Couldn't add your Doctor. Please ensure each Doctor's name is unique.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-								.show();
+						.show();
 					}
 				}
 			}
@@ -755,7 +770,7 @@ public class MainActivity extends ActionBarActivity implements
 						d.dismiss();
 						currFrag = 1;
 						MainActivity.getInstance().mViewPager
-								.setCurrentItem(currFrag);
+						.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 						if (f != null) {
 							// Should never be null, but just in case...
@@ -764,7 +779,7 @@ public class MainActivity extends ActionBarActivity implements
 					} else {
 						String message = "Couldn't add your Pharmacy to the DB. Please ensure all Pharmacy names are unique";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-								.show();
+						.show();
 					}
 				}
 			}
@@ -896,7 +911,7 @@ public class MainActivity extends ActionBarActivity implements
 					} else {
 						String message = "Couldn't add your Pharmacy. Please ensure all Pharmacys have unique name.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-								.show();
+						.show();
 					}
 				}
 			}
@@ -1174,11 +1189,11 @@ public class MainActivity extends ActionBarActivity implements
 		builder.setView(sv);
 		builder.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// Adios amigos!
-						return;
-					}
-				});
+			public void onClick(DialogInterface dialog, int id) {
+				// Adios amigos!
+				return;
+			}
+		});
 		builder.setPositiveButton("OK", null);
 		// This is to make it so hitting OK on an invalid input doesn't close
 		// the dialog!
@@ -1334,13 +1349,13 @@ public class MainActivity extends ActionBarActivity implements
 									// Switch to the Prescriptions tab if we've
 									// added a prescription
 									MainActivity.getInstance().mViewPager
-											.setCurrentItem(0);
+									.setCurrentItem(0);
 
 								}
 								// update the view
 								currFrag = 0;
 								MainActivity.getInstance().mViewPager
-										.setCurrentItem(currFrag);
+								.setCurrentItem(currFrag);
 								RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 								if (f != null) {
 									// Should never be null, but just in case...
