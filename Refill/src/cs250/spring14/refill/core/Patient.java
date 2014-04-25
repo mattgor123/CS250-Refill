@@ -186,11 +186,15 @@ public class Patient {
 						c = Color.WHITE;
 					}
 					if (shouldUpdatePatient(pat, str, c)) {
-						if (MainActivity.paAdapter.existsPatWithColor(String.valueOf(c))) {
-							Toast.makeText(context, "A patient with that color already exists!", Toast.LENGTH_SHORT).show();
+						if (MainActivity.paAdapter.existsPatWithColor(String
+								.valueOf(c))) {
+							Toast.makeText(
+									context,
+									"A patient with that color already exists!",
+									Toast.LENGTH_SHORT).show();
 							return;
-						}
-						else if (MainActivity.paAdapter.updatePa(pat.getId(), str, c)) {
+						} else if (MainActivity.paAdapter.updatePa(pat.getId(),
+								str, c)) {
 							// We successfully updated the Patient
 							String oldPatient = makeStringFromPatient(pat);
 							pat.setName(str);

@@ -22,7 +22,7 @@ public class HistoryDBAdapter {
 	public static int histCount;
 
 	private static final String DB_NAME = "His.db";
-	private static final int DB_VERSION = 17;
+	private static final int DB_VERSION = 18;
 
 	private static final String H_TABLE = "His";
 	public static final String H_ID = "H_id"; // column 0
@@ -146,11 +146,12 @@ public class HistoryDBAdapter {
 			} while (c.moveToNext());
 		return his;
 	}
-	
+
 	/**
 	 * Method to get the right number of history items from the DB
 	 * 
-	 * @return an ArrayList<HistoryItem> with no more than histCount HistoryItems
+	 * @return an ArrayList<HistoryItem> with no more than histCount
+	 *         HistoryItems
 	 */
 	public ArrayList<HistoryItem> getHisForDisplay() {
 		ArrayList<HistoryItem> his = new ArrayList<HistoryItem>();
@@ -163,7 +164,7 @@ public class HistoryDBAdapter {
 				// Set the ID to the row in the DB
 				result.setId(c.getInt(0));
 				his.add(result);
-			} while (c.getPosition() < histCount-1 && c.moveToNext());
+			} while (c.getPosition() < histCount - 1 && c.moveToNext());
 		return his;
 	}
 

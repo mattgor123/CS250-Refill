@@ -26,7 +26,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 22; // Patient Str -> Patient class
+	private static final int DB_VERSION = 23; // Patient Str -> Patient class
 	public static final String namesortKey = "refill.namesort";
 	public static final String patientsortKey = "refill.patientsort";
 	public static boolean shouldSortByName;
@@ -294,14 +294,16 @@ public class RxDBAdapter {
 	public Cursor getAllRxsCursor() {
 		if (shouldSortByName) {
 			if (shouldSortByPatient) {
-				return db.query(RX_TABLE,RX_COLS,null,null,null,null, RX_PT +", " + RX_NAME + " ASC");
-			}
-			else return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_NAME+" ASC");
-		}
-		else if (shouldSortByPatient){
-			return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_PT + " ASC");
-		}
-		else return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
+				return db.query(RX_TABLE, RX_COLS, null, null, null, null,
+						RX_PT + ", " + RX_NAME + " ASC");
+			} else
+				return db.query(RX_TABLE, RX_COLS, null, null, null, null,
+						RX_NAME + " ASC");
+		} else if (shouldSortByPatient) {
+			return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_PT
+					+ " ASC");
+		} else
+			return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
 	}
 
 	/**

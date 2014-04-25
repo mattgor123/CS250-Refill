@@ -61,7 +61,8 @@ import cs250.spring14.refill.view.RefreshableFragment;
 import cs250.spring14.refill.view.SettingsFragment;
 
 public class MainActivity extends ActionBarActivity implements
-ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceChangeListener {
+		ActionBar.TabListener, PatientFragment.OnCompleteListener,
+		OnSharedPreferenceChangeListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -99,7 +100,8 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 				Context.MODE_PRIVATE);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		shouldLogin = prefs.getBoolean(LoginActivity.nextKey, true);
-		HistoryDBAdapter.histCount = prefs.getInt(HistoryDBAdapter.histKey, 100);
+		HistoryDBAdapter.histCount = prefs
+				.getInt(HistoryDBAdapter.histKey, 100);
 		if (shouldLogin) {
 			// Show the log-in screen
 			Intent login = new Intent(this, LoginActivity.class);
@@ -126,18 +128,18 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
 		mViewPager
-		.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-				MainActivity.currFrag = position;
-				RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-				if (f != null) {
-					// Should never be null, but just in case...
-					f.repopulateAdapter();
-				}
-			}
-		});
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						actionBar.setSelectedNavigationItem(position);
+						MainActivity.currFrag = position;
+						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+						if (f != null) {
+							// Should never be null, but just in case...
+							f.repopulateAdapter();
+						}
+					}
+				});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (String tName : tabs) {
@@ -151,14 +153,16 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 
 		// Rx adapter stuff
 		rxAdapter = new RxDBAdapter(this);
-		RxDBAdapter.shouldSortByName = prefs.getBoolean(RxDBAdapter.namesortKey, false);
-		RxDBAdapter.shouldSortByPatient = prefs.getBoolean(RxDBAdapter.patientsortKey, false);
+		RxDBAdapter.shouldSortByName = prefs.getBoolean(
+				RxDBAdapter.namesortKey, false);
+		RxDBAdapter.shouldSortByPatient = prefs.getBoolean(
+				RxDBAdapter.patientsortKey, false);
 		rxAdapter.open();
 
 		// Dr adapter stuff
 		drAdapter = new DoctorDBAdapter(this);
 		drAdapter.open();
-		if (drAdapter.getAllDrs().size() == 0) {
+		if (drAdapter.getSize() == 0) {
 			// Dummy doctor in first spot for the spinner
 			Doctor adding = new Doctor("", "", "Select a Doctor or Add One");
 			adding.setId(drAdapter.insertDr(adding));
@@ -166,7 +170,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		// Ph adapter stuff
 		phAdapter = new PharmacyDBAdapter(this);
 		phAdapter.open();
-		if (phAdapter.getAllPhs().size() == 0) {
+		if (phAdapter.getSize() == 0) {
 			// Dummy pharmacy in first spot for the spinner
 			Pharmacy adding = new Pharmacy("", "", "",
 					"Select a Pharmacy or Add One");
@@ -174,12 +178,13 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		}
 		// History adapter stuff
 		hAdapter = new HistoryDBAdapter(this);
-		HistoryDBAdapter.histCount = prefs.getInt(HistoryDBAdapter.histKey, 100);
+		HistoryDBAdapter.histCount = prefs
+				.getInt(HistoryDBAdapter.histKey, 100);
 		hAdapter.open();
 		// Patient adapter stuff
 		paAdapter = new PatientDBAdapter(this);
 		paAdapter.open();
-		if (paAdapter.getAllPats().size() == 0) {
+		if (paAdapter.getSize() == 0) {
 			Patient adding = new Patient("Select a Patient!", 0);
 			adding.setId(paAdapter.insertPa(adding));
 		}
@@ -205,35 +210,36 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 			return true;
 		}
 		case R.id.action_doc:
-			if (drAdapter.getAllDrs().size() == 1) {
-				Toast.makeText(this, "You haven't added any Doctors yet!", Toast.LENGTH_SHORT).show();
-			}
-			else {
+			if (drAdapter.getSize() <= 1) {
+				Toast.makeText(this, "You haven't added any Doctors yet!",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				DoctorFragment docFrag = new DoctorFragment();
 				docFrag.show(getSupportFragmentManager(), "DoctorFragment");
 			}
 			return true;
 		case R.id.action_pharm:
-			if (phAdapter.getAllPhs().size() == 1){
-				Toast.makeText(this, "You haven't added any Pharmacies yet!", Toast.LENGTH_SHORT).show();
-			}
-			else {
+			if (phAdapter.getSize() <= 1) {
+				Toast.makeText(this, "You haven't added any Pharmacies yet!",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				PharmacyFragment pharmFrag = new PharmacyFragment();
 				pharmFrag.show(getSupportFragmentManager(), "PharmacyFragment");
 			}
 			return true;
 		case R.id.action_patient:
-			if (paAdapter.getAllPats().size() == 1) {
-				Toast.makeText(this, "You haven't added any Patients yet!", Toast.LENGTH_SHORT).show();
-			}
-			else {
+			if (paAdapter.getSize() <= 1) {
+				Toast.makeText(this, "You haven't added any Patients yet!",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				PatientFragment patientFrag = new PatientFragment();
-				patientFrag.show(getSupportFragmentManager(), "PatientFragment");
+				patientFrag
+						.show(getSupportFragmentManager(), "PatientFragment");
 			}
 			return true;
 		case R.id.action_settings:
 			SettingsFragment settingFrag = new SettingsFragment();
-			settingFrag.show(getSupportFragmentManager(),"SettingsFragment");
+			settingFrag.show(getSupportFragmentManager(), "SettingsFragment");
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -458,7 +464,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 								"D"));
 						d.dismiss();
 						MainActivity.getInstance().mViewPager
-						.setCurrentItem(currFrag);
+								.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 						if (f != null) {
 							// Should never be null, but just in case...
@@ -468,7 +474,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 						// We didn't actually add the Doctor; ID = 0
 						String message = "All Doctors must have unique names. Please try again.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-						.show();
+								.show();
 					}
 				}
 			}
@@ -501,7 +507,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 							"A patient with this name already exists!",
 							Toast.LENGTH_SHORT).show();
 				}
-				//Step 3) Make sure no patient with same color already exists
+				// Step 3) Make sure no patient with same color already exists
 				else {
 					int color = colors.getCheckedRadioButtonId();
 					String message;
@@ -533,18 +539,19 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 						return;
 					}
 					if (paAdapter.existsPatWithColor(String.valueOf(newColor))) {
-						Toast.makeText(context, "A patient with this color already exists!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,
+								"A patient with this color already exists!",
+								Toast.LENGTH_SHORT).show();
 						return;
-					}
-					else {
-						paAdapter.insertPa(new Patient(str,newColor));
+					} else {
+						paAdapter.insertPa(new Patient(str, newColor));
 						message = "Added to Patients DB on "
 								+ df.format(Calendar.getInstance().getTime());
 						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();		
+						dialog.dismiss();
 						currFrag = 1;
 						MainActivity.getInstance().mViewPager
-						.setCurrentItem(currFrag);
+								.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 						if (f != null) {
 							// Should never be null, but just in case...
@@ -630,7 +637,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 					} else {
 						String message = "Couldn't add your Doctor. Please ensure each Doctor's name is unique.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-						.show();
+								.show();
 					}
 				}
 			}
@@ -752,7 +759,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 						d.dismiss();
 						currFrag = 1;
 						MainActivity.getInstance().mViewPager
-						.setCurrentItem(currFrag);
+								.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 						if (f != null) {
 							// Should never be null, but just in case...
@@ -761,7 +768,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 					} else {
 						String message = "Couldn't add your Pharmacy to the DB. Please ensure all Pharmacy names are unique";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-						.show();
+								.show();
 					}
 				}
 			}
@@ -771,7 +778,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 
 	protected void openPatientSelectDialog(final Context context, final View v) {
 		ArrayList<Patient> pats = paAdapter.getAllPats();
-		if (pats.size() == 0 || pats.size() == 1) {
+		if (pats.size() <= 1) {
 			Toast.makeText(
 					context,
 					"Please add a patient; this must be done before adding an Rx",
@@ -784,7 +791,8 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setView(spinner);
 			final Dialog d = builder.create();
-			//Making the dialog appear at the top rather than center; looks better imo
+			// Making the dialog appear at the top rather than center; looks
+			// better imo
 			d.getWindow().setGravity(Gravity.TOP);
 			spinner.setAdapter(aa);
 			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -893,7 +901,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 					} else {
 						String message = "Couldn't add your Pharmacy. Please ensure all Pharmacys have unique name.";
 						Toast.makeText(context, message, Toast.LENGTH_SHORT)
-						.show();
+								.show();
 					}
 				}
 			}
@@ -959,7 +967,7 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		pill.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (paAdapter.getAllPats().size() < 2) {
+				if (paAdapter.getSize() <= 1) {
 					Toast.makeText(context, "Please add a patient first!",
 							Toast.LENGTH_SHORT).show();
 				} else {
@@ -986,14 +994,16 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		patient.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (paAdapter.getAllPats().size() == 8) {
-					Toast.makeText(context, "We're sorry, you can't add another patient - there are no colors left. Please remove a patient first.", Toast.LENGTH_SHORT).show();
-				}
-				else {
+				if (paAdapter.getSize() == 8) {
+					Toast.makeText(
+							context,
+							"We're sorry, you can't add another patient - there are no colors left. Please remove a patient first.",
+							Toast.LENGTH_SHORT).show();
+				} else {
 					openAddPatientDialog(context);
 					dialog.dismiss();
 				}
-				
+
 			}
 		});
 		dialog.show();
@@ -1177,11 +1187,11 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		builder.setView(sv);
 		builder.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// Adios amigos!
-				return;
-			}
-		});
+					public void onClick(DialogInterface dialog, int id) {
+						// Adios amigos!
+						return;
+					}
+				});
 		builder.setPositiveButton("OK", null);
 		// This is to make it so hitting OK on an invalid input doesn't close
 		// the dialog!
@@ -1337,13 +1347,13 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 									// Switch to the Prescriptions tab if we've
 									// added a prescription
 									MainActivity.getInstance().mViewPager
-									.setCurrentItem(0);
+											.setCurrentItem(0);
 
 								}
 								// update the view
 								currFrag = 0;
 								MainActivity.getInstance().mViewPager
-								.setCurrentItem(currFrag);
+										.setCurrentItem(currFrag);
 								RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 								if (f != null) {
 									// Should never be null, but just in case...
@@ -1448,21 +1458,21 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		if (key.equals(HistoryDBAdapter.histKey)) {
 			HistoryDBAdapter.histCount = sharedPreferences.getInt(key, 100);
 			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-			if (f!=null) {
+			if (f != null) {
 				f.repopulateAdapter();
 			}
-		}
-		else if (key.equals(RxDBAdapter.namesortKey)) {
-			RxDBAdapter.shouldSortByName = sharedPreferences.getBoolean(key, false);
+		} else if (key.equals(RxDBAdapter.namesortKey)) {
+			RxDBAdapter.shouldSortByName = sharedPreferences.getBoolean(key,
+					false);
 			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-			if (f!=null) {
+			if (f != null) {
 				f.repopulateAdapter();
 			}
-		}
-		else if (key.equals(RxDBAdapter.patientsortKey)) {
-			RxDBAdapter.shouldSortByPatient = sharedPreferences.getBoolean(key, false);
+		} else if (key.equals(RxDBAdapter.patientsortKey)) {
+			RxDBAdapter.shouldSortByPatient = sharedPreferences.getBoolean(key,
+					false);
 			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-			if (f!= null) {
+			if (f != null) {
 				f.repopulateAdapter();
 			}
 		}

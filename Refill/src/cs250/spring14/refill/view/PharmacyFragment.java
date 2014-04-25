@@ -47,17 +47,18 @@ public class PharmacyFragment extends DialogFragment implements
 				MainActivity.phAdapter.getAllPhs());
 		phList.setAdapter(phAdap);
 		phList.setLongClickable(true);
-		phList.setOnItemLongClickListener(new OnItemLongClickListener () {
+		phList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final Pharmacy ph = (Pharmacy) parent.getItemAtPosition(position);
-				//We implement our long-press action soon.
+				final Pharmacy ph = (Pharmacy) parent
+						.getItemAtPosition(position);
+				// We implement our long-press action soon.
 				MainActivity.alertMessage(getActivity(),
 						"Please select an action",
-						"Would you like to Call or E-mail "
-								+ ph.getName() + "?", "Call",
+						"Would you like to Call or E-mail " + ph.getName()
+								+ "?", "Call",
 						// Call
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -65,10 +66,12 @@ public class PharmacyFragment extends DialogFragment implements
 									int which) {
 								// Remove functionality must be added here
 								if (ph != null) {
-									//Populate the Dialer with Phone #
+									// Populate the Dialer with Phone #
 									getDialog().dismiss();
-									Intent intent = new Intent(Intent.ACTION_DIAL);
-									intent.setData(Uri.parse("tel:"+ph.getPhone()));
+									Intent intent = new Intent(
+											Intent.ACTION_DIAL);
+									intent.setData(Uri.parse("tel:"
+											+ ph.getPhone()));
 									startActivity(intent);
 								}
 							}
@@ -79,17 +82,27 @@ public class PharmacyFragment extends DialogFragment implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (ph != null) {
-									//Populate the E-mail intent with E-mail address
-									Toast.makeText(getActivity(), "Emailing " + ph.getName(), Toast.LENGTH_SHORT).show();
-									Intent intent = new Intent(Intent.ACTION_SENDTO);
-									String uriText = "mailto:" + Uri.encode(ph.getEmail()) + "?subject=" + Uri.encode("Question about a prescription") + "&body=" + Uri.encode("Dear " + ph.getName() + ",\n\n");
+									// Populate the E-mail intent with E-mail
+									// address
+									Toast.makeText(getActivity(),
+											"Emailing " + ph.getName(),
+											Toast.LENGTH_SHORT).show();
+									Intent intent = new Intent(
+											Intent.ACTION_SENDTO);
+									String uriText = "mailto:"
+											+ Uri.encode(ph.getEmail())
+											+ "?subject="
+											+ Uri.encode("Question about a prescription")
+											+ "&body="
+											+ Uri.encode("Dear " + ph.getName()
+													+ ",\n\n");
 									intent.setData(Uri.parse(uriText));
-									startActivity(intent);								
+									startActivity(intent);
 								}
 							}
 						});
 				return true;
-			}			
+			}
 		});
 		phList.setOnItemClickListener(new OnItemClickListener() {
 

@@ -53,39 +53,39 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 						"Please select an action",
 						"Would you like to Remove or View/Edit details for "
 								+ rx.getName() + "?", "Remove",
-								// Remove
-								new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						// Remove functionality must be added here
-						MainActivity.rxAdapter.removeRx(rx.getId());
-						String msg = "Removed from Prescriptions DB on "
-								+ MainActivity.df.format(Calendar
-										.getInstance().getTime());
-						MainActivity.hAdapter
-						.insertHis(new HistoryItem(
-								rx.getName(), msg, "R"));
-						// phAdap.notifyDataSetChanged();
-						repopulateAdapter();
-					}
-				}, "View/Edit",
-				// Edit
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						// Edit functionality must be added here
+						// Remove
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// Remove functionality must be added here
+								MainActivity.rxAdapter.removeRx(rx.getId());
+								String msg = "Removed from Prescriptions DB on "
+										+ MainActivity.df.format(Calendar
+												.getInstance().getTime());
+								MainActivity.hAdapter
+										.insertHis(new HistoryItem(
+												rx.getName(), msg, "R"));
+								// phAdap.notifyDataSetChanged();
+								repopulateAdapter();
+							}
+						}, "View/Edit",
+						// Edit
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// Edit functionality must be added here
 
-						MainActivity.getInstance()
-						.openAddOrEditRxDialog(
-								MainActivity.getInstance(), rx);
-						// Toast.makeText(getActivity(),
-						// "You selected to edit Rx " + rx.getName(),
-						// Toast.LENGTH_SHORT)
-						// .show();
-					}
-				});
+								MainActivity.getInstance()
+										.openAddOrEditRxDialog(
+												MainActivity.getInstance(), rx);
+								// Toast.makeText(getActivity(),
+								// "You selected to edit Rx " + rx.getName(),
+								// Toast.LENGTH_SHORT)
+								// .show();
+							}
+						});
 			}
 
 		});
@@ -102,128 +102,134 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 						"Would you like to contact Doctor: "
 								+ rx.getDoc().getName() + " or Pharmacy: "
 								+ rx.getPharmacy().getName() + "?", "Doctor",
-								// Doctor
-								new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						final Doctor doc = rx.getDoc();
-						// Open up the Doctor alertMessage
-						MainActivity.alertMessage(getActivity(),
-								"Please select an action",
-								"Would you like to Call or E-mail "
-										+ doc.getName() + "?", "Call",
-										// Call
-										new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(
-									DialogInterface dialog,
-									int which) {
-								if (doc != null) {
-									// Populate the Dialer with
-									// Phone #
-									Intent intent = new Intent(
-											Intent.ACTION_DIAL);
-									intent.setData(Uri.parse("tel:"
-											+ doc.getPhone()));
-									startActivity(intent);
-								}
-							}
-						}, "E-mail",
-						// Email
+						// Doctor
 						new DialogInterface.OnClickListener() {
 							@Override
-							public void onClick(
-									DialogInterface dialog,
+							public void onClick(DialogInterface dialog,
 									int which) {
-								if (doc != null) {
-									// Populate the E-mail
-									// intent with E-mail
-									// address
-									Intent intent = new Intent(
-											Intent.ACTION_SENDTO);
-									String uriText = "mailto:"
-											+ Uri.encode(doc
-													.getEmail())
-													+ "?subject="
-													+ Uri.encode("Question about Rx " + rx.getName() + "-#" + rx.getRxNumb())
-													+ "&body="
-													+ Uri.encode("Dr. "
-															+ doc.getName()
-															+ ",\n\n");
-									intent.setData(Uri
-											.parse(uriText));
-									startActivity(intent);
-								}
-							}
-						});
+								final Doctor doc = rx.getDoc();
+								// Open up the Doctor alertMessage
+								MainActivity.alertMessage(getActivity(),
+										"Please select an action",
+										"Would you like to Call or E-mail "
+												+ doc.getName() + "?", "Call",
+										// Call
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												if (doc != null) {
+													// Populate the Dialer with
+													// Phone #
+													Intent intent = new Intent(
+															Intent.ACTION_DIAL);
+													intent.setData(Uri.parse("tel:"
+															+ doc.getPhone()));
+													startActivity(intent);
+												}
+											}
+										}, "E-mail",
+										// Email
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												if (doc != null) {
+													// Populate the E-mail
+													// intent with E-mail
+													// address
+													Intent intent = new Intent(
+															Intent.ACTION_SENDTO);
+													String uriText = "mailto:"
+															+ Uri.encode(doc
+																	.getEmail())
+															+ "?subject="
+															+ Uri.encode("Question about Rx "
+																	+ rx.getName()
+																	+ "-#"
+																	+ rx.getRxNumb())
+															+ "&body="
+															+ Uri.encode("Dr. "
+																	+ doc.getName()
+																	+ ",\n\n");
+													intent.setData(Uri
+															.parse(uriText));
+													startActivity(intent);
+												}
+											}
+										});
 
-					}
-				}, "Pharmacy",
-				// Open up the Pharmacy alertMessage
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						final Pharmacy ph = rx.getPharmacy();
-						MainActivity.alertMessage(getActivity(),
-								"Please select an action",
-								"Would you like to Call or E-mail "
-										+ ph.getName() + "?", "Call",
-										// Call
-										new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(
-									DialogInterface dialog,
-									int which) {
-								// Remove functionality must be
-								// added here
-								if (ph != null) {
-									// Populate the Dialer with
-									// Phone #
-									Intent intent = new Intent(
-											Intent.ACTION_DIAL);
-									intent.setData(Uri.parse("tel:"
-											+ ph.getPhone()));
-									startActivity(intent);
-								}
 							}
-						}, "E-mail",
-						// Edit
+						}, "Pharmacy",
+						// Open up the Pharmacy alertMessage
 						new DialogInterface.OnClickListener() {
 							@Override
-							public void onClick(
-									DialogInterface dialog,
+							public void onClick(DialogInterface dialog,
 									int which) {
-								if (ph != null) {
-									// Populate the E-mail
-									// intent with E-mail
-									// address
-									Toast.makeText(
-											getActivity(),
-											"Emailing "
-													+ ph.getName(),
-													Toast.LENGTH_SHORT)
-													.show();
-									Intent intent = new Intent(
-											Intent.ACTION_SENDTO);
-									String uriText = "mailto:"
-											+ Uri.encode(ph
-													.getEmail())
-													+ "?subject="
-													+ Uri.encode("Question about Rx " + rx.getName() + "-#" + rx.getRxNumb())
-													+ "&body="
-													+ Uri.encode("Dear "
-															+ ph.getName()
-															+ ",\n\n"); 
-									intent.setData(Uri
-											.parse(uriText));
-									startActivity(intent);
-								}
+								final Pharmacy ph = rx.getPharmacy();
+								MainActivity.alertMessage(getActivity(),
+										"Please select an action",
+										"Would you like to Call or E-mail "
+												+ ph.getName() + "?", "Call",
+										// Call
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												// Remove functionality must be
+												// added here
+												if (ph != null) {
+													// Populate the Dialer with
+													// Phone #
+													Intent intent = new Intent(
+															Intent.ACTION_DIAL);
+													intent.setData(Uri.parse("tel:"
+															+ ph.getPhone()));
+													startActivity(intent);
+												}
+											}
+										}, "E-mail",
+										// Edit
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												if (ph != null) {
+													// Populate the E-mail
+													// intent with E-mail
+													// address
+													Toast.makeText(
+															getActivity(),
+															"Emailing "
+																	+ ph.getName(),
+															Toast.LENGTH_SHORT)
+															.show();
+													Intent intent = new Intent(
+															Intent.ACTION_SENDTO);
+													String uriText = "mailto:"
+															+ Uri.encode(ph
+																	.getEmail())
+															+ "?subject="
+															+ Uri.encode("Question about Rx "
+																	+ rx.getName()
+																	+ "-#"
+																	+ rx.getRxNumb())
+															+ "&body="
+															+ Uri.encode("Dear "
+																	+ ph.getName()
+																	+ ",\n\n");
+													intent.setData(Uri
+															.parse(uriText));
+													startActivity(intent);
+												}
+											}
+										});
 							}
 						});
-					}
-				});
 
 				return true;
 			}

@@ -47,17 +47,17 @@ public class DoctorFragment extends DialogFragment implements
 				MainActivity.drAdapter.getAllDrs());
 		docList.setAdapter(docAdap);
 		docList.setLongClickable(true);
-		docList.setOnItemLongClickListener(new OnItemLongClickListener () {
+		docList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				final Doctor doc = (Doctor) parent.getItemAtPosition(position);
-				//We implement our long-press action soon.
+				// We implement our long-press action soon.
 				MainActivity.alertMessage(getActivity(),
 						"Please select an action",
-						"Would you like to Call or E-mail "
-								+ doc.getName() + "?", "Call",
+						"Would you like to Call or E-mail " + doc.getName()
+								+ "?", "Call",
 						// Call
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -65,10 +65,12 @@ public class DoctorFragment extends DialogFragment implements
 									int which) {
 								// Remove functionality must be added here
 								if (doc != null) {
-									//Populate the Dialer with Phone #
+									// Populate the Dialer with Phone #
 									getDialog().dismiss();
-									Intent intent = new Intent(Intent.ACTION_DIAL);
-									intent.setData(Uri.parse("tel:"+doc.getPhone()));
+									Intent intent = new Intent(
+											Intent.ACTION_DIAL);
+									intent.setData(Uri.parse("tel:"
+											+ doc.getPhone()));
 									startActivity(intent);
 								}
 							}
@@ -79,18 +81,26 @@ public class DoctorFragment extends DialogFragment implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (doc != null) {
-									//Populate the E-mail intent with E-mail address
+									// Populate the E-mail intent with E-mail
+									// address
 									getDialog().dismiss();
-									Intent intent = new Intent(Intent.ACTION_SENDTO);
-									String uriText = "mailto:" + Uri.encode(doc.getEmail()) + "?subject=" + Uri.encode("Question about a prescription") + "&body=" + Uri.encode("Dr. " + doc.getName() + ",\n\n");
+									Intent intent = new Intent(
+											Intent.ACTION_SENDTO);
+									String uriText = "mailto:"
+											+ Uri.encode(doc.getEmail())
+											+ "?subject="
+											+ Uri.encode("Question about a prescription")
+											+ "&body="
+											+ Uri.encode("Dr. " + doc.getName()
+													+ ",\n\n");
 									intent.setData(Uri.parse(uriText));
-									startActivity(intent);								
+									startActivity(intent);
 								}
 							}
 						});
 				return true;
 			}
-			
+
 		});
 		docList.setOnItemClickListener(new OnItemClickListener() {
 

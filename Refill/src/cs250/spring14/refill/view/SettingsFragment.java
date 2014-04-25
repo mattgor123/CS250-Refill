@@ -26,48 +26,64 @@ public class SettingsFragment extends DialogFragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_settings, container,
 				false);
-		final EditText histCount = (EditText) rootView.findViewById(R.id.historyCount);
-		histCount.setText(""+HistoryDBAdapter.histCount);
-		final CheckBox loginBox = (CheckBox) rootView.findViewById(R.id.shouldLogin);
-		final CheckBox nameSortBox = (CheckBox) rootView.findViewById(R.id.sortbyname);
-		final CheckBox ptSortBox = (CheckBox) rootView.findViewById(R.id.sortbypatient);
-		final SharedPreferences prefs = MainActivity.getInstance().getSharedPreferences("refill",
-				Context.MODE_PRIVATE);
-		final boolean loginChecked = prefs.getBoolean(LoginActivity.nextKey, true);
-		final boolean nameSortChecked = prefs.getBoolean(RxDBAdapter.namesortKey, false);
-		final boolean ptSortChecked = prefs.getBoolean(RxDBAdapter.patientsortKey, false);
+		final EditText histCount = (EditText) rootView
+				.findViewById(R.id.historyCount);
+		histCount.setText("" + HistoryDBAdapter.histCount);
+		final CheckBox loginBox = (CheckBox) rootView
+				.findViewById(R.id.shouldLogin);
+		final CheckBox nameSortBox = (CheckBox) rootView
+				.findViewById(R.id.sortbyname);
+		final CheckBox ptSortBox = (CheckBox) rootView
+				.findViewById(R.id.sortbypatient);
+		final SharedPreferences prefs = MainActivity.getInstance()
+				.getSharedPreferences("refill", Context.MODE_PRIVATE);
+		final boolean loginChecked = prefs.getBoolean(LoginActivity.nextKey,
+				true);
+		final boolean nameSortChecked = prefs.getBoolean(
+				RxDBAdapter.namesortKey, false);
+		final boolean ptSortChecked = prefs.getBoolean(
+				RxDBAdapter.patientsortKey, false);
 		loginBox.setChecked(loginChecked);
 		nameSortBox.setChecked(nameSortChecked);
 		ptSortBox.setChecked(ptSortChecked);
 		Button ok = (Button) rootView.findViewById(R.id.ok);
-		ok.setOnClickListener(new OnClickListener () {
+		ok.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//See if we should update shared preference for nextKey
+				// See if we should update shared preference for nextKey
 				if (loginBox.isChecked() != loginChecked) {
-					prefs.edit().putBoolean(LoginActivity.nextKey, loginBox.isChecked()).commit();
+					prefs.edit()
+							.putBoolean(LoginActivity.nextKey,
+									loginBox.isChecked()).commit();
 				}
-				//See if we should update shared preferences for name sort
+				// See if we should update shared preferences for name sort
 				if (nameSortBox.isChecked() != nameSortChecked) {
-					prefs.edit().putBoolean(RxDBAdapter.namesortKey, nameSortBox.isChecked()).commit();
+					prefs.edit()
+							.putBoolean(RxDBAdapter.namesortKey,
+									nameSortBox.isChecked()).commit();
 				}
-				//See if we should update shared preferences for patient
+				// See if we should update shared preferences for patient
 				if (ptSortBox.isChecked() != ptSortChecked) {
-					prefs.edit().putBoolean(RxDBAdapter.patientsortKey, ptSortBox.isChecked()).commit();
+					prefs.edit()
+							.putBoolean(RxDBAdapter.patientsortKey,
+									ptSortBox.isChecked()).commit();
 				}
-				//See if we should update shared preferences for hist count
-				int newHist = Integer.valueOf(histCount.getText().toString().trim());
+				// See if we should update shared preferences for hist count
+				int newHist = Integer.valueOf(histCount.getText().toString()
+						.trim());
 				if (newHist < 10) {
-					Toast.makeText(getActivity(), "Please show at least 10 history items", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(),
+							"Please show at least 10 history items",
+							Toast.LENGTH_SHORT).show();
 					return;
-				}
-				else if (newHist != HistoryDBAdapter.histCount) {
-					prefs.edit().putInt(HistoryDBAdapter.histKey,newHist).commit();
+				} else if (newHist != HistoryDBAdapter.histCount) {
+					prefs.edit().putInt(HistoryDBAdapter.histKey, newHist)
+							.commit();
 				}
 				getDialog().dismiss();
 			}
-			
+
 		});
 		return rootView;
 	}

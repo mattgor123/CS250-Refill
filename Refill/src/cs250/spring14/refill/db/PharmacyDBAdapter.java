@@ -20,7 +20,7 @@ public class PharmacyDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Ph.db";
-	private static final int DB_VERSION = 16; // all pharmacies must have unique
+	private static final int DB_VERSION = 17; // all pharmacies must have unique
 												// name
 
 	private static final String PH_TABLE = "phs";
@@ -156,6 +156,17 @@ public class PharmacyDBAdapter {
 		db = dbHelper.getWritableDatabase();
 		return db.delete(PH_TABLE, PH_ID + " = ?",
 				new String[] { String.valueOf(ri) });
+	}
+
+	/**
+	 * Method to get the # of rows in the db
+	 * 
+	 * @return the Cursor
+	 */
+	public int getSize() {
+		Cursor c = db.query(PH_TABLE, PH_COLS, null, null, null, null, null);
+		c.moveToFirst();
+		return c.getCount();
 	}
 
 	/**

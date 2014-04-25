@@ -20,7 +20,7 @@ public class PatientDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Pa.db";
-	private static final int DB_VERSION = 5; //Require unique color
+	private static final int DB_VERSION = 6; // Require unique color
 
 	private static final String PA_TABLE = "Pats";
 	public static final String PA_ID = "Pa_id"; // column 0
@@ -115,6 +115,17 @@ public class PatientDBAdapter {
 	}
 
 	/**
+	 * Method to get the # of rows in the db
+	 * 
+	 * @return the Cursor
+	 */
+	public int getSize() {
+		Cursor c = db.query(PA_TABLE, PA_COLS, null, null, null, null, null);
+		c.moveToFirst();
+		return c.getCount();
+	}
+
+	/**
 	 * Method to get a Patient given Name
 	 * 
 	 * @param name
@@ -206,15 +217,16 @@ public class PatientDBAdapter {
 
 	/**
 	 * Method to determine if a patient of a given color already exists
-	 * @param color the color to check for
+	 * 
+	 * @param color
+	 *            the color to check for
 	 * @return true if exists, false otherwise
 	 * @throws SQLException
 	 */
 	public boolean existsPatWithColor(String colorStr) throws SQLException {
-		Cursor c = db
-				.query(true, PA_TABLE, PA_COLS, PA_COLOR + "=?",
-						new String[] { String.valueOf(colorStr) }, null, null,
-						null, null);
+		Cursor c = db.query(true, PA_TABLE, PA_COLS, PA_COLOR + "=?",
+				new String[] { String.valueOf(colorStr) }, null, null, null,
+				null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return false;
 		} else {
@@ -222,7 +234,6 @@ public class PatientDBAdapter {
 		}
 	}
 
-	
 	/**
 	 * Method to return the cursor for a Patient given a specific row
 	 * 
