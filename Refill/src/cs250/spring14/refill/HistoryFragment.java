@@ -139,8 +139,10 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 
 	@Override
 	public void repopulateAdapter() {
+		if (hisAdap!=null) {
 		hisAdap.clear();
 		hisAdap.addAll(MainActivity.hAdapter.getHisForDisplay());
+		}
 	}
 
 }

@@ -13,8 +13,10 @@
     <string name="phmenuicon">The pharmacy\'s icon</string>
     <!-- The doctor's icon in overflow menu -->
     <string name="docmenuicon">The doctor\'s icon</string>
+    <!-- The calendar button name -->
+	<string name="cal">Calendar</string>
     <!-- The add button name -->
-	<string name="add">add</string>
+	<string name="add">Add</string>
 	<!-- The doc button name -->
 	<string name="doc">Doctors</string>
 	<!-- The pharmacy button name -->
@@ -22,7 +24,7 @@
 	<!-- The patient button name -->
 	<string name="pat">Patients</string>
 	<!-- The overflow button name -->
-	<string name="overflow">overflow</string>
+	<string name="overflow">Overflow</string>
 	<!-- The historyitem's icon -->
 	<string name="historyicon">The HistoryItem\'s icon</string>
 	<!-- The username input -->

@@ -205,7 +205,9 @@ public class PharmacyFragment extends DialogFragment implements
 	 */
 	@Override
 	public void repopulateAdapter() {
-		phAdap.clear();
-		phAdap.addAll(MainActivity.phAdapter.getAllPhs());
+		if (phAdap != null) {
+			phAdap.clear();
+			phAdap.addAll(MainActivity.phAdapter.getAllPhs());
+		}
 	}
 }

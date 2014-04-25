@@ -4,9 +4,15 @@
     tools:context="cs250.spring14.refill.MainActivity" >
 
     <item
+        android:id="@+id/action_cal"
+        android:icon="@drawable/ic_menu_my_calendar"
+        android:orderInCategory="1"
+        android:title="@string/cal"
+        app:showAsAction="always"/>       
+    <item
         android:id="@+id/action_add"
         android:icon="@drawable/ic_action_new"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/add"
         app:showAsAction="always"/>
     <item

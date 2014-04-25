@@ -128,7 +128,9 @@ public class PatientFragment extends DialogFragment implements
 
 	@Override
 	public void repopulateAdapter() {
-		patAdap.clear();
-		patAdap.addAll(MainActivity.paAdapter.getAllPats());
+		if (patAdap != null) {
+			patAdap.clear();
+			patAdap.addAll(MainActivity.paAdapter.getAllPats());
+		}
 	}
 }

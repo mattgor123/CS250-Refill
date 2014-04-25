@@ -268,11 +268,13 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 
 	@Override
 	public void repopulateAdapter() {
-		rxAdap.clear();
-		try {
-			rxAdap.addAll(MainActivity.rxAdapter.getAllRxs());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		if (rxAdap != null) {
+			rxAdap.clear();
+			try {
+				rxAdap.addAll(MainActivity.rxAdapter.getAllRxs());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+		}		
 	}
 }

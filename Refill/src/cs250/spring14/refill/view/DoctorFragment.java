@@ -202,7 +202,9 @@ public class DoctorFragment extends DialogFragment implements
 	 */
 	@Override
 	public void repopulateAdapter() {
-		docAdap.clear();
-		docAdap.addAll(MainActivity.drAdapter.getAllDrs());
+		if (docAdap!=null) {
+			docAdap.clear();
+			docAdap.addAll(MainActivity.drAdapter.getAllDrs());
+		}
 	}
 }
