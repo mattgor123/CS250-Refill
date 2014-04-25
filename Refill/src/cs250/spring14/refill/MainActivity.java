@@ -151,6 +151,8 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 
 		// Rx adapter stuff
 		rxAdapter = new RxDBAdapter(this);
+		RxDBAdapter.shouldSortByName = prefs.getBoolean(RxDBAdapter.namesortKey, false);
+		RxDBAdapter.shouldSortByPatient = prefs.getBoolean(RxDBAdapter.patientsortKey, false);
 		rxAdapter.open();
 
 		// Dr adapter stuff
@@ -499,79 +501,55 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 							"A patient with this name already exists!",
 							Toast.LENGTH_SHORT).show();
 				}
-				// Step 3) Add the patient with the selected color!
+				//Step 3) Make sure no patient with same color already exists
 				else {
 					int color = colors.getCheckedRadioButtonId();
 					String message;
+					int newColor;
 					switch (color) {
 					case R.id.w:
-						paAdapter.insertPa(new Patient(str, Color.WHITE));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.WHITE;
 						break;
 					case R.id.lb:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#94FFFF")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#94FFFF");
 						break;
 					case R.id.lo:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#FFCC99")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#FFCC99");
 						break;
 					case R.id.ly:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#FFFF99")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#FFFF99");
 						break;
 					case R.id.lg:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#85FF85")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#85FF85");
 						break;
 					case R.id.lpu:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#CCCCFF")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#CCCCFF");
 						break;
 					case R.id.lpi:
-						paAdapter.insertPa(new Patient(str, Color
-								.parseColor("#FFCCFF")));
-						message = "Added to Patients DB on "
-								+ df.format(Calendar.getInstance().getTime());
-						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
-						dialog.dismiss();
+						newColor = Color.parseColor("#FFCCFF");
 						break;
 					default:
 						// We really shouldn't be here
 						return;
 					}
-					// We've done our adding stuff, let's refresh & go to
-					// history
-					currFrag = 1;
-					MainActivity.getInstance().mViewPager
-					.setCurrentItem(currFrag);
-					RefreshableFragment f = (RefreshableFragment) frags[currFrag];
-					if (f != null) {
-						// Should never be null, but just in case...
-						f.repopulateAdapter();
+					if (paAdapter.existsPatWithColor(String.valueOf(newColor))) {
+						Toast.makeText(context, "A patient with this color already exists!", Toast.LENGTH_SHORT).show();
+						return;
+					}
+					else {
+						paAdapter.insertPa(new Patient(str,newColor));
+						message = "Added to Patients DB on "
+								+ df.format(Calendar.getInstance().getTime());
+						hAdapter.insertHis(new HistoryItem(str, message, "PA"));
+						dialog.dismiss();		
+						currFrag = 1;
+						MainActivity.getInstance().mViewPager
+						.setCurrentItem(currFrag);
+						RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+						if (f != null) {
+							// Should never be null, but just in case...
+							f.repopulateAdapter();
+						}
 					}
 				}
 			}
@@ -1462,13 +1440,25 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (key.equals(HistoryDBAdapter.histKey)) {
-			Toast.makeText(this, "Updated hist key", Toast.LENGTH_SHORT).show();
 			HistoryDBAdapter.histCount = sharedPreferences.getInt(key, 100);
 			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
 			if (f!=null) {
 				f.repopulateAdapter();
 			}
 		}
-		
+		else if (key.equals(RxDBAdapter.namesortKey)) {
+			RxDBAdapter.shouldSortByName = sharedPreferences.getBoolean(key, false);
+			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+			if (f!=null) {
+				f.repopulateAdapter();
+			}
+		}
+		else if (key.equals(RxDBAdapter.patientsortKey)) {
+			RxDBAdapter.shouldSortByPatient = sharedPreferences.getBoolean(key, false);
+			RefreshableFragment f = (RefreshableFragment) frags[currFrag];
+			if (f!= null) {
+				f.repopulateAdapter();
+			}
+		}
 	}
 }

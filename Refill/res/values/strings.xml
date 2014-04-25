@@ -33,6 +33,10 @@
     <string name="histCount">How many history items to show?</string>
     <!--  The shouldLogin preference -->
     <string name="shouldLogin">Do you want to show the login screen?</string>
+    <!--  The sortbyname preference -->
+    <string name="sortbyname">Would you like Rx\'s sorted by name?</string>
+    <!--  The sortbypatient preference -->
+    <string name="sortbypatient">Would you like Rx\'s sorted by Patient?</string>
     <!-- The registration input -->
     <string name="register">Login or Sign Up Now!</string>
     <!-- The welcome image on login activity -->

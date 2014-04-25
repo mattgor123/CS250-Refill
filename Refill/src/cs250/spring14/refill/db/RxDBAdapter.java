@@ -26,8 +26,11 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 21; // Patient Str -> Patient class
-
+	private static final int DB_VERSION = 22; // Patient Str -> Patient class
+	public static final String namesortKey = "refill.namesort";
+	public static final String patientsortKey = "refill.patientsort";
+	public static boolean shouldSortByName;
+	public static boolean shouldSortByPatient;
 	private static final String RX_TABLE = "Rxs";
 	public static final String RX_ID = "Rx_id"; // column 0
 	public static final String RX_NAME = "Rx_name"; // column 1
@@ -286,10 +289,19 @@ public class RxDBAdapter {
 	/**
 	 * Method to get a cursor for all the Rx
 	 * 
-	 * @return the cursos
+	 * @return the cursor
 	 */
 	public Cursor getAllRxsCursor() {
-		return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
+		if (shouldSortByName) {
+			if (shouldSortByPatient) {
+				return db.query(RX_TABLE,RX_COLS,null,null,null,null, RX_PT +", " + RX_NAME + " ASC");
+			}
+			else return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_NAME+" ASC");
+		}
+		else if (shouldSortByPatient){
+			return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_PT + " ASC");
+		}
+		else return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
 	}
 
 	/**

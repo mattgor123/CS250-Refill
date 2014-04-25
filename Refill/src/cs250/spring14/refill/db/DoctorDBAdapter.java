@@ -20,7 +20,7 @@ public class DoctorDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Dr.db";
-	private static final int DB_VERSION = 15; // All Doctors must have unique
+	private static final int DB_VERSION = 16; // All Doctors must have unique
 												// name
 
 	private static final String DR_TABLE = "Drs";

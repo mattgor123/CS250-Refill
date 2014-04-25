@@ -20,14 +20,14 @@ public class PatientDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Pa.db";
-	private static final int DB_VERSION = 4;
+	private static final int DB_VERSION = 5; //Require unique color
 
 	private static final String PA_TABLE = "Pats";
 	public static final String PA_ID = "Pa_id"; // column 0
 	public static final String PA_NAME = "Pa_name"; // column 1
 	public static final String PA_COLOR = "Pa_color"; // column 2
 
-	public static final String[] DR_COLS = { PA_ID, PA_NAME, PA_COLOR };
+	public static final String[] PA_COLS = { PA_ID, PA_NAME, PA_COLOR };
 
 	/**
 	 * Constructor given a Context for this DBAdapter
@@ -123,7 +123,7 @@ public class PatientDBAdapter {
 	 * @throws SQLException
 	 */
 	public Patient getPatientByName(String name) throws SQLException {
-		Cursor c = db.query(true, PA_TABLE, DR_COLS, PA_NAME + "=?",
+		Cursor c = db.query(true, PA_TABLE, PA_COLS, PA_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
 			return null;
@@ -181,7 +181,7 @@ public class PatientDBAdapter {
 	 * @return the Cursor
 	 */
 	public Cursor getAllPatsCursor() {
-		return db.query(PA_TABLE, DR_COLS, null, null, null, null, null);
+		return db.query(PA_TABLE, PA_COLS, null, null, null, null, null);
 	}
 
 	/**
@@ -205,6 +205,25 @@ public class PatientDBAdapter {
 	}
 
 	/**
+	 * Method to determine if a patient of a given color already exists
+	 * @param color the color to check for
+	 * @return true if exists, false otherwise
+	 * @throws SQLException
+	 */
+	public boolean existsPatWithColor(String colorStr) throws SQLException {
+		Cursor c = db
+				.query(true, PA_TABLE, PA_COLS, PA_COLOR + "=?",
+						new String[] { String.valueOf(colorStr) }, null, null,
+						null, null);
+		if ((c.getCount() == 0) || !c.moveToFirst()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	
+	/**
 	 * Method to return the cursor for a Patient given a specific row
 	 * 
 	 * @param ri
@@ -213,7 +232,7 @@ public class PatientDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getPatCursor(long ri) throws SQLException {
-		Cursor result = db.query(true, PA_TABLE, DR_COLS, PA_ID + "=" + ri,
+		Cursor result = db.query(true, PA_TABLE, PA_COLS, PA_ID + "=" + ri,
 				null, null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {
 			throw new SQLException("No Patient items found for row: " + ri);
