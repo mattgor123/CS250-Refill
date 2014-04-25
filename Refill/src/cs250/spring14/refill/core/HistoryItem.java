@@ -104,7 +104,7 @@ public class HistoryItem {
 		case PAD:
 			return R.drawable.patient;
 		default:
-			return R.drawable.default_pill;
+			return R.drawable.default_pill_his;
 		}
 	}
 
