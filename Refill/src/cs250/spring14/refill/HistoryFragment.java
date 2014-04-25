@@ -16,7 +16,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
 	private RefreshableFragment.OnCompleteListener mListener;
-
+	
 	public RefreshableFragment.OnCompleteListener getmListener() {
 		return mListener;
 	}
@@ -29,6 +29,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 		super.onAttach(activity);
 		try {
 			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
+			setRetainInstance(true);
 		} catch (final ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnCompleteListener");
@@ -37,7 +38,7 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		setRetainInstance(true);
 		View rootView = inflater.inflate(R.layout.fragment_his, container,
 				false);
 		historyList = (ListView) rootView.findViewById(R.id.listView1);

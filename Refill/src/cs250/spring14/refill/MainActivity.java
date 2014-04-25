@@ -109,7 +109,11 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		setContentView(R.layout.activity_main);
 		// Set up the fragments
-		frags = new Fragment[] { new RxFragment(), new HistoryFragment() };
+		RxFragment rxFrag = new RxFragment();
+		rxFrag.setRetainInstance(true);
+		HistoryFragment hisFrag = new HistoryFragment();
+		hisFrag.setRetainInstance(true);
+		frags = new Fragment[] { rxFrag, hisFrag };
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
@@ -304,7 +308,15 @@ public class MainActivity extends ActionBarActivity implements
 		hAdapter.open();
 		paAdapter.open();
 		//Make sure the fragments are still initialized, haven't been destroyed
-		frags = new Fragment[] { new RxFragment(), new HistoryFragment() };
+		if (frags[0] == null || frags[1] == null)
+		{
+			RxFragment rxFrag = new RxFragment();
+			rxFrag.setRetainInstance(true);
+			frags[0] = rxFrag;
+			HistoryFragment hisFrag = new HistoryFragment();
+			hisFrag.setRetainInstance(true);
+			frags[1] = hisFrag;			
+		}
 	}
 
 	@Override

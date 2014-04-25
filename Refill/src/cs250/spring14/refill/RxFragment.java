@@ -40,6 +40,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		setRetainInstance(true);
 		try {
 			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
 		} catch (final ClassCastException e) {
@@ -51,7 +52,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		setRetainInstance(true);
 		View rootView = inflater
 				.inflate(R.layout.fragment_rx, container, false);
 		rxList = (ListView) rootView.findViewById(R.id.listView1);
