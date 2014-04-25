@@ -986,8 +986,14 @@ ActionBar.TabListener, PatientFragment.OnCompleteListener, OnSharedPreferenceCha
 		patient.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openAddPatientDialog(context);
-				dialog.dismiss();
+				if (paAdapter.getAllPats().size() == 8) {
+					Toast.makeText(context, "We're sorry, you can't add another patient - there are no colors left. Please remove a patient first.", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					openAddPatientDialog(context);
+					dialog.dismiss();
+				}
+				
 			}
 		});
 		dialog.show();
