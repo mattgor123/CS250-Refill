@@ -23,33 +23,25 @@ public class PatientFragment extends DialogFragment implements
 		RefreshableFragment {
 	ListView patList;
 	ArrayAdapter<Patient> patAdap;
-	private OnCompleteListener mListener;
+	private RefreshableFragment.OnCompleteListener mListener;
 
-	public OnCompleteListener getmListener() {
+	public RefreshableFragment.OnCompleteListener getmListener() {
 		return mListener;
 	}
 
-	public void setmListener(OnCompleteListener mListener) {
+	public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
 		this.mListener = mListener;
 	}
 
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			this.setmListener((OnCompleteListener) activity);
+			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
 		} catch (final ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnCompleteListener");
 		}
 	}
-
-	// To communicate with MainActivity (to refresh view)
-	// Code adapted from
-	// http://stackoverflow.com/questions/15121373/returning-string-from-dialog-fragment-back-to-activity
-	public static interface OnCompleteListener {
-		public abstract void onComplete(boolean b);
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -87,7 +79,7 @@ public class PatientFragment extends DialogFragment implements
 											Toast.LENGTH_SHORT).show();
 								} else if (MainActivity.paAdapter
 										.removePatient(pat.getId()) > 0) {
-									// We were able to remove the doctor
+									// We were able to remove the patient
 									String message = "Removed from Patient DB on "
 											+ MainActivity.df.format(Calendar
 													.getInstance().getTime());
@@ -100,6 +92,7 @@ public class PatientFragment extends DialogFragment implements
 													+ " from the Patient DB",
 											Toast.LENGTH_SHORT).show();
 									repopulateAdapter();
+									PatientFragment.this.getmListener().onComplete(true);
 								} else {
 									// Doctor has already been deleted
 									Toast.makeText(

@@ -1,5 +1,6 @@
 package cs250.spring14.refill;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +15,25 @@ import cs250.spring14.refill.view.RefreshableFragment;
 public class HistoryFragment extends Fragment implements RefreshableFragment {
 	ListView historyList;
 	ArrayAdapter<HistoryItem> hisAdap;
+	private RefreshableFragment.OnCompleteListener mListener;
 
+	public RefreshableFragment.OnCompleteListener getmListener() {
+		return mListener;
+	}
+
+	public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
+		this.mListener = mListener;
+	}
+
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
+		} catch (final ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnCompleteListener");
+		}
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

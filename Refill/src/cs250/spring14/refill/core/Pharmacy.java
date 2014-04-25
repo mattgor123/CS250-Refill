@@ -209,6 +209,7 @@ public class Pharmacy {
 						// hisAdap.add(his);
 						// hisAdap.notifyDataSetChanged();
 						fr.repopulateAdapter();
+						fr.getmListener().onComplete(true);
 						d.dismiss();
 					} else {
 						// We didn't actually successfully update the Doctor

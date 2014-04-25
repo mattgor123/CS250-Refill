@@ -292,18 +292,27 @@ public class RxDBAdapter {
 	 * @return the cursor
 	 */
 	public Cursor getAllRxsCursor() {
-		if (shouldSortByName) {
-			if (shouldSortByPatient) {
+		if (shouldSortByPatient) {
+			if (shouldSortByName) {
+				//Sort by both (Patient first)
 				return db.query(RX_TABLE, RX_COLS, null, null, null, null,
-						RX_PT + ", " + RX_NAME + " ASC");
-			} else
+						RX_PT + ", " + RX_NAME + " ASC"); 
+			}
+			else {
+				//Sort by Patient (not name)
 				return db.query(RX_TABLE, RX_COLS, null, null, null, null,
-						RX_NAME + " ASC");
-		} else if (shouldSortByPatient) {
-			return db.query(RX_TABLE, RX_COLS, null, null, null, null, RX_PT
-					+ " ASC");
-		} else
+						RX_PT + " ASC");
+			}			
+		}
+		else if (shouldSortByName) {
+			//Sort by Name (not patient)
+			return db.query(RX_TABLE, RX_COLS, null, null, null, null,
+					RX_NAME + " ASC");
+		}
+		else {
+			//No sorting
 			return db.query(RX_TABLE, RX_COLS, null, null, null, null, null);
+		}
 	}
 
 	/**

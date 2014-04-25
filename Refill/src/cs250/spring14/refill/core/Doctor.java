@@ -175,6 +175,7 @@ public class Doctor {
 						MainActivity.hAdapter.insertHis(his);
 						d.dismiss();
 						fr.repopulateAdapter();
+						fr.getmListener().onComplete(true);
 					} else {
 						// We didn't actually successfully update the Doctor
 						String message = "Something went wrong updating your Doctor. Perhaps a Doctor with the name already exists?";

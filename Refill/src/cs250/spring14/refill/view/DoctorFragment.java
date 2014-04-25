@@ -2,6 +2,7 @@ package cs250.spring14.refill.view;
 
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +26,25 @@ public class DoctorFragment extends DialogFragment implements
 		RefreshableFragment {
 	ListView docList;
 	ArrayAdapter<Doctor> docAdap;
+	private RefreshableFragment.OnCompleteListener mListener;
+
+	public RefreshableFragment.OnCompleteListener getmListener() {
+		return mListener;
+	}
+
+	public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
+		this.mListener = mListener;
+	}
+
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
+		} catch (final ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnCompleteListener");
+		}
+	}
 
 	/**
 	 * Method to create the Doctor's dialog, inflate the dialog and attach to
@@ -140,6 +160,7 @@ public class DoctorFragment extends DialogFragment implements
 											"Deleted Doctor " + doc.getName()
 													+ " from the Doctor DB",
 											Toast.LENGTH_SHORT).show();
+									DoctorFragment.this.getmListener().onComplete(true);
 									repopulateAdapter();
 								} else {
 									// Doctor has already been deleted

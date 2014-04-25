@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
-import cs250.spring14.refill.view.PatientFragment;
+import cs250.spring14.refill.view.RefreshableFragment;
 
 public class Patient {
 	private String name;
@@ -116,7 +116,7 @@ public class Patient {
 	}
 
 	public static void openEditPatientDialog(final Context context,
-			final Patient pat, final PatientFragment fr) {
+			final Patient pat, final RefreshableFragment fr) {
 		final Dialog dialog = new Dialog(context);
 		dialog.setTitle("Editing a patient");
 		dialog.setContentView(R.layout.patient_dialog);

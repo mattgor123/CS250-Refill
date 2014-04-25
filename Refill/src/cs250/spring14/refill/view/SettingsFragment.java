@@ -69,6 +69,10 @@ public class SettingsFragment extends DialogFragment {
 							.putBoolean(RxDBAdapter.patientsortKey,
 									ptSortBox.isChecked()).commit();
 				}
+				//See if we should give our little warning toast
+				if (ptSortBox.isChecked() && nameSortBox.isChecked() && !(ptSortChecked && nameSortChecked)) {
+					Toast.makeText(getActivity(),"Since you've chosen to sort by both, Prescriptions will be organized by PATIENT and then sorted by NAME", Toast.LENGTH_LONG).show();
+				}
 				// See if we should update shared preferences for hist count
 				int newHist = Integer.valueOf(histCount.getText().toString()
 						.trim());

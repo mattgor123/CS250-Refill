@@ -61,7 +61,7 @@ import cs250.spring14.refill.view.RefreshableFragment;
 import cs250.spring14.refill.view.SettingsFragment;
 
 public class MainActivity extends ActionBarActivity implements
-		ActionBar.TabListener, PatientFragment.OnCompleteListener,
+		ActionBar.TabListener, RefreshableFragment.OnCompleteListener,
 		OnSharedPreferenceChangeListener {
 
 	/**
@@ -463,6 +463,7 @@ public class MainActivity extends ActionBarActivity implements
 						hAdapter.insertHis(new HistoryItem(nameStr, message,
 								"D"));
 						d.dismiss();
+						currFrag = 1;
 						MainActivity.getInstance().mViewPager
 								.setCurrentItem(currFrag);
 						RefreshableFragment f = (RefreshableFragment) frags[currFrag];

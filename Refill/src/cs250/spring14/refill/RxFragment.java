@@ -3,6 +3,7 @@ package cs250.spring14.refill;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,6 +28,25 @@ import cs250.spring14.refill.view.RxWrapper;
 public class RxFragment extends Fragment implements RefreshableFragment {
 	ListView rxList;
 	ArrayAdapter<RxItem> rxAdap;
+	private RefreshableFragment.OnCompleteListener mListener;
+
+	public RefreshableFragment.OnCompleteListener getmListener() {
+		return mListener;
+	}
+
+	public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
+		this.mListener = mListener;
+	}
+
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			this.setmListener((RefreshableFragment.OnCompleteListener) activity);
+		} catch (final ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnCompleteListener");
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

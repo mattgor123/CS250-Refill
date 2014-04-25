@@ -34,7 +34,7 @@
     <!--  The shouldLogin preference -->
     <string name="shouldLogin">Do you want to show the login screen?</string>
     <!--  The sortbyname preference -->
-    <string name="sortbyname">Would you like Rx\'s sorted by name?</string>
+    <string name="sortbyname">Would you like Rx\'s sorted by Name?</string>
     <!--  The sortbypatient preference -->
     <string name="sortbypatient">Would you like Rx\'s sorted by Patient?</string>
     <!-- The registration input -->
