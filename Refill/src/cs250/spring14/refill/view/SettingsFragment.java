@@ -5,6 +5,7 @@ import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
+import cs250.spring14.refill.notify.RxNotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,12 +32,16 @@ public class SettingsFragment extends DialogFragment {
 		histCount.setText("" + HistoryDBAdapter.histCount);
 		final CheckBox loginBox = (CheckBox) rootView
 				.findViewById(R.id.shouldLogin);
+		final EditText numDays = (EditText) rootView.findViewById(R.id.numdays);
 		final CheckBox nameSortBox = (CheckBox) rootView
 				.findViewById(R.id.sortbyname);
 		final CheckBox ptSortBox = (CheckBox) rootView
 				.findViewById(R.id.sortbypatient);
 		final SharedPreferences prefs = MainActivity.getInstance()
 				.getSharedPreferences("refill", Context.MODE_PRIVATE);
+		int oldNum = prefs.getInt(RxNotificationManager.countKey, 5);
+		numDays.setText("" + oldNum);
+		
 		final boolean loginChecked = prefs.getBoolean(LoginActivity.nextKey,
 				true);
 		final boolean nameSortChecked = prefs.getBoolean(
@@ -73,9 +78,17 @@ public class SettingsFragment extends DialogFragment {
 				if (ptSortBox.isChecked() && nameSortBox.isChecked() && !(ptSortChecked && nameSortChecked)) {
 					Toast.makeText(getActivity(),"Since you've chosen to sort by both, Prescriptions will be organized by PATIENT and then sorted by NAME", Toast.LENGTH_LONG).show();
 				}
+				//See if we should update shraed preferences for numDays
+				int newNum = (numDays.getText().toString().trim().length() == 0) ? 0 : Integer.valueOf(numDays.getText().toString().trim());
+				if (newNum < 1) {
+					Toast.makeText(getActivity(), "Must be at least 1 day in advance!",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				else if (newNum != RxNotificationManager.numDays) {
+					prefs.edit().putInt(RxNotificationManager.countKey, newNum).commit();
+				}
 				// See if we should update shared preferences for hist count
-				int newHist = Integer.valueOf(histCount.getText().toString()
-						.trim());
+				int newHist = (histCount.getText().toString().trim().length() == 0) ? 0 : Integer.valueOf(histCount.getText().toString().trim());
 				if (newHist < 10) {
 					Toast.makeText(getActivity(),
 							"Please show at least 10 history items",

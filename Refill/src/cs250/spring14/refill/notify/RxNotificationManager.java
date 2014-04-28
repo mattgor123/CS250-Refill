@@ -19,6 +19,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
 /**
@@ -27,18 +28,27 @@ import android.support.v4.app.NotificationCompat;
  */
 public class RxNotificationManager extends BroadcastReceiver{
 	   public static final String SEND_NOTIFICATION = "cs250.spring14.refill.NOTIFY"; 
-
+	   private static final int WARNING_NOTIFICATION_ID = 99;
+	   private static final int REFILL_NOTIFICATION_ID = 100;
+	   public static final String countKey = "refill.numdays";
+	   public static int numDays = 5;
+		
 	   @Override
 	    public void onReceive(Context context, Intent intent) {
 	       String action = intent.getAction();
+	       SharedPreferences prefs;
+	       prefs = context.getSharedPreferences("refill", Context.MODE_PRIVATE);
+	       if (prefs!=null) {
+	    	   numDays = prefs.getInt(countKey, 5);
+	       }
 	       if(SEND_NOTIFICATION.equals(action)) {
 	           // here you call a service etc.
 	    	   //make Notification
-	    	   checkIfNeedsNotification(context);
+	    	   doNotificationLogic(context, numDays);
 	    }
 	 }
 	   
-	   private void checkIfNeedsNotification(Context context) {
+	   private void doNotificationLogic(Context context, int numdays) {
 		   RxDBAdapter rxAdap = new RxDBAdapter(context);
 		   rxAdap.open();
 		   ArrayList<RxItem> rxs = new ArrayList<RxItem>();
@@ -58,10 +68,10 @@ public class RxNotificationManager extends BroadcastReceiver{
 			   if (sameDay) {
 				   makeRefillAnnouncement(context, r);
 			   }
-			   myCal2.add(Calendar.DAY_OF_YEAR, 5);
-			   boolean dayPlusOne = myCal.get(Calendar.YEAR) == myCal2.get(Calendar.YEAR) &&
+			   myCal2.add(Calendar.DAY_OF_YEAR, numdays);
+			   boolean shouldNotify = myCal.get(Calendar.YEAR) == myCal2.get(Calendar.YEAR) &&
 		                  myCal.get(Calendar.DAY_OF_YEAR) == myCal2.get(Calendar.DAY_OF_YEAR);
-			   if (dayPlusOne) {
+			   if (shouldNotify) {
 				   makeNotificationShouldUpdateRx(context, r);
 			   }   
 		   }
@@ -82,7 +92,7 @@ public class RxNotificationManager extends BroadcastReceiver{
 				    mBuilder.setAutoCancel(true);
 				    mBuilder.setDefaults(Notification.DEFAULT_ALL);
 				    	mBuilder.setContentIntent(resultPendingIntent);
-			int mNotificationId = 100;
+			int mNotificationId = WARNING_NOTIFICATION_ID;
 			
 			NotificationManager mNotifyManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotifyManager.notify(mNotificationId, mBuilder.build());
@@ -103,11 +113,9 @@ public class RxNotificationManager extends BroadcastReceiver{
 				    mBuilder.setContentText("Click to refill or dismiss this notification");
 				    mBuilder.setAutoCancel(true);
 				    mBuilder.setContentIntent(resultPendingIntent);
-			int mNotificationId = 99;
-			
+			int mNotificationId = REFILL_NOTIFICATION_ID;
 			NotificationManager mNotifyManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotifyManager.notify(mNotificationId, mBuilder.build());
-		
 		   
 	   }
 }

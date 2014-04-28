@@ -171,7 +171,7 @@ public class MainActivity extends ActionBarActivity implements
 		drAdapter.open();
 		if (drAdapter.getSize() == 0) {
 			// Dummy doctor in first spot for the spinner
-			Doctor adding = new Doctor("", "", "Select a Doctor or Add One");
+			Doctor adding = new Doctor("Select a Doctor or Add One", "", "");
 			adding.setId(drAdapter.insertDr(adding));
 		}
 		// Ph adapter stuff
@@ -179,8 +179,8 @@ public class MainActivity extends ActionBarActivity implements
 		phAdapter.open();
 		if (phAdapter.getSize() == 0) {
 			// Dummy pharmacy in first spot for the spinner
-			Pharmacy adding = new Pharmacy("", "", "",
-					"Select a Pharmacy or Add One");
+			Pharmacy adding = new Pharmacy("Select a Pharmacy or Add One", "", "",
+					"");
 			adding.setId(phAdapter.insertPh(adding));
 		}
 		// History adapter stuff
@@ -608,7 +608,7 @@ public class MainActivity extends ActionBarActivity implements
 		ArrayList<Doctor> drs = drAdapter.getAllDrs();
 		if (drs.size() == 0) {
 			// Dummy doctor in first spot for the spinner
-			Doctor adding = new Doctor("", "", "Select a Doctor or Add One");
+			Doctor adding = new Doctor("Select a Doctor or Add One", "", "");
 			adding.setId(drAdapter.insertDr(adding));
 			drs.add(adding);
 		}
@@ -863,8 +863,8 @@ public class MainActivity extends ActionBarActivity implements
 		ArrayList<Pharmacy> phs = phAdapter.getAllPhs();
 		if (phs.size() == 0) {
 			// Dummy pharmacy in first spot for the spinner
-			Pharmacy adding = new Pharmacy("", "", "",
-					"Select a Pharmacy or Add One");
+			Pharmacy adding = new Pharmacy("Select a Pharmacy or Add One", "", "",
+					"");
 			adding.setId(phAdapter.insertPh(adding));
 			phs.add(adding);
 		}
@@ -1491,7 +1491,10 @@ public class MainActivity extends ActionBarActivity implements
 			if (f != null) {
 				f.repopulateAdapter();
 			}
-		} else if (key.equals(RxDBAdapter.namesortKey)) {
+		} else if (key.equals(RxNotificationManager.countKey)) {
+			RxNotificationManager.numDays = sharedPreferences.getInt(key, 5);
+		}
+		else if (key.equals(RxDBAdapter.namesortKey)) {
 			RxDBAdapter.shouldSortByName = sharedPreferences.getBoolean(key,
 					false);
 			RefreshableFragment f = (RefreshableFragment) frags[currFrag];

@@ -26,7 +26,7 @@ public class RxDBAdapter {
 	private final Context context;
 
 	private static final String DB_NAME = "Rx.db";
-	private static final int DB_VERSION = 23; // Patient Str -> Patient class
+	private static final int DB_VERSION = 24; // Patient Str -> Patient class
 	public static final String namesortKey = "refill.namesort";
 	public static final String patientsortKey = "refill.patientsort";
 	public static boolean shouldSortByName;

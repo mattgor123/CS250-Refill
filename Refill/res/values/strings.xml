@@ -79,11 +79,14 @@
     <string name="lpi">lightpink</string>
     <!-- The OK on patient dialog -->
     <string name="ok">OK</string>
-    <string name="title_activity_rx_notification">RxNotificationActivity</string>
+    <!--  The eligible for a refill message -->
     <string name="refillrx">Your prescription is eligible for a Refill. Would you like to refill your prescription now?</string>
+    <!-- Yes refill button -->
     <string name="yes">Yes please</string>
+    <!-- No refill button -->
     <string name="no">Not today</string>
+    <!-- The title of the rx notification activity -->
     <string name="title_activity_rx_refill">RxRefillActivity</string>
-    <string name="hello_world">Hello world!</string>
-
+    <!-- The number of days in advance to notify the user an Rx is running low -->
+    <string name="numdays">Days in advance to notify Rx Refill:</string>
 </resources>

@@ -22,7 +22,7 @@ public class HistoryDBAdapter {
 	public static int histCount;
 
 	private static final String DB_NAME = "His.db";
-	private static final int DB_VERSION = 18;
+	private static final int DB_VERSION = 19;
 
 	private static final String H_TABLE = "His";
 	public static final String H_ID = "H_id"; // column 0

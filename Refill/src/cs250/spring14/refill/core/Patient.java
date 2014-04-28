@@ -27,12 +27,12 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		return "<" + name + ">";
+		return this.name;
 
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -40,7 +40,7 @@ public class Patient {
 	}
 
 	public int getColor() {
-		return color;
+		return this.color;
 	}
 
 	public void setColor(int color) {
