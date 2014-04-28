@@ -12,7 +12,6 @@ import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.db.RxDBAdapter;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -90,8 +89,8 @@ public class RxNotificationManager extends BroadcastReceiver{
 				    mBuilder.setContentTitle(r.getName() + " running low:");
 				    mBuilder.setContentText("On " + MainActivity.df.format(r.getNextRefillDate()) + " make sure you refill!");
 				    mBuilder.setAutoCancel(true);
-				    mBuilder.setDefaults(Notification.DEFAULT_ALL);
-				    	mBuilder.setContentIntent(resultPendingIntent);
+				    mBuilder.setLights(0xff00ff00, 300, 1000);
+				    mBuilder.setContentIntent(resultPendingIntent);
 			int mNotificationId = WARNING_NOTIFICATION_ID;
 			
 			NotificationManager mNotifyManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -112,10 +111,10 @@ public class RxNotificationManager extends BroadcastReceiver{
 				    mBuilder.setContentTitle("Refill " + r.getName() + " today!");
 				    mBuilder.setContentText("Click to refill or dismiss this notification");
 				    mBuilder.setAutoCancel(true);
+				    mBuilder.setLights(0xffff0000, 300, 1000);
 				    mBuilder.setContentIntent(resultPendingIntent);
 			int mNotificationId = REFILL_NOTIFICATION_ID;
 			NotificationManager mNotifyManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotifyManager.notify(mNotificationId, mBuilder.build());
-		   
 	   }
 }

@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements
 	private boolean shouldLogin;
 	private Menu menu;
 	protected static final int LOGIN = 3;
-	protected static String DEFAULT_RX_NUMBER = "12345";
+	public static String DEFAULT_RX_NUMBER = "12345";
 	private static MainActivity _instance;
 
 	@Override

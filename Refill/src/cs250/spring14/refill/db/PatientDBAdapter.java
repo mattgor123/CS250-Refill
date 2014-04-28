@@ -67,6 +67,7 @@ public class PatientDBAdapter {
 	 * @return the row # of the Patient DB to which we just inserted
 	 */
 	public long insertPa(Patient pa) {
+		open();
 		// create a new row of values to insert
 		ContentValues cvalues = new ContentValues();
 		// assign values for each col
@@ -84,7 +85,7 @@ public class PatientDBAdapter {
 	 * @return true if success, false otherwise
 	 */
 	public boolean removePaByName(String name) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(PA_TABLE, PA_NAME + "= ?", new String[] { name }) > 0;
 	}
 
@@ -100,6 +101,7 @@ public class PatientDBAdapter {
 	 * @return true if update successful; false otherwise
 	 */
 	public boolean updatePa(long ri, String name, int color) {
+		open();
 		Patient pat = getPatientByName(name);
 		if (pat != null) {
 			// there already is a doc with this name; make sure he has the same
@@ -120,6 +122,7 @@ public class PatientDBAdapter {
 	 * @return the Cursor
 	 */
 	public int getSize() {
+		open();
 		Cursor c = db.query(PA_TABLE, PA_COLS, null, null, null, null, null);
 		c.moveToFirst();
 		return c.getCount();
@@ -134,6 +137,7 @@ public class PatientDBAdapter {
 	 * @throws SQLException
 	 */
 	public Patient getPatientByName(String name) throws SQLException {
+		open();
 		Cursor c = db.query(true, PA_TABLE, PA_COLS, PA_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
@@ -162,6 +166,7 @@ public class PatientDBAdapter {
 	 * @return true if update successful; false otherwise
 	 */
 	public boolean updatePatientByName(String pname, String name, int color) {
+		open();
 		if (pname != name && getPatientByName(name) != null) {
 			return false;
 		} else {
@@ -181,7 +186,7 @@ public class PatientDBAdapter {
 	 * @return the # of affected rows
 	 */
 	public int removePatient(long ri) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(PA_TABLE, PA_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
@@ -192,6 +197,7 @@ public class PatientDBAdapter {
 	 * @return the Cursor
 	 */
 	public Cursor getAllPatsCursor() {
+		open();
 		return db.query(PA_TABLE, PA_COLS, null, null, null, null, null);
 	}
 
@@ -201,6 +207,7 @@ public class PatientDBAdapter {
 	 * @return an ArrayList<Patient> with all the Doctors
 	 */
 	public ArrayList<Patient> getAllPats() {
+		open();
 		ArrayList<Patient> pats = new ArrayList<Patient>();
 		Cursor c = this.getAllPatsCursor();
 		if (c.moveToFirst())
@@ -224,6 +231,7 @@ public class PatientDBAdapter {
 	 * @throws SQLException
 	 */
 	public boolean existsPatWithColor(String colorStr) throws SQLException {
+		open();
 		Cursor c = db.query(true, PA_TABLE, PA_COLS, PA_COLOR + "=?",
 				new String[] { String.valueOf(colorStr) }, null, null, null,
 				null);
@@ -243,6 +251,7 @@ public class PatientDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getPatCursor(long ri) throws SQLException {
+		open();
 		Cursor result = db.query(true, PA_TABLE, PA_COLS, PA_ID + "=" + ri,
 				null, null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {

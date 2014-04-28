@@ -95,6 +95,7 @@ public class HistoryDBAdapter {
 	 * @return true if update successful; false otherwise
 	 */
 	public boolean updateHis(long ri, String own, String msg, String h) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(H_OWN, own);
 		cvalues.put(H_MSG, msg);
@@ -111,7 +112,7 @@ public class HistoryDBAdapter {
 	 * @return the # of affected rows
 	 */
 	public int removeHis(long ri) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(H_TABLE, H_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
@@ -123,6 +124,7 @@ public class HistoryDBAdapter {
 	 * @return the Cursor
 	 */
 	public Cursor getAllHisCursor() {
+		open();
 		return db
 				.query(H_TABLE, H_COLS, null, null, null, null, H_ID + " DESC");
 	}

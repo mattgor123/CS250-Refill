@@ -124,6 +124,7 @@ public class RxDBAdapter {
 	 * @throws SQLException
 	 */
 	public boolean existsRxWithPat(String patStr) throws SQLException {
+		open();
 		Cursor c = db
 				.query(true, RX_TABLE, RX_COLS, RX_PT + "=?",
 						new String[] { String.valueOf(patStr) }, null, null,
@@ -144,6 +145,7 @@ public class RxDBAdapter {
 	 * @throws SQLException
 	 */
 	public boolean existsRxWithDoc(String docStr) throws SQLException {
+		open();
 		Cursor c = db
 				.query(true, RX_TABLE, RX_COLS, RX_MD + "=?",
 						new String[] { String.valueOf(docStr) }, null, null,
@@ -164,6 +166,7 @@ public class RxDBAdapter {
 	 * @throws SQLException
 	 */
 	public boolean existsRxWithPharm(String phStr) throws SQLException {
+		open();
 		Cursor c = db.query(true, RX_TABLE, RX_COLS, RX_PHRM + "=?",
 				new String[] { String.valueOf(phStr) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
@@ -183,6 +186,7 @@ public class RxDBAdapter {
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithPatient(String oldPatient, String newPatient) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_PT, newPatient);
 		return db.update(RX_TABLE, cvalues, RX_PT + " = ?",
@@ -199,6 +203,7 @@ public class RxDBAdapter {
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithDoctor(String oldDoctor, String newDoctor) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_MD, newDoctor);
 		return db.update(RX_TABLE, cvalues, RX_MD + " = ?",
@@ -215,6 +220,7 @@ public class RxDBAdapter {
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateAllRxWithPharmacy(String oldPharm, String newPharm) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_PHRM, newPharm);
 		return db.update(RX_TABLE, cvalues, RX_PHRM + " = ?",
@@ -285,6 +291,7 @@ public class RxDBAdapter {
 	 * @return true if update successful, false otherwise
 	 */
 	public boolean updateRxRefillDate(long ri, Date newDate) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_LAST, MainActivity.df.format(newDate));
 		return db.update(RX_TABLE, cvalues, RX_ID + " = ?",
@@ -300,7 +307,7 @@ public class RxDBAdapter {
 	 * @return the # of affected rows
 	 */
 	public int removeRx(long ri) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(RX_TABLE, RX_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
@@ -335,20 +342,40 @@ public class RxDBAdapter {
 		}
 	}
 
-	public Date getLastRefillDate(long ri) {
+	/**
+	 * Method to get an RxItem given a row
+	 * @param ri the row of the RxItem
+	 * @return the RxItem in the row
+	 */
+	public RxItem getRxFromRow(long ri) {
 		open();
-		Date d = new Date();
 		Cursor c = this.getRxCursor(ri);
 		if (c.moveToFirst()) {
+			RxItem result = null;
 			try {
-				d = MainActivity.df.parse(c.getString(12));
+				result = new RxItem(c.getString(1), // name
+						Patient.makePatientFromString(c.getString(2)), // patient
+						c.getString(3), // symptoms
+						c.getString(4), // sideEffects
+						c.getFloat(5), // dose
+						c.getInt(6), // pillsPerDay
+						MainActivity.df.parse(c.getString(11)), // startDate
+						c.getInt(7), // daysBetween
+						Pharmacy.makePharmFromString(c.getString(8)), // pharmacy
+						Doctor.makeDocFromString(c.getString(9)), // physician
+						c.getString(10), // RX Number
+						MainActivity.df.parse(c.getString(12)) // last refill
+				);
+				result.setId(c.getInt(0));	
+				return result;
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		return d;
+		return null;
 	}
+	
 	/**
 	 * Method to get all Rx's from the database
 	 * 

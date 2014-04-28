@@ -71,6 +71,7 @@ public class PharmacyDBAdapter {
 	 * @return the row # of the Doctor DB to which we just inserted
 	 */
 	public long insertPh(Pharmacy ph) {
+		open();
 		// create a new row of values to insert
 		ContentValues cvalues = new ContentValues();
 		// assign values for each col
@@ -99,6 +100,7 @@ public class PharmacyDBAdapter {
 	 */
 	public boolean updatePh(long ri, String name, String email, String phone,
 			String street) {
+		open();
 		Pharmacy ph = getPharmByName(name);
 		if (ph != null) {
 			// there already is a doc with this name; make sure he has the same
@@ -132,6 +134,7 @@ public class PharmacyDBAdapter {
 	 */
 	public boolean updatePhByName(String pname, String name, String email,
 			String phone, String street) {
+		open();
 		if (pname != name && getPharmByName(name) != null) {
 			return false;
 		} else {
@@ -153,7 +156,7 @@ public class PharmacyDBAdapter {
 	 * @return the # of affected rows
 	 */
 	public int removePh(long ri) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(PH_TABLE, PH_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
@@ -164,6 +167,7 @@ public class PharmacyDBAdapter {
 	 * @return the Cursor
 	 */
 	public int getSize() {
+		open();
 		Cursor c = db.query(PH_TABLE, PH_COLS, null, null, null, null, null);
 		c.moveToFirst();
 		return c.getCount();
@@ -177,7 +181,7 @@ public class PharmacyDBAdapter {
 	 * @return true if success, false otherwise
 	 */
 	public boolean removePhByName(String name) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(PH_TABLE, PH_NAME + "= ?", new String[] { name }) > 0;
 	}
 
@@ -187,6 +191,7 @@ public class PharmacyDBAdapter {
 	 * @return the Cursor
 	 */
 	public Cursor getAllPhsCursor() {
+		open();
 		return db.query(PH_TABLE, PH_COLS, null, null, null, null, null);
 	}
 
@@ -196,6 +201,7 @@ public class PharmacyDBAdapter {
 	 * @return an ArrayList<Pharmacy> with all the Doctors
 	 */
 	public ArrayList<Pharmacy> getAllPhs() {
+		open();
 		ArrayList<Pharmacy> phs = new ArrayList<Pharmacy>();
 		Cursor c = this.getAllPhsCursor();
 		if (c.moveToFirst())
@@ -221,6 +227,7 @@ public class PharmacyDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getPhCursor(long ri) throws SQLException {
+		open();
 		Cursor result = db.query(true, PH_TABLE, PH_COLS, PH_ID + "=" + ri,
 				null, null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {
@@ -238,6 +245,7 @@ public class PharmacyDBAdapter {
 	 * @throws SQLException
 	 */
 	public Pharmacy getPharmByName(String name) throws SQLException {
+		open();
 		Cursor c = db.query(true, PH_TABLE, PH_COLS, PH_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {

@@ -69,6 +69,7 @@ public class DoctorDBAdapter {
 	 * @return the row # of the Doctor DB to which we just inserted
 	 */
 	public long insertDr(Doctor dr) {
+		open();
 		// create a new row of values to insert
 		ContentValues cvalues = new ContentValues();
 		// assign values for each col
@@ -87,7 +88,7 @@ public class DoctorDBAdapter {
 	 * @return true if success, false otherwise
 	 */
 	public boolean removeDrByName(String name) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(DR_TABLE, DR_NAME + "= ?", new String[] { name }) > 0;
 	}
 
@@ -105,6 +106,7 @@ public class DoctorDBAdapter {
 	 * @return true if update successful; false otherwise
 	 */
 	public boolean updateDr(long ri, String name, String email, String phone) {
+		open();
 		Doctor doc = getDocByName(name);
 		if (doc != null) {
 			// there already is a doc with this name; make sure he has the same
@@ -129,6 +131,7 @@ public class DoctorDBAdapter {
 	 * @throws SQLException
 	 */
 	public Doctor getDocByName(String name) throws SQLException {
+		open();
 		Cursor c = db.query(true, DR_TABLE, DR_COLS, DR_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
 		if ((c.getCount() == 0) || !c.moveToFirst()) {
@@ -161,6 +164,7 @@ public class DoctorDBAdapter {
 	 */
 	public boolean updateDrByName(String dname, String name, String email,
 			String phone) {
+		open();
 		if (dname != name && getDocByName(name) != null) {
 			return false;
 		} else {
@@ -181,7 +185,7 @@ public class DoctorDBAdapter {
 	 * @return the # of affected rows
 	 */
 	public int removeDr(long ri) {
-		db = dbHelper.getWritableDatabase();
+		open();
 		return db.delete(DR_TABLE, DR_ID + " = ?",
 				new String[] { String.valueOf(ri) });
 	}
@@ -192,6 +196,7 @@ public class DoctorDBAdapter {
 	 * @return the Cursor
 	 */
 	public Cursor getAllDrsCursor() {
+		open();
 		return db.query(DR_TABLE, DR_COLS, null, null, null, null, null);
 	}
 
@@ -201,6 +206,7 @@ public class DoctorDBAdapter {
 	 * @return the Cursor
 	 */
 	public int getSize() {
+		open();
 		Cursor c = db.query(DR_TABLE, DR_COLS, null, null, null, null, null);
 		c.moveToFirst();
 		return c.getCount();
@@ -212,6 +218,7 @@ public class DoctorDBAdapter {
 	 * @return an ArrayList<Doctor> with all the Doctors
 	 */
 	public ArrayList<Doctor> getAllDrs() {
+		open();
 		ArrayList<Doctor> drs = new ArrayList<Doctor>();
 		Cursor c = this.getAllDrsCursor();
 		if (c.moveToFirst())
@@ -236,6 +243,7 @@ public class DoctorDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getDrCursor(long ri) throws SQLException {
+		open();
 		Cursor result = db.query(true, DR_TABLE, DR_COLS, DR_ID + "=" + ri,
 				null, null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {
