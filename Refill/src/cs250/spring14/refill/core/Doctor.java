@@ -39,14 +39,17 @@ public class Doctor {
 	 * @return the doctor, formatted as a string
 	 */
 	public String toString() {
-		return name + " <" + phone + ">";
+		if (!phone.isEmpty()) {
+			return this.name + " <" + this.phone + ">";
+		}
+		else return this.name;
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class Doctor {
 	 * @return the email
 	 */
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class Doctor {
 	 * @return the phone
 	 */
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	/**

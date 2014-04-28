@@ -42,14 +42,19 @@ public class Pharmacy {
 	 * @return the pharmacy, formatted as a string
 	 */
 	public String toString() {
-		return name + " <" + streetAddress + ">";
+		if (!streetAddress.isEmpty()) {
+			return this.name + " <" + streetAddress + ">";
+		}
+		else {
+			return this.name;
+		}
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class Pharmacy {
 	 * @return the email
 	 */
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	/**
@@ -79,7 +84,7 @@ public class Pharmacy {
 	 * @return the streetAddress
 	 */
 	public String getStreetAddress() {
-		return streetAddress;
+		return this.streetAddress;
 	}
 
 	/**
@@ -94,7 +99,7 @@ public class Pharmacy {
 	 * @return the phone
 	 */
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	/**
