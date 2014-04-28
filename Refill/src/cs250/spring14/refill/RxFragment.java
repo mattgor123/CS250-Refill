@@ -164,7 +164,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 													Intent intent = new Intent(
 															Intent.ACTION_SENDTO);
 													String uriText;
-													if (rx.getRxNumb() == MainActivity.DEFAULT_RX_NUMBER) {
+													if (rx.getRxNumb().equals(MainActivity.DEFAULT_RX_NUMBER)) {
 														uriText = "mailto:"
 																+ Uri.encode(doc
 																		.getEmail())
