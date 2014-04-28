@@ -7,7 +7,7 @@ Next, Right click on the Refill project and select Properties -> Android.
 Android 4.4.2 should be the only one checked for the Project Build Target, and in the Library section you need to add the appcompat project you just imported. Make sure Is Library is unchecked!
 
 Next, navigate to Properties -> Java Build Path. The Projects tab should have nothing but this android-support-v7-appcompat folder, Libraries tab should have android-support-v4.jar and android-support-v7-appcompat.jar, and Order & Export should look like:
-![Alt text](raw/master/buildpath.png?raw=true "Order & Export Build Path")
+![Alt text](refill/raw/master/buildpath.png?raw=true "Order & Export Build Path")
 
 You should now be good to go to launch & edit Refill!
 
