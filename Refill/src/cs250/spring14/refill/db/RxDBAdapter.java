@@ -94,6 +94,7 @@ public class RxDBAdapter {
 	 * @return the row # of the Rx DB to which we just inserted
 	 */
 	public long insertRx(RxItem rx) {
+		open();
 		// create a new row of values to insert
 		ContentValues cvalues = new ContentValues();
 		// assign values for each col
@@ -256,6 +257,7 @@ public class RxDBAdapter {
 			String symptoms, String sideEffects, double dose, int pillsPerDay,
 			Date start, int daysBetweenRefills, String pharmacy,
 			String physician, String rxNumb, Date lastrefill) {
+		open();
 		ContentValues cvalues = new ContentValues();
 		cvalues.put(RX_NAME, name);
 		cvalues.put(RX_PT, patient);
@@ -273,6 +275,23 @@ public class RxDBAdapter {
 				new String[] { String.valueOf(ri) }) > 0;
 	}
 
+	/**
+	 * Method to update an Rx's LastRefillDate
+	 * 
+	 * @param ri
+	 *            the row to update
+	 * @param newDate
+	 *            the new LastRefillDate
+	 * @return true if update successful, false otherwise
+	 */
+	public boolean updateRxRefillDate(long ri, Date newDate) {
+		ContentValues cvalues = new ContentValues();
+		cvalues.put(RX_LAST, MainActivity.df.format(newDate));
+		return db.update(RX_TABLE, cvalues, RX_ID + " = ?",
+				new String[] { String.valueOf(ri) }) > 0;
+	}
+
+	
 	/**
 	 * Method to remove a Rx from the database given a ri
 	 * 
@@ -292,6 +311,7 @@ public class RxDBAdapter {
 	 * @return the cursor
 	 */
 	public Cursor getAllRxsCursor() {
+		open();
 		if (shouldSortByPatient) {
 			if (shouldSortByName) {
 				//Sort by both (Patient first)
@@ -315,6 +335,20 @@ public class RxDBAdapter {
 		}
 	}
 
+	public Date getLastRefillDate(long ri) {
+		open();
+		Date d = new Date();
+		Cursor c = this.getRxCursor(ri);
+		if (c.moveToFirst()) {
+			try {
+				d = MainActivity.df.parse(c.getString(12));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return d;
+	}
 	/**
 	 * Method to get all Rx's from the database
 	 * 
@@ -322,6 +356,7 @@ public class RxDBAdapter {
 	 * @throws ParseException
 	 */
 	public ArrayList<RxItem> getAllRxs() throws ParseException {
+		open();
 		ArrayList<RxItem> rxs = new ArrayList<RxItem>();
 		Cursor c = this.getAllRxsCursor();
 		if (c.moveToFirst())
@@ -354,6 +389,7 @@ public class RxDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getRxCursor(long ri) throws SQLException {
+		open();
 		Cursor result = db.query(true, RX_TABLE, RX_COLS, RX_ID + "=" + ri,
 				null, null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {

@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-	<!-- The app's name -->
+
+    <!-- The app's name -->
     <string name="app_name">Refill</string>
     <!-- The settings button name -->
     <string name="action_settings">Settings</string>
-    <!--  The history count setting -->
+    <!-- The history count setting -->
     <string name="history">History items to display</string>
-    <!-- The pill's icon in overflow menu-->
+    <!-- The pill's icon in overflow menu -->
     <string name="pillicon">The pill\'s icon</string>
     <!-- The pharmacy's icon in overflow menu -->
     <string name="phmenuicon">The pharmacy\'s icon</string>
     <!-- The doctor's icon in overflow menu -->
     <string name="docmenuicon">The doctor\'s icon</string>
     <!-- The calendar button name -->
-	<string name="cal">Calendar</string>
+    <string name="cal">Calendar</string>
     <!-- The add button name -->
-	<string name="add">Add</string>
-	<!-- The doc button name -->
-	<string name="doc">Doctors</string>
-	<!-- The pharmacy button name -->
-	<string name="pharm">Pharmacies</string>
-	<!-- The patient button name -->
-	<string name="pat">Patients</string>
-	<!-- The overflow button name -->
-	<string name="overflow">Overflow</string>
-	<!-- The historyitem's icon -->
-	<string name="historyicon">The HistoryItem\'s icon</string>
-	<!-- The username input -->
-	<string name="username">E-mail address</string>
-	<!--  The password input -->
+    <string name="add">Add</string>
+    <!-- The doc button name -->
+    <string name="doc">Doctors</string>
+    <!-- The pharmacy button name -->
+    <string name="pharm">Pharmacies</string>
+    <!-- The patient button name -->
+    <string name="pat">Patients</string>
+    <!-- The overflow button name -->
+    <string name="overflow">Overflow</string>
+    <!-- The historyitem's icon -->
+    <string name="historyicon">The HistoryItem\'s icon</string>
+    <!-- The username input -->
+    <string name="username">E-mail address</string>
+    <!-- The password input -->
     <string name="password">Password</string>
-    <!--  The history count textView -->
+    <!-- The history count textView -->
     <string name="histCount">How many history items to show?</string>
-    <!--  The shouldLogin preference -->
+    <!-- The shouldLogin preference -->
     <string name="shouldLogin">Do you want to show the login screen?</string>
-    <!--  The sortbyname preference -->
+    <!-- The sortbyname preference -->
     <string name="sortbyname">Would you like Rx\'s sorted by Name?</string>
-    <!--  The sortbypatient preference -->
+    <!-- The sortbypatient preference -->
     <string name="sortbypatient">Would you like Rx\'s sorted by Patient?</string>
     <!-- The registration input -->
     <string name="register">Login or Sign Up Now!</string>
     <!-- The welcome image on login activity -->
-	<string name="welcome">The welcome image</string>
-	<!-- The 'display next time' checkbox -->
-	<string name="checkbox">Display Login screen next time?</string>
-	<!-- The rx image on select dialog -->
-	<string name="rxicon">The rx image selection</string>
-	<!-- The pharmacy image on select dialog -->
-	<string name="pharmicon">The pharmacy image selection</string>
-	<!-- The doctor image on select dialog -->
-	<string name="docicon">The doctor image selection</string>
-	<!-- The patient image on select dialog -->
-	<string name="paticon">The patient image selection</string>
-	<!-- The pharmacy on select dialog -->
-	<string name="pharmacy">Pharmacy</string>
-	<!-- The prescription on select dialog -->
-	<string name="prescription">Prescription</string>
-	<!-- The doctor on select dialog -->
-	<string name="doctor">Doctor</string>
-	<!-- The patient on select dialog -->
-	<string name="patient">Patient</string>
-	<!-- The patient on patient dialog -->
-	<string name="patientname">Patient Name: </string>
-	<!-- The white on patient dialog -->
-	<string name="w">white</string>
+    <string name="welcome">The welcome image</string>
+    <!-- The 'display next time' checkbox -->
+    <string name="checkbox">Display Login screen next time?</string>
+    <!-- The rx image on select dialog -->
+    <string name="rxicon">The rx image selection</string>
+    <!-- The pharmacy image on select dialog -->
+    <string name="pharmicon">The pharmacy image selection</string>
+    <!-- The doctor image on select dialog -->
+    <string name="docicon">The doctor image selection</string>
+    <!-- The patient image on select dialog -->
+    <string name="paticon">The patient image selection</string>
+    <!-- The pharmacy on select dialog -->
+    <string name="pharmacy">Pharmacy</string>
+    <!-- The prescription on select dialog -->
+    <string name="prescription">Prescription</string>
+    <!-- The doctor on select dialog -->
+    <string name="doctor">Doctor</string>
+    <!-- The patient on select dialog -->
+    <string name="patient">Patient</string>
+    <!-- The patient on patient dialog -->
+    <string name="patientname">Patient Name: </string>
+    <!-- The white on patient dialog -->
+    <string name="w">white</string>
     <!-- The light blue on patient dialog -->
-	<string name="lb">lightblue</string>
-	<!-- The light orange on patient dialog -->
-	<string name="lo">lightorange</string>
-	<!-- The light yellow on patient dialog -->
-	<string name="ly">lightyellow</string>
-	<!-- The light green on patient dialog -->
-	<string name="lg">lightgreen</string>
-	<!-- The light purple on patient dialog -->
-	<string name="lpu">lightpurple</string>
-	<!-- The light pink on patient dialog -->
-	<string name="lpi">lightpink</string>
-	<!-- The OK on patient dialog -->
-	<string name="ok">OK</string>
+    <string name="lb">lightblue</string>
+    <!-- The light orange on patient dialog -->
+    <string name="lo">lightorange</string>
+    <!-- The light yellow on patient dialog -->
+    <string name="ly">lightyellow</string>
+    <!-- The light green on patient dialog -->
+    <string name="lg">lightgreen</string>
+    <!-- The light purple on patient dialog -->
+    <string name="lpu">lightpurple</string>
+    <!-- The light pink on patient dialog -->
+    <string name="lpi">lightpink</string>
+    <!-- The OK on patient dialog -->
+    <string name="ok">OK</string>
+    <string name="title_activity_rx_notification">RxNotificationActivity</string>
+    <string name="refillrx">Your prescription is eligible for a Refill. Would you like to refill your prescription now?</string>
+    <string name="yes">Yes please</string>
+    <string name="no">Not today</string>
+    <string name="title_activity_rx_refill">RxRefillActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

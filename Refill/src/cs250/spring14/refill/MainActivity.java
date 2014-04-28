@@ -14,11 +14,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,7 +24,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -168,7 +165,6 @@ public class MainActivity extends ActionBarActivity implements
 		RxDBAdapter.shouldSortByPatient = prefs.getBoolean(
 				RxDBAdapter.patientsortKey, false);
 		rxAdapter.open();
-
 		// Dr adapter stuff
 		drAdapter = new DoctorDBAdapter(this);
 		drAdapter.open();
@@ -198,27 +194,18 @@ public class MainActivity extends ActionBarActivity implements
 			Patient adding = new Patient("Select a Patient!", 0);
 			adding.setId(paAdapter.insertPa(adding));
 		}
-		_instance = this;
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
+		//Notification stuff
 		//Starting Alarm Service for the refill Notification 
 		Intent alarmIntent = new Intent(this, RxNotificationManager.class);
 		alarmIntent.setAction(RxNotificationManager.SEND_NOTIFICATION);
 		PendingIntent pi = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		am.cancel(pi);
-		
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.set(Calendar.HOUR_OF_DAY, 22);
-		calendar.set(Calendar.MINUTE, 11);
-		
-		System.out.println(calendar.getTime());
-		
-		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+		calendar.set(Calendar.HOUR_OF_DAY, 12);
+		calendar.set(Calendar.MINUTE, 0);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()+86400000, AlarmManager.INTERVAL_DAY, pi);
+		_instance = this;
 	}
 
 	@Override
@@ -1304,12 +1291,9 @@ public class MainActivity extends ActionBarActivity implements
 									getApplicationContext(),
 									"Please ensure you've entered a valid physician",
 									Toast.LENGTH_SHORT).show();
-						} else if (rxnumbET.getText().toString().trim()
-								.length() == 0) {
-							Toast.makeText(
-									getApplicationContext(),
-									"Please ensure you've entered a valid Rx number",
-									Toast.LENGTH_SHORT).show();
+						} else if (!isValidInt(rxnumbET)) {
+							//Dummy value for now (not enough time to make it actually optional)
+							rxnumbET.setText("12345");
 						} else {
 							// None of our inputs are empty;
 							// We insert a new RxItem into the database

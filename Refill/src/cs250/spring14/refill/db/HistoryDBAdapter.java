@@ -133,6 +133,7 @@ public class HistoryDBAdapter {
 	 * @return an ArrayList<HistoryItem> with all the HistoryItems
 	 */
 	public ArrayList<HistoryItem> getAllHis() {
+		open();
 		ArrayList<HistoryItem> his = new ArrayList<HistoryItem>();
 		Cursor c = this.getAllHisCursor();
 		if (c.moveToFirst())
@@ -154,6 +155,7 @@ public class HistoryDBAdapter {
 	 *         HistoryItems
 	 */
 	public ArrayList<HistoryItem> getHisForDisplay() {
+		open();
 		ArrayList<HistoryItem> his = new ArrayList<HistoryItem>();
 		Cursor c = this.getAllHisCursor();
 		if (c.moveToFirst())
@@ -177,6 +179,7 @@ public class HistoryDBAdapter {
 	 * @throws SQLException
 	 */
 	public Cursor getHisCursor(long ri) throws SQLException {
+		open();
 		Cursor result = db.query(true, H_TABLE, H_COLS, H_ID + "=" + ri, null,
 				null, null, null, null);
 		if ((result.getCount() == 0) || !result.moveToFirst()) {
