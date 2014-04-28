@@ -1082,7 +1082,7 @@ public class MainActivity extends ActionBarActivity implements
 		dbrET.setHint("   Days Between Refills: ");
 		pharmET.setHint("   Pharmacy (Click to Pick/Add): ");
 		physET.setHint("   Doctor (Click to Pick/Add): ");
-		rxnumbET.setHint("   RX Number (If blank, default value 12345 used): ");
+		rxnumbET.setHint("   RX Number (Optional): ");
 		nameET.setSingleLine();
 		// To avoid having to deal with keyboard input when you want to pick
 		// patient
