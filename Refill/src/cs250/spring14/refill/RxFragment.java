@@ -163,7 +163,22 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 													// address
 													Intent intent = new Intent(
 															Intent.ACTION_SENDTO);
-													String uriText = "mailto:"
+													String uriText;
+													if (rx.getRxNumb() == MainActivity.DEFAULT_RX_NUMBER) {
+														uriText = "mailto:"
+																+ Uri.encode(doc
+																		.getEmail())
+																+ "?subject="
+																+ Uri.encode("Question about my "
+																		+ rx.getName()
+																		+ " Prescription")
+																+ "&body="
+																+ Uri.encode("Dr. "
+																		+ doc.getName()
+																		+ ",\n\n");
+													}
+													else {
+														uriText = "mailto:"
 															+ Uri.encode(doc
 																	.getEmail())
 															+ "?subject="
@@ -175,6 +190,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 															+ Uri.encode("Dr. "
 																	+ doc.getName()
 																	+ ",\n\n");
+													}
 													intent.setData(Uri
 															.parse(uriText));
 													startActivity(intent);

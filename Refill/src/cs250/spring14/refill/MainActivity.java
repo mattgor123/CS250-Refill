@@ -93,6 +93,7 @@ public class MainActivity extends ActionBarActivity implements
 	private boolean shouldLogin;
 	private Menu menu;
 	protected static final int LOGIN = 3;
+	protected static String DEFAULT_RX_NUMBER = "12345";
 	private static MainActivity _instance;
 
 	@Override
@@ -1081,7 +1082,7 @@ public class MainActivity extends ActionBarActivity implements
 		dbrET.setHint("   Days Between Refills: ");
 		pharmET.setHint("   Pharmacy (Click to Pick/Add): ");
 		physET.setHint("   Doctor (Click to Pick/Add): ");
-		rxnumbET.setHint("   RX Number: ");
+		rxnumbET.setHint("   RX Number (If blank, default value 12345 used): ");
 		nameET.setSingleLine();
 		// To avoid having to deal with keyboard input when you want to pick
 		// patient
@@ -1291,12 +1292,14 @@ public class MainActivity extends ActionBarActivity implements
 									getApplicationContext(),
 									"Please ensure you've entered a valid physician",
 									Toast.LENGTH_SHORT).show();
-						} else if (!isValidInt(rxnumbET)) {
-							//Dummy value for now (not enough time to make it actually optional)
-							rxnumbET.setText("12345");
 						} else {
 							// None of our inputs are empty;
 							// We insert a new RxItem into the database
+							//See if we should use the value in the ET or default value
+							if (!isValidInt(rxnumbET)) {
+								//Dummy value for now (not enough time to make it actually optional)
+								rxnumbET.setText(DEFAULT_RX_NUMBER);
+							}
 							try {
 								Date lastRefillDate = null;
 								String name = nameET.getText().toString();// name
