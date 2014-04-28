@@ -7,6 +7,9 @@
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="19" />
+    
+    <uses-permission
+        android:name="com.android.alarm.permission.SET_ALARM"/>
 
     <application
         android:allowBackup="true"
@@ -23,6 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+=======
+        <receiver android:name=".core.RxNotificationManager" >
+        </receiver>
+>>>>>>> a1015c4334ffa576905cd511f17ac137439cd329
         <activity
             android:name="LoginActivity"
             android:label="@string/title_activity_login"
