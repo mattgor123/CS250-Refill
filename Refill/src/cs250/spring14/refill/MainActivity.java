@@ -54,12 +54,12 @@ import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Patient;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.RxItem;
-import cs250.spring14.refill.core.RxNotificationManager;
 import cs250.spring14.refill.db.DoctorDBAdapter;
 import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.PatientDBAdapter;
 import cs250.spring14.refill.db.PharmacyDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
+import cs250.spring14.refill.notify.RxNotificationManager;
 import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.PatientFragment;
 import cs250.spring14.refill.view.PharmacyFragment;
@@ -213,8 +213,8 @@ public class MainActivity extends ActionBarActivity implements
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.set(Calendar.HOUR_OF_DAY, 19);
-		calendar.set(Calendar.MINUTE, 28);
+		calendar.set(Calendar.HOUR_OF_DAY, 22);
+		calendar.set(Calendar.MINUTE, 11);
 		
 		System.out.println(calendar.getTime());
 		
