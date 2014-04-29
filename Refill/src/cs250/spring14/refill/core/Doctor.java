@@ -14,7 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.view.RefreshableFragment;
-
+/**
+ * The Doctor class is the doctor object associated with a Rx.
+ * An Rx can not be added unless it has a Doctor.
+ */
 public class Doctor {
 
   private String name;
@@ -25,9 +28,9 @@ public class Doctor {
   /**
    * Constructor for Doctor given a name, e-mail, and phone
    * 
-   * @param n
-   * @param e
-   * @param p
+   * @param n - the doctor's inputted name
+   * @param e - the doctor's inputted email
+   * @param p - the doctor's inputted phone number
    */
   public Doctor(String n, String e, String p) {
     this.setName(n);
@@ -47,7 +50,7 @@ public class Doctor {
   }
 
   /**
-   * @return the name
+   * @return the doctor's name
    */
   public String getName() {
     return this.name;
@@ -61,7 +64,7 @@ public class Doctor {
   }
 
   /**
-   * @return the email
+   * @return the doctor's email
    */
   public String getEmail() {
     return this.email;
@@ -75,26 +78,30 @@ public class Doctor {
   }
 
   /**
-   * @return the phone
+   * @return the doctor's phone number
    */
   public String getPhone() {
     return this.phone;
   }
 
   /**
-   * @param phone the phone to set
+   * @param phone the phone number to set
    */
   public void setPhone(String phone) {
     this.phone = phone;
   }
 
   /**
-   * @return the ID
+   * @return the doctor's ID from the DB 
    */
   public long getId() {
     return this.id;
   }
 
+  /**
+   * 
+   * @param id set the doctor's ID from the DB
+   */
   public void setId(long id) {
     this.id = id;
   }
@@ -177,10 +184,24 @@ public class Doctor {
     d.show();
   }
 
+  /**
+   * RxDatabase store the Rx's doctor information as string, therefore this 
+   * method returns the doctor object as a string
+   * 
+   * @param dr the doctor object
+   * @returnthe doctor as a string
+   */
   public static String makeStringFromDoc(Doctor dr) {
     return dr.getName() + " :: " + dr.getEmail() + " :: " + dr.getPhone();
   }
 
+  /**
+   * Since RxDatabase store doctors as string, this method is needed to get
+   * a doctor object from an RxItem
+   *  
+   * @param string the doctor as a string
+   * @return
+   */
   public static Doctor makeDocFromString(String string) {
     String[] tokens = string.split(" :: ");
     if (tokens.length != 3) {
@@ -191,6 +212,15 @@ public class Doctor {
     }
   }
 
+  /**
+   * Determines if the user made changes to a doctor while viewing the doctor's information
+   * 
+   * @param dr the doctor object
+   * @param name the doctor's name
+   * @param email the doctor's email
+   * @param phone the doctor's phone number
+   * @return
+   */
   public static boolean shouldUpdateDr(Doctor dr, String name, String email, String phone) {
     return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) || (!dr.getPhone().equals(phone)));
   }
