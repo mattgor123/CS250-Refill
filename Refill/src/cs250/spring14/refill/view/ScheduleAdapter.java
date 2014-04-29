@@ -21,8 +21,8 @@ public class ScheduleAdapter extends BaseAdapter{
 
 	private Context mContext;
 	private Calendar cal;
-	private String[] days = new String[]{"", "Sun", " M ", " T ", " W ", " Th", " F ", "Sat"};
-	private String[] hours = new String[]{"", " 6AM", " 7AM", " 8AM", " 9AM", "10AM", "11AM", "12PM",
+	private String[] days = new String[]{"", "| Sun |", "|   M  |", "|   T   |", "|   W  |", "|  Th  |", "|   F   |", "|  Sat |"};
+	private String[] hours = new String[]{"", " 6AM ", " 7AM ", " 8AM ", " 9AM ", "10AM", "11AM", "12PM",
 			" 1PM", " 2PM", " 3PM", " 4PM", " 5PM", " 6PM", " 7PM", " 8PM", " 9PM", "10PM"};
 	
     public ScheduleAdapter(Context c) {
@@ -92,7 +92,7 @@ public class ScheduleAdapter extends BaseAdapter{
 			v.setVisibility(View.VISIBLE);
 			layout = (LinearLayout) v.findViewById(R.id.schedule_layout);
 			TextView txt = new TextView(mContext);
-			txt.setText("|      |");
+			txt.setText("|         |");
 			txt.setLines(1);
 			layout.addView(txt);
 		}
