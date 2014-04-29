@@ -16,8 +16,10 @@ import android.widget.Button;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
+import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
 
 public class RxRefillActivity extends Activity {
@@ -36,6 +38,12 @@ public class RxRefillActivity extends Activity {
     } else {
       rxAdap = MainActivity.rxAdapter;
     }
+    final HistoryDBAdapter hisAdap;
+    if (MainActivity.rxAdapter == null) {
+      hisAdap = new HistoryDBAdapter(getApplicationContext());
+    } else {
+      hisAdap = MainActivity.hAdapter;
+    }
     rxAdap.open();
     final RxItem r = rxAdap.getRxFromRow(id);
     yes.setOnClickListener(new OnClickListener() {
@@ -47,11 +55,13 @@ public class RxRefillActivity extends Activity {
         if (rxAdap.updateRxRefillDate(id, today)) {
           Toast.makeText(getApplicationContext(),
               "Successfully updated refill date to " + MainActivity.df.format(today), Toast.LENGTH_SHORT).show();
+          hisAdap.open();
+          hisAdap.insertHis(new HistoryItem(r.getName(),"Updated Last Refill date to " + MainActivity.df.format(today),"R"));
+          hisAdap.close();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong updating your RX, sorry!", Toast.LENGTH_SHORT)
               .show();
         }
-
         rxAdap.close();
         final Pharmacy ph = r.getPharmacy();
         // Now, let's ask them if they want to call or e-mail the

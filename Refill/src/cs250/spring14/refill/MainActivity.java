@@ -1191,8 +1191,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                   if (!start.equals(rx.getStartDate())) {
                     // This means the date has been updated;
                     // must update last Refill date to match
-                    lastRefillDate = start;
-                    dateChanged = true;
+                    Calendar myCal = Calendar.getInstance();
+                    myCal.setTime(start);
+                    myCal.add(Calendar.DAY_OF_YEAR, rx.getDaysBetweenRefills());
+                    //If we changed the date but it shouldn't impact next refill
+                    if (rx.getNextRefillDate().compareTo(myCal.getTime()) > 0) {
+                      Toast.makeText(getApplicationContext(), "Start date has been updated, but your Last Refill date cannot be moved backwards. If you made a mistake before Refilling, please remove and re-add this Rx.", Toast.LENGTH_LONG).show();
+                      dateChanged = true;
+                      lastRefillDate = rx.getLastRefill();
+                    }
+                    else {
+                      dateChanged = true;
+                      lastRefillDate = start;
+                    }
                   } else {
                     // We have not updated the date, so we
                     // must keep the old last refill date
