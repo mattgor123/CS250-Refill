@@ -14,15 +14,18 @@ import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.RxItem;
 
+/**
+ * Extension of ArrayAdapter<RxItem> to get the custom view for each RxItem. Used by the RxFragment
+ */
 public class RxWrapper extends ArrayAdapter<RxItem> {
   private List<RxItem> items;
 
   /**
    * Constructor given a Context, resource and a RxItem list
    * 
-   * @param context
-   * @param resource
-   * @param objects list of Rx's
+   * @param context The context passed by the RxFragment
+   * @param resource The resource to use (since we do custom, never used)
+   * @param objects The List of RxItems from the DBAdapter, passed by RxFragment
    */
   public RxWrapper(Context context, int resource, List<RxItem> objects) {
     super(context, resource, objects);
@@ -98,9 +101,9 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
   }
 
   /**
-   * Helper method to get the resource for a pill given its name
+   * Helper method to get the icon for a pill given its name
    * 
-   * @param name
+   * @param name The name (always lowercase) of the RxItem
    * @return the int of the resource created in the R file
    */
   public int getIconFromString(String name) {

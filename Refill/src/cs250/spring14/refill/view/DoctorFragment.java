@@ -22,21 +22,37 @@ import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.Doctor;
 import cs250.spring14.refill.core.HistoryItem;
 
+/**
+ * DialogFragment that opens onClick of the Doctor icon in Overflow menu
+ */
 public class DoctorFragment extends DialogFragment implements RefreshableFragment {
   ListView docList;
   ArrayAdapter<Doctor> docAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
@@ -50,10 +66,10 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
   /**
    * Method to create the Doctor's dialog, inflate the dialog and attach to the parent view
    * 
-   * @param inflater
-   * @param container
-   * @param savedInstanceState
-   * @return
+   * @param inflater the LayoutInflater to use
+   * @param container the parent container
+   * @param savedInstanceState The bundle with saved instance (not used really)
+   * @return the created view for the fragment
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,11 +77,16 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
 
     View rootView = inflater.inflate(R.layout.fragment_doc, container, false);
     docList = (ListView) rootView.findViewById(R.id.listView1);
+    // Make the Wrapper for the adapter
     docAdap = new DoctorWrapper(rootView.getContext(), 0, MainActivity.drAdapter.getAllDrs());
+    // Hook up the List to the wrapper
     docList.setAdapter(docAdap);
     docList.setLongClickable(true);
     docList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+      /**
+       * Method to set the OnItemLongClick actions (in this case, call/e-mail Doctor)
+       */
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         final Doctor doc = (Doctor) parent.getItemAtPosition(position);
@@ -160,8 +181,9 @@ public class DoctorFragment extends DialogFragment implements RefreshableFragmen
     return rootView;
   }
 
-  // We will manually call this to ensure the Prescriptions view is always
-  // current
+  /**
+   * We want to repopulate our adapter every time this fragment is resumed
+   */
   @Override
   public void onResume() {
     super.onResume();

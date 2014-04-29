@@ -12,15 +12,18 @@ import android.widget.TextView;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 
+/**
+ * Extension of ArrayAdapter<HistoryItem> used to properly display the HistoryFragment
+ */
 public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
   private List<HistoryItem> items;
 
   /**
    * Constructor given a Context, resource and a History list
    * 
-   * @param context
-   * @param resource
-   * @param objects
+   * @param context The context passed from the HistoryFragment
+   * @param resource not used; always 0
+   * @param objects The List<HistoryItems> (obtained from static class in MainActivity)
    */
   public HistoryWrapper(Context context, int resource, List<HistoryItem> objects) {
     super(context, resource, objects);
@@ -44,7 +47,8 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
    *        number)
    * @param convertView the old view that will be updated
    * @param parent the parent that this view will be attached to
-   * @return a View corresponding to the Rx at the specified position.
+   * @return a View corresponding to the HistoryItem at the specified position.
+   * @See HistoryItem, HistoryItem.getIconResource()
    */
   @Override
   public View getView(int pos, View convertView, ViewGroup parent) {
@@ -88,7 +92,6 @@ public class HistoryWrapper extends ArrayAdapter<HistoryItem> {
         msg.setText(str);
       }
       if (iv != null) {
-        // Here we handle finding the image from the name
         iv.setImageResource(i.getIconResource());
       }
     }

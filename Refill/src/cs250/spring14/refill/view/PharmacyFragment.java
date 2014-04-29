@@ -22,21 +22,37 @@ import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Pharmacy;
 
+/**
+ * The DialogFragment which opens when one clicks on the Pharmacy from the Overflow menu
+ */
 public class PharmacyFragment extends DialogFragment implements RefreshableFragment {
   ListView phList;
   ArrayAdapter<Pharmacy> phAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
@@ -49,11 +65,13 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
 
   /**
    * Method to create the Pharmacy's dialog, inflate the dialog and attach to the parent view
+   * (PharmacyFragment)
    * 
-   * @param inflater
-   * @param container
-   * @param savedInstanceState
-   * @return
+   * @param inflater The LayoutInflater passed to the constructor from MainActivity
+   * @param container The container for this DialogFragment
+   * @param savedInstanceState The bundle used to retain instance state; not used in our
+   *        implementation
+   * @return The PharmacyFragment's view
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -158,8 +176,10 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
     return rootView;
   }
 
-  // We will manually call this to ensure the Prescriptions view is always
-  // current
+  /**
+   * Method to ensure the PharmacyFragment remains synchronized; calls repopulateAdapter() whenever
+   * Fragment is resumed.
+   */
   @Override
   public void onResume() {
     super.onResume();

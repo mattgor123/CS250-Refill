@@ -12,15 +12,18 @@ import android.widget.TextView;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.Doctor;
 
+/**
+ * Extension of ArrayAdapter<Doctor> to get the view for each item in the DoctorFragment
+ */
 public class DoctorWrapper extends ArrayAdapter<Doctor> {
   private List<Doctor> items;
 
   /**
    * Constructor given a Context, resource and a Doctor's list
    * 
-   * @param context
-   * @param resource
-   * @param objects
+   * @param context the context, passed from the calling DoctorFragment
+   * @param resource always 0; not used
+   * @param objects the List<Doctor> that we will be setting views for
    */
   public DoctorWrapper(Context context, int resource, List<Doctor> objects) {
     super(context, resource, objects);
@@ -64,7 +67,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
       TextView email = (TextView) v.findViewById(R.id.email);
       ImageView iv = (ImageView) v.findViewById(R.id.dr_ico);
       if (i.getId() == 1) {
-        // This is our dummy Pharmacy
+        // This is our dummy Pharmacy; we don't want to display it
         name.setVisibility(View.GONE);
         phone.setVisibility(View.GONE);
         email.setVisibility(View.GONE);
@@ -72,6 +75,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
         v.setVisibility(View.GONE);
         return v;
       } else {
+        // This is a real Pharmacy; we want to display it
         name.setVisibility(View.VISIBLE);
         phone.setVisibility(View.VISIBLE);
         email.setVisibility(View.VISIBLE);
@@ -80,6 +84,7 @@ public class DoctorWrapper extends ArrayAdapter<Doctor> {
         String nstr = i.getName();
         if (name != null) {
           String str = nstr;
+          // Truncate if too long
           if (str.length() > 17)
             str = (String) str.subSequence(0, 15) + "...";
           name.setText(str);

@@ -28,22 +28,38 @@ import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.core.ScheduleItem;
 
+/**
+ * The DialogFragment that should be opened when the user clicks on the Schedule ActionBar icon
+ */
 public class ScheduleFragment extends DialogFragment implements RefreshableFragment {
   GridView grid;
   ScheduleWrapper scheduleAdap;
 
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
@@ -54,6 +70,15 @@ public class ScheduleFragment extends DialogFragment implements RefreshableFragm
     }
   }
 
+  /**
+   * Method to create the actual view for the ScheduleFragment
+   * 
+   * @param inflater the LayoutInflater to use
+   * @param container The ViewGroup in which this ScheduleFragment should be contained
+   * @param savedInstanceState the Bundle which should be used to restore an old instance (not used,
+   *        we use repopulate instead)
+   * @return the View for the ScheduleFragment
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     getDialog().setTitle("Schedule");
@@ -83,7 +108,14 @@ public class ScheduleFragment extends DialogFragment implements RefreshableFragm
     return rootView;
   }
 
-
+  /**
+   * Method to open the Dialog to add a new Rx for a given position
+   * 
+   * @param context the context (always the Activity that created the ScheduleFragment)
+   * @param parent the GridView item on which we clicked to open the dialog
+   * @param hasPrescription true if this parent already has an Rx, false otherwise
+   * @param position the position on which we clicked to open this dialog
+   */
   protected void openScheduleRxDialog(final Context context, final View parent, final boolean hasPrescription,
       final int position) {
     final Dialog dialog = new Dialog(context);
@@ -103,7 +135,8 @@ public class ScheduleFragment extends DialogFragment implements RefreshableFragm
         txt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
         txt.setBackgroundColor(s.getColor());
         /**
-         * txt.setOnClickListener(new OnClickListener() {
+         * My miserably failed attempt to make the TextView clickable to replace the Remove button,
+         * didn't work. txt.setOnClickListener(new OnClickListener() {
          * 
          * @Override public void onClick(View v) { final TextView clicked = (TextView) v; final
          *           Dialog confirm = new Dialog(context); confirm.setTitle("Confirm remove");
@@ -204,6 +237,10 @@ public class ScheduleFragment extends DialogFragment implements RefreshableFragm
     dialog.show();
   }
 
+  /**
+   * Method to repopulate the Adapter based on MainActivity's ScheduleDBAdapter. Used to keep the
+   * status of the Fragment current.
+   */
   @Override
   public void repopulateAdapter() {
     // TODO Auto-generated method stub

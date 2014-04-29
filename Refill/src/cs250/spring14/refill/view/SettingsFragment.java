@@ -19,7 +19,13 @@ import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
 import cs250.spring14.refill.notify.RxNotificationManager;
 
+/**
+ * The DialogFragment that we will show upon clicking on the Settings icon in the Overflow menu
+ */
 public class SettingsFragment extends DialogFragment {
+  /**
+   * The method to create the view for the SettingsFragment based on XML & SharedPreferences
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     getDialog().setTitle("Settings");

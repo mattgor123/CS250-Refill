@@ -19,21 +19,38 @@ import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.HistoryItem;
 import cs250.spring14.refill.core.Patient;
 
+/**
+ * DialogFragment that opens onClick of the Patient in the Overflow menu
+ * 
+ */
 public class PatientFragment extends DialogFragment implements RefreshableFragment {
   ListView patList;
   ArrayAdapter<Patient> patAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
@@ -44,6 +61,13 @@ public class PatientFragment extends DialogFragment implements RefreshableFragme
     }
   }
 
+  /**
+   * Method to create the view used by this DialogFragment
+   * 
+   * @param inflater The LayoutInflater to use
+   * @param container The ViewGroup to which this DialogFragment belongs
+   * @param savedInstanceState the Bundle used to retain instances (not really used)
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     getDialog().setTitle("Select a Patient!");
@@ -103,12 +127,20 @@ public class PatientFragment extends DialogFragment implements RefreshableFragme
     return rootView;
   }
 
+  /**
+   * Method to repopulate the adapter every time the fragment's onResume is called
+   */
   @Override
   public void onResume() {
     super.onResume();
     repopulateAdapter();
   }
 
+  /**
+   * Method to clear and then re-add all of the items that should be displayed Note: This method is
+   * not very efficient, but since we are not working with more than a few hundred objects at a
+   * time, it should not cause performance issues.
+   */
   @Override
   public void repopulateAdapter() {
     if (patAdap != null) {

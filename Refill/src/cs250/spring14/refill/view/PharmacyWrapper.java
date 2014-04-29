@@ -12,15 +12,20 @@ import android.widget.TextView;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.Pharmacy;
 
+/**
+ * Extension of ArrayAdapter<Pharmacy> to get the views for specific pharmacies in the
+ * PharmacyFragment
+ */
 public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
   private List<Pharmacy> items;
 
   /**
    * Constructor given a Context, resource and a Pharmacy's list
    * 
-   * @param context
-   * @param resource
-   * @param objects
+   * @param context The context passed by the PharmacyFragment
+   * @param resource The resource (always 0, never actually used)
+   * @param objects The List<Pharmacy> objects passed by the PharmacyFragment for which to get each
+   *        view
    */
   public PharmacyWrapper(Context context, int resource, List<Pharmacy> objects) {
     super(context, resource, objects);
@@ -64,7 +69,7 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
       TextView email = (TextView) v.findViewById(R.id.email);
       ImageView iv = (ImageView) v.findViewById(R.id.ph_ico);
       if (i.getId() == 1) {
-        // This is our dummy Pharmacy
+        // This is our dummy Pharmacy, we don't want to display
         name.setVisibility(View.GONE);
         phone.setVisibility(View.GONE);
         email.setVisibility(View.GONE);
@@ -81,6 +86,7 @@ public class PharmacyWrapper extends ArrayAdapter<Pharmacy> {
         String nstr = i.getName();
         if (name != null) {
           String str = nstr;
+          // Truncate if too long
           if (str.length() > 17)
             str = (String) str.subSequence(0, 15) + "...";
           name.setText(str);

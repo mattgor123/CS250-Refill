@@ -16,6 +16,10 @@ import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.ScheduleItem;
 
+/**
+ * The extension of ArrayAdapter<ScheduleItem> that we use to populate the ScheduleFragment's
+ * GridView
+ */
 public class ScheduleWrapper extends ArrayAdapter<ScheduleItem> {
 
   private Context mContext;
@@ -25,29 +29,30 @@ public class ScheduleWrapper extends ArrayAdapter<ScheduleItem> {
       " 2PM", " 3PM", " 4PM", " 5PM", " 6PM", " 7PM", " 8PM", " 9PM", "10PM"};
   List<ScheduleItem> list;
 
+  /**
+   * Constructor for the ScheduleWrapper given Context, resource, and the List<ScheduleItems>
+   * 
+   * @param c The context, passed by the ScheduleFragment
+   * @param resource The resource to use for the adapter (always 0, not used)
+   * @param objects The List<ScheduleItem> for which we want to adapt the view
+   */
   public ScheduleWrapper(Context c, int resource, List<ScheduleItem> objects) {
     super(c, resource, objects);
     this.mContext = c;
     this.list = objects;
   }
 
+  /**
+   * Method to return the number of views we need to create
+   */
   @Override
   public int getCount() {
     return days.length * hours.length;
   }
 
-  @Override
-  public ScheduleItem getItem(int position) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public long getItemId(int position) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
+  /**
+   * Method to return the view for the specific item in the ArrayAdapter<ScheduleItem>
+   */
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     // TODO Auto-generated method stub
@@ -67,16 +72,18 @@ public class ScheduleWrapper extends ArrayAdapter<ScheduleItem> {
       LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       v = inflater.inflate(R.layout.schedule_schema, parent, false);
     }
-
+    // Get the items corresponding to this position
     ArrayList<ScheduleItem> schItems = MainActivity.scAdapter.getScshByPos(position);
 
     v.setVisibility(View.VISIBLE);
     layout = (LinearLayout) v.findViewById(R.id.schedule_layout);
-
+    // If it's not empty, we need to set the color
     if (!schItems.isEmpty()) {
       for (ScheduleItem s : schItems) {
         TextView txt = new TextView(getContext());
         txt.setBackgroundColor(s.getColor());
+        // If there's more than one, we append an asterisk to let the user know
+        // Must be a better way to do this, but it's fine for now
         if (schItems.size() > 1)
           txt.setText("*" + s.getName());
         else
@@ -101,7 +108,7 @@ public class ScheduleWrapper extends ArrayAdapter<ScheduleItem> {
         timeText.setLines(1);
         layout.addView(timeText);
 
-        // cell to show the meds that should be taken that time
+        // If there's nothing there, the view should be the pipes
       } else {
         TextView txt = new TextView(mContext);
         txt.setText("|         |");

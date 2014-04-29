@@ -11,14 +11,29 @@ import android.widget.TextView;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.Patient;
 
+/**
+ * Extension of ArrayAdapter<Patient> used by the PatientFragment to get view for each patient
+ */
 public class PatientWrapper extends ArrayAdapter<Patient> {
   private List<Patient> items;
 
+  /**
+   * Constructor given a context, resource, and a List<Patient> (passed by PatientFragment)
+   * 
+   * @param context The context given by the PatientFragment
+   * @param resource The resource (never actually used)
+   * @param objects The List<Patient> objects passed by the PatientFragment, gotten from the
+   *        MainActivity's PatientDBAdapter
+   */
   public PatientWrapper(Context context, int resource, List<Patient> objects) {
     super(context, resource, objects);
     this.items = objects;
   }
 
+  /**
+   * Method to get the specific view for the Patient at the given position. Used to set the View's
+   * background to the Patient's color and TextView to Patient's name.
+   */
   @Override
   public View getView(int pos, View convertView, ViewGroup parent) {
     // assign the view we are converting to a local variable
