@@ -60,11 +60,15 @@ public class ScheduleAdapter extends BaseAdapter{
 			v = inflater.inflate(R.layout.schedule_schema, parent, false);
 			
 		}else{
+			// invalidating the current layout to avoid scroll issues
 			v = null; 
+			
+			// inflating again to render the view
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = inflater.inflate(R.layout.schedule_schema, parent, false);
 		}
+		// filling the text for the first row (days)
 		if (position != 0 && position < 8){
 			v.setVisibility(View.VISIBLE);
 			layout = (LinearLayout) v.findViewById(R.id.schedule_layout);
@@ -72,6 +76,8 @@ public class ScheduleAdapter extends BaseAdapter{
 			dayText.setText(days[position]);
 			dayText.setLines(1);
 			layout.addView(dayText);
+			
+		// filling the text for the first column (times)
 		}else if ((position/8) < 18 && (position%8 == 0) ){
 			v.setVisibility(View.VISIBLE);
 			layout = (LinearLayout) v.findViewById(R.id.schedule_layout);
@@ -79,6 +85,8 @@ public class ScheduleAdapter extends BaseAdapter{
 			timeText.setText(hours[position/8]);
 			timeText.setLines(1);
 			layout.addView(timeText);
+			
+		// cell to show the meds that should be taken that time
 		}else
 		{
 			v.setVisibility(View.VISIBLE);
