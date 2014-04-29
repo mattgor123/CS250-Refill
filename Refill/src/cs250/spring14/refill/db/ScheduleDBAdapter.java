@@ -79,14 +79,16 @@ public class ScheduleDBAdapter {
   }
 
   /**
-   * Method to remove ScheduleItems from the DB given Name
+   * Method to remove ScheduleItems from the DB given Name & Patient
    * 
    * @param name the ScheduleItem's name
+   * @param patient the ScheduleItem's patient color
    * @return true if success, false otherwise
    */
-  public boolean removeSchByName(String name) {
+  public boolean removeSchByName(String name, int patient) {
     open();
-    return db.delete(SC_TABLE, SC_NAME + "= ?", new String[] {name}) > 0;
+    return db.delete(SC_TABLE, SC_NAME + " = ?" + " AND " + SC_COLOR + " = ?", new String[] {name,
+        String.valueOf(patient)}) > 0;
   }
 
 
