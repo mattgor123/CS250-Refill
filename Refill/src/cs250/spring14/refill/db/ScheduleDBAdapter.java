@@ -20,8 +20,7 @@ public class ScheduleDBAdapter {
   private final Context context;
 
   private static final String DB_NAME = "Sch.db";
-  private static final int DB_VERSION = 3; // All Doctors must have unique
-  // name
+  private static final int DB_VERSION = 3;
 
   private static final String SC_TABLE = "Scs";
   public static final String SC_ID = "Sc_id"; // column 0
@@ -191,6 +190,54 @@ public class ScheduleDBAdapter {
       } while (c.moveToNext());
     return schs;
   }
+
+  /**
+   * Method to update all ScheduleItems from a patient to another
+   * 
+   * @param oldPatient the old patient's color
+   * @param newPatient the new patient's color
+   * @return true if update successful, false otherwise
+   */
+  public boolean updateAllSchWithPatient(int oldPatient, int newPatient) {
+    open();
+    ContentValues cvalues = new ContentValues();
+    cvalues.put(SC_COLOR, newPatient);
+    return db.update(SC_TABLE, cvalues, SC_COLOR + " = ?", new String[] {String.valueOf(oldPatient)}) > 0;
+  }
+
+  /**
+   * Method to update all ScheduleItems from a patient to another
+   * 
+   * @param oldPatient the old patient's color
+   * @param newPatient the new patient's color
+   * @param oldName the old Rx's name
+   * @param newName the new Rx's name
+   * @return true if update successful, false otherwise
+   */
+  public boolean updateAllSchWithPatientAndName(int oldPatient, int newPatient, String oldName, String newName) {
+    open();
+    ContentValues cvalues = new ContentValues();
+    cvalues.put(SC_COLOR, newPatient);
+    cvalues.put(SC_NAME, newName);
+    return db.update(SC_TABLE, cvalues, SC_COLOR + " = ?" + " AND " + SC_NAME + " = ?", new String[] {
+        String.valueOf(oldPatient), oldName}) > 0;
+  }
+
+
+  /**
+   * Method to update all ScheduleItems from an Rx to a new one
+   * 
+   * @param oldRx the old rx name
+   * @param newRx the new rx name
+   * @return true if update successful, false otherwise
+   */
+  public boolean updateAllSchWithRxName(String oldRx, String newRx) {
+    open();
+    ContentValues cvalues = new ContentValues();
+    cvalues.put(SC_NAME, newRx);
+    return db.update(SC_TABLE, cvalues, SC_NAME + " = ?", new String[] {oldRx}) > 0;
+  }
+
 
   /**
    * Method to return the cursor for a Doctor given a specific row

@@ -76,6 +76,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
               public void onClick(DialogInterface dialog, int which) {
                 // Remove functionality must be added here
                 MainActivity.rxAdapter.removeRx(rx.getId());
+                MainActivity.scAdapter.removeSchByName(rx.getName());
                 String msg =
                     "Removed from Prescriptions DB on " + MainActivity.df.format(Calendar.getInstance().getTime());
                 MainActivity.hAdapter.insertHis(new HistoryItem(rx.getName(), msg, "R"));

@@ -101,6 +101,37 @@ public class Patient {
 
   }
 
+  public static int getColorIntFromPatientString(String pat) {
+    String[] tokens = pat.split(" :: ");
+    if (tokens.length != 2) {
+      // Something went very wrong
+      return Color.WHITE;
+    }
+    String str = tokens[1];
+    switch (str) {
+      case "LightBlue":
+        return -7012353;
+
+      case "LightOrange":
+        return -13159;
+
+      case "LightYellow":
+        return -103;
+
+      case "LightGreen":
+        return -7995515;
+
+      case "LightPurple":
+        return -3355393;
+
+      case "LightPink":
+        return -13057;
+
+      default:
+        return Color.WHITE;
+    }
+  }
+
   public static String makeStringFromPatient(Patient p) {
     return p.name + " :: " + getColorStringFromColorInt(p.color);
   }
@@ -187,6 +218,8 @@ public class Patient {
               return;
             } else if (MainActivity.paAdapter.updatePa(pat.getId(), str, c)) {
               // We successfully updated the Patient
+              // Update Schedule
+              MainActivity.scAdapter.updateAllSchWithPatient(pat.getColor(), c);
               String oldPatient = makeStringFromPatient(pat);
               pat.setName(str);
               pat.setColor(c);

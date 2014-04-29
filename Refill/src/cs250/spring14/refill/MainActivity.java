@@ -190,17 +190,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // ScheduleItem adapter stuff
     scAdapter = new ScheduleDBAdapter(this);
     scAdapter.open();
-    // Notification stuff
-    // Starting Alarm Service for the refill Notification
-    Intent alarmIntent = new Intent(this, RxNotificationManager.class);
-    alarmIntent.setAction(RxNotificationManager.SEND_NOTIFICATION);
-    PendingIntent pi = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-    am.cancel(pi);
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.HOUR_OF_DAY, 12);
-    calendar.set(Calendar.MINUTE, 0);
-    am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 86400000, AlarmManager.INTERVAL_DAY, pi);
     _instance = this;
   }
 
@@ -294,11 +283,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         } else if (resultCode == Activity.RESULT_FIRST_USER) {
           String email = data.getStringExtra(LoginActivity.RESULT_STRING);
           Toast.makeText(this, "First time logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
-          // HERE IS WHERE WE ASK THEM IF WE WANT TO MAKE A NEW PATIENT
-
+          // Initializing daily notification stuff
+          // Notification stuff
+          // Starting Alarm Service for the refill Notification
+          Intent alarmIntent = new Intent(this, RxNotificationManager.class);
+          alarmIntent.setAction(RxNotificationManager.SEND_NOTIFICATION);
+          PendingIntent pi = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+          AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+          am.cancel(pi);
+          Calendar calendar = Calendar.getInstance();
+          calendar.set(Calendar.HOUR_OF_DAY, 12);
+          calendar.set(Calendar.MINUTE, 0);
+          am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 86400000, AlarmManager.INTERVAL_DAY, pi);
           break;
         } else if (resultCode == LoginActivity.KILLED) {
-          // We hit the back button
+          // We hit the back button from LoginActivity
           finish();
         }
       }
@@ -965,7 +964,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // Now I'm making the scrollview with a linear layout for this badboy
     // (easier to do programatically than in XML)
     ScrollView sv = new ScrollView(this);
-    LayoutParams svlp = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+    LayoutParams svlp =
+        new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT);
     sv.setLayoutParams(svlp);
     LinearLayout layout = new LinearLayout(this);
     layout.setOrientation(1);
@@ -1233,6 +1234,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                       || dateChanged) {
                     rxAdapter.updateRx(rx.getId(), name, patient, symp, sideEffects, dose, ppd, start, dbr, pharm, doc,
                         rxnumb, lastRefillDate);
+                    scAdapter.updateAllSchWithPatientAndName(rx.getPatient().getColor(), Patient
+                        .getColorIntFromPatientString(patient), rx.getName(), name);
                     String message = "Updated in Prescriptions DB on " + df.format(Calendar.getInstance().getTime());
                     hAdapter.insertHis(new HistoryItem(name, message, "R"));
                   } else {
