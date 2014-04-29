@@ -1,33 +1,24 @@
 package cs250.spring14.refill.view;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import cs250.spring14.refill.R;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ScheduleAdapter extends BaseAdapter{
 
 	private Context mContext;
-	private Calendar cal;
 	private String[] days = new String[]{"", "| Sun |", "|   M  |", "|   T   |", "|   W  |", "|  Th  |", "|   F   |", "|  Sat |"};
 	private String[] hours = new String[]{"", " 6AM ", " 7AM ", " 8AM ", " 9AM ", "10AM", "11AM", "12PM",
 			" 1PM", " 2PM", " 3PM", " 4PM", " 5PM", " 6PM", " 7PM", " 8PM", " 9PM", "10PM"};
 	
     public ScheduleAdapter(Context c) {
         mContext = c;
-        cal = Calendar.getInstance();
     }
 
 	@Override
