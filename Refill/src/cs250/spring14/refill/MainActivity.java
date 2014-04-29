@@ -62,6 +62,7 @@ import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.PatientFragment;
 import cs250.spring14.refill.view.PharmacyFragment;
 import cs250.spring14.refill.view.RefreshableFragment;
+import cs250.spring14.refill.view.ScheduleFragment;
 import cs250.spring14.refill.view.SettingsFragment;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,
@@ -213,7 +214,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // as you specify a parent activity in AndroidManifest.xml.
     switch (item.getItemId()) {
       case R.id.action_cal:
-        Toast.makeText(this, "Let's do some fun stuff with calendars!", Toast.LENGTH_SHORT).show();
+        ScheduleFragment scheduleFrag = new ScheduleFragment();
+        scheduleFrag.show(getSupportFragmentManager(), "ScheduleFragment");
+    	//Toast.makeText(this, "Let's do some fun stuff with calendars!", Toast.LENGTH_SHORT).show();
         return true;
       case R.id.action_add:
         openCustomDialog(this);
