@@ -313,6 +313,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     phAdapter.open();
     hAdapter.open();
     paAdapter.open();
+    scAdapter.open();
     // Make sure the fragments are still initialized, haven't been destroyed
     if (frags[0] == null || frags[1] == null) {
       RxFragment rxFrag = new RxFragment();
@@ -332,6 +333,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     phAdapter.close();
     hAdapter.close();
     paAdapter.close();
+    scAdapter.close();
   }
 
   @Override
