@@ -22,13 +22,20 @@ import cs250.spring14.refill.core.RxItem;
 import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
 
+/**
+ * The Activity that will be started upon clicking on the 'Refill RxItem today!' notification
+ */
 public class RxRefillActivity extends Activity {
 
+  /**
+   * Method to create the activity
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     final Context ctx = this;
+    // We start the intent with an ID for the Rx
     final long id = getIntent().getLongExtra("id", 500);
     setContentView(R.layout.activity_rx_refill);
     Button yes = (Button) findViewById(R.id.yes);
@@ -39,13 +46,22 @@ public class RxRefillActivity extends Activity {
       rxAdap = MainActivity.rxAdapter;
     }
     final HistoryDBAdapter hisAdap;
-    if (MainActivity.rxAdapter == null) {
+    if (MainActivity.hAdapter == null) {
       hisAdap = new HistoryDBAdapter(getApplicationContext());
     } else {
       hisAdap = MainActivity.hAdapter;
     }
     rxAdap.open();
+    // Here we use the ID we got from the extra. Will cause NullPointers
+    // If the intent's extra was not populated correctly or the Rx has
+    // been removed between the time a notification was created and
+    // we try to refill it.
     final RxItem r = rxAdap.getRxFromRow(id);
+    if (r == null) {
+      rxAdap.close();
+      finish();
+    }
+    // Let's help the user notify their pharmacy!
     yes.setOnClickListener(new OnClickListener() {
 
       @Override
@@ -113,6 +129,7 @@ public class RxRefillActivity extends Activity {
       }
     });
     Button no = (Button) findViewById(R.id.no);
+    // Increment nextRefillDate by 1 by adding 1 to the lastRefillDate of the RX
     no.setOnClickListener(new OnClickListener() {
 
       @Override
