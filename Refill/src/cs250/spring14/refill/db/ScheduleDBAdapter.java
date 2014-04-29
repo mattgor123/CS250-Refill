@@ -26,9 +26,10 @@ public class ScheduleDBAdapter {
   private static final String SC_TABLE = "Scs";
   public static final String SC_ID = "Sc_id"; // column 0
   public static final String SC_NAME = "Sc_name"; // column 1
-  public static final String SC_POS = "Sc_email"; // column 2
+  public static final String SC_POS = "Sc_pos"; // column 2
+  public static final String SC_COLOR = "Sc_color"; //column 3
 
-  public static final String[] SC_COLS = {SC_ID, SC_NAME, SC_POS};
+  public static final String[] SC_COLS = {SC_ID, SC_NAME, SC_POS, SC_COLOR};
 
   /**
    * Constructor given a Context for this DBAdapter
@@ -73,6 +74,7 @@ public class ScheduleDBAdapter {
     // assign values for each col
     cvalues.put(SC_NAME, sch.getName());
     cvalues.put(SC_POS, sch.getPos());
+    cvalues.put(SC_COLOR, sch.getColor());
     long row = db.insert(SC_TABLE, null, cvalues);
     return row;
   }
@@ -106,7 +108,7 @@ public class ScheduleDBAdapter {
       return null;
     } else {
       ScheduleItem result = new ScheduleItem(c.getString(1), // name
-          Integer.valueOf(c.getString(2)));
+          Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
       // Set the ID to the row in the DB
       result.setId(c.getInt(0));
       return result;
@@ -128,7 +130,7 @@ public class ScheduleDBAdapter {
     if (c.moveToFirst()) {
       do {
         ScheduleItem result = new ScheduleItem(c.getString(1), // name
-            Integer.valueOf(c.getString(2)));
+            Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
         // Set the ID to the row in the DB
         result.setId(c.getInt(0));
         schs.add(result);
@@ -143,7 +145,7 @@ public class ScheduleDBAdapter {
    * @param ri the row to remove
    * @return the # of affected rows
    */
-  public int removeDr(long ri) {
+  public int removeSch(long ri) {
     open();
     return db.delete(SC_TABLE, SC_ID + " = ?", new String[] {String.valueOf(ri)});
   }
@@ -182,7 +184,7 @@ public class ScheduleDBAdapter {
     if (c.moveToFirst())
       do {
         ScheduleItem result = new ScheduleItem(c.getString(1), // name
-            Integer.valueOf(c.getString(2)));
+            Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
         // Set the ID to the row in the DB
         result.setId(c.getInt(0));
         schs.add(result);
@@ -215,7 +217,7 @@ public class ScheduleDBAdapter {
 
     // SQL statement to create a new database
     private static final String DB_CREATE = "CREATE TABLE " + SC_TABLE + " (" + SC_ID
-        + " INTEGER PRIMARY KEY AUTOINCREMENT," + SC_NAME + " TEXT," + SC_POS + " INTEGER);";
+        + " INTEGER PRIMARY KEY AUTOINCREMENT," + SC_NAME + " TEXT," + SC_POS + " INTEGER," + SC_COLOR + " INTEGER);";
 
     public SchDBHelper(Context context, String name, CursorFactory fct, int version) {
       super(context, name, fct, version);

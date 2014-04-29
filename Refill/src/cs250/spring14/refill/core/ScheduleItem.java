@@ -5,10 +5,12 @@ public class ScheduleItem {
   private long id;
   private String name;
   private int pos;
+  private int color;
   
-  public ScheduleItem(String name, int pos) {
+  public ScheduleItem(String name, int pos, int color) {
     this.setName(name);
     this.setPos(pos);
+    this.setColor(color);
   }
   
   public long getId() {
@@ -28,5 +30,13 @@ public class ScheduleItem {
   }
   public void setPos(int pos) {
     this.pos = pos;
+  }
+
+  public int getColor() {
+    return color;
+  }
+
+  public void setColor(int color) {
+    this.color = color;
   }
 }
