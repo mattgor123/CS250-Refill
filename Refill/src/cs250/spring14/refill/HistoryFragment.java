@@ -17,27 +17,48 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
   ArrayAdapter<HistoryItem> hisAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     try {
       this.setmListener((RefreshableFragment.OnCompleteListener) activity);
-      setRetainInstance(true);
     } catch (final ClassCastException e) {
       throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
     }
   }
 
+  /**
+   * Method to create the view for this Fragment
+   * 
+   * @param inflater the LayoutInflater passed to the constructor
+   * @param container the ViewGroup to which this HistoryFragment belongs
+   * @param savedInstanceState the Bundle used to restore settings (we do repopulateAdapter() so not
+   *        used)
+   * @return the View that we created
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     setRetainInstance(true);
@@ -114,12 +135,18 @@ public class HistoryFragment extends Fragment implements RefreshableFragment {
     return rootView;
   }
 
+  /**
+   * Method to ensure that repopulateAdapter() is called whenever we hit onResume()
+   */
   @Override
   public void onResume() {
     super.onResume();
     repopulateAdapter();
   }
 
+  /**
+   * Method to repopulate this HistoryFragment's adapter with all the required info
+   */
   @Override
   public void repopulateAdapter() {
     if (hisAdap != null) {

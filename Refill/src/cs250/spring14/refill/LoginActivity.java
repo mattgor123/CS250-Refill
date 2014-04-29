@@ -62,6 +62,9 @@ public class LoginActivity extends Activity {
   private TextView mLoginStatusMessageView;
   public static CheckedTextView checkBox;
 
+  /**
+   * Method called whenever we create a LoginActivity
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -114,6 +117,9 @@ public class LoginActivity extends Activity {
     });
   }
 
+  /**
+   * Method to create the Dialog if this is our first ever run of Refill!
+   */
   public void makeFirstRunDialog() {
     new AlertDialog.Builder(this)
         .setTitle("Welcome to Refill!")
@@ -123,6 +129,10 @@ public class LoginActivity extends Activity {
         .setNeutralButton("I understand", null).show();
   }
 
+  /**
+   * Method to kill the LoginActivity with ResultCode KILLED if we hit the back button (which will
+   * call us to kill MainActivity as well)
+   */
   @Override
   public void onBackPressed() {
     Intent returnIntent = new Intent();
@@ -130,6 +140,9 @@ public class LoginActivity extends Activity {
     finish();
   }
 
+  /**
+   * Method to create the OptionsMenu for the LoginActivity (forgot password button, etc.)
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
@@ -137,6 +150,9 @@ public class LoginActivity extends Activity {
     return true;
   }
 
+  /**
+   * Method to display the toast about forgotten password given click on that MenuItem
+   */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
@@ -288,6 +304,10 @@ public class LoginActivity extends Activity {
       return FAILED;
     }
 
+    /**
+     * Method used to finish the activity based on the result & pass this result back to
+     * MainActivity
+     */
     @Override
     protected void onPostExecute(final Integer success) {
       mAuthTask = null;
@@ -310,6 +330,9 @@ public class LoginActivity extends Activity {
       }
     }
 
+    /**
+     * Method to make sure that if we cancel the login form, we don't log in or anything!
+     */
     @Override
     protected void onCancelled() {
       mAuthTask = null;
