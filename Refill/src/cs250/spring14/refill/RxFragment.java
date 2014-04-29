@@ -240,7 +240,7 @@ public class RxFragment extends Fragment implements RefreshableFragment {
     super.onResume();
     repopulateAdapter();
   }
-  
+
   /**
    * Method to repopulate the Rx's array adapter with changes produced in the edit dialog
    */

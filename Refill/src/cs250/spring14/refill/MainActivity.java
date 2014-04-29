@@ -100,8 +100,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   /**
    * Method that creates our app.
    * 
-   * @param savedInstanceState 
-   * 				a Bundle containing a previous saved state of our app
+   * @param savedInstanceState a Bundle containing a previous saved state of our app
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -202,8 +201,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   /**
    * Method to create the action bar menus and inflate it with items.
    * 
-   * @param menu
-   * 			the action bar
+   * @param menu the action bar
    */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,10 +214,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   /**
    * Method to handle a click in a action bar item.
    * 
-   * @param item
-   * 			the action bar item clicked
+   * @param item the action bar item clicked
    * 
-   * @return true if the action bar item is matched in the switch statement (should always return true)
+   * @return true if the action bar item is matched in the switch statement (should always return
+   *         true)
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
@@ -331,8 +329,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Override method to onStart().
-   * Gets executed when the app starts.
+   * Override method to onStart(). Gets executed when the app starts.
    */
   @Override
   public void onStart() {
@@ -353,10 +350,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       frags[1] = hisFrag;
     }
   }
-  
+
   /**
-   * Override method to onStop().
-   * Gets executed when the app stops.
+   * Override method to onStop(). Gets executed when the app stops.
    */
   @Override
   public void onStop() {
@@ -372,8 +368,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   /**
    * Method to handle the selection of a tab.
    * 
-   * @param tab
-   * 		the selected tab
+   * @param tab the selected tab
    * @param fragmentTransaction
    */
   @Override
@@ -390,11 +385,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
   /**
-   * Method to check if a int is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a int is valid within a EditText. This method is used to validate the data
+   * filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if int is valid, false otherwise
    */
   public static boolean isValidInt(EditText et) {
@@ -406,11 +400,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to check if a double is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a double is valid within a EditText. This method is used to validate the
+   * data filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if double is valid, false otherwise
    */
   public static boolean isValidDouble(EditText et) {
@@ -422,11 +415,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to check if a name is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a name is valid within a EditText. This method is used to validate the data
+   * filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if the name is valid, false otherwise
    */
   public static boolean isValidName(String str) {
@@ -445,11 +437,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to check if a phone is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a phone is valid within a EditText. This method is used to validate the data
+   * filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if the phone is valid, false otherwise
    */
   public static boolean isValidPhone(String str) {
@@ -460,11 +451,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to check if a email is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a email is valid within a EditText. This method is used to validate the data
+   * filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if the email is valid, false otherwise
    */
   public static boolean isValidEmail(String str) {
@@ -475,11 +465,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to check if a street is valid within a EditText.
-   * This method is used to validate the data filled in our dialogs.
+   * Method to check if a street is valid within a EditText. This method is used to validate the
+   * data filled in our dialogs.
    * 
-   * @param et
-   * 		the EditText being evaluated
+   * @param et the EditText being evaluated
    * @return true if the street is valid, false otherwise
    */
   public static boolean isValidStreet(String str) {
@@ -1021,8 +1010,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to open a dialog from which the user can choose to add a new prescription, doctor, pharmacy or patient.
-   *  
+   * Method to open a dialog from which the user can choose to add a new prescription, doctor,
+   * pharmacy or patient.
+   * 
    * @param context the context for the dialog
    */
   public void openCustomDialog(final Context context) {
@@ -1442,8 +1432,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     /**
      * Method to get a fragment for a given position in a page.
      * 
-     * @param position
-     * 				the requested fragment position
+     * @param position the requested fragment position
      * @return a fragment for the given position
      */
     @Override
@@ -1485,13 +1474,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to implement OnSharedPreferenceChangeListener.
-   * Used to refresh the appropriate fragment and make fragments reflect settings changes.
+   * Method to implement OnSharedPreferenceChangeListener. Used to refresh the appropriate fragment
+   * and make fragments reflect settings changes.
    * 
-   * @param sharedPreferences
-   * 				the app's shared preferences
-   * @param key
-   * 			the shared preference that just changed
+   * @param sharedPreferences the app's shared preferences
+   * @param key the shared preference that just changed
    */
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

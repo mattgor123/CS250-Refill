@@ -13,6 +13,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cs250.spring14.refill.core.Doctor;
 
+/**
+ * Database adapter to work with and create our database of Doctors Statically referenced in
+ * MainActivity & also takes a context as constructor for new DBAdapter
+ */
 public class DoctorDBAdapter {
 
   private SQLiteDatabase db;

@@ -19,6 +19,11 @@ import cs250.spring14.refill.core.Patient;
 import cs250.spring14.refill.core.Pharmacy;
 import cs250.spring14.refill.core.RxItem;
 
+/**
+ * Database adapter to work with and create our database of RxItems Statically referenced in
+ * MainActivity & also takes a context as constructor for new DBAdapter
+ */
+
 public class RxDBAdapter {
 
   private SQLiteDatabase db;

@@ -13,6 +13,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cs250.spring14.refill.core.Pharmacy;
 
+/**
+ * Database adapter to work with and create our database of Pharmacys Statically referenced in
+ * MainActivity & also takes a context as constructor for new DBAdapter
+ */
+
 public class PharmacyDBAdapter {
 
   private SQLiteDatabase db;

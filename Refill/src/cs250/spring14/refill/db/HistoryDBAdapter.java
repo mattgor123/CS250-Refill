@@ -13,6 +13,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import cs250.spring14.refill.core.HistoryItem;
 
+/**
+ * Database adapter to work with and create our database of HistoryItems Statically referenced in
+ * MainActivity & also takes a context as constructor for new DBAdapter
+ */
+
 public class HistoryDBAdapter {
 
   private SQLiteDatabase db;
