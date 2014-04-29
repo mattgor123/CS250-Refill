@@ -13,13 +13,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings.TextSize;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScheduleAdapter extends ArrayAdapter<ScheduleItem>{
+public class ScheduleWrapper extends ArrayAdapter<ScheduleItem>{
 
 	private Context mContext;
 	private String[] days = new String[]{"", "| Sun |", "|   M  |", "|   T   |", "|   W  |", "|  Th  |", "|   F   |", "|  Sat |"};
@@ -27,7 +25,7 @@ public class ScheduleAdapter extends ArrayAdapter<ScheduleItem>{
 			" 1PM", " 2PM", " 3PM", " 4PM", " 5PM", " 6PM", " 7PM", " 8PM", " 9PM", "10PM"};
 	List<ScheduleItem> list;
     
-    public ScheduleAdapter (Context c, int resource, List<ScheduleItem> objects)
+    public ScheduleWrapper (Context c, int resource, List<ScheduleItem> objects)
     {
     	super(c, resource, objects);
     	this.mContext = c;
@@ -84,11 +82,14 @@ public class ScheduleAdapter extends ArrayAdapter<ScheduleItem>{
 			{
 				TextView txt = new TextView(getContext());
 				txt.setBackgroundColor(s.getColor());
-		  		txt.setText(s.getName());
+				if (schItems.size() > 1)
+					txt.setText("*" + s.getName());
+				else
+					txt.setText(s.getName());
 		  		txt.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 		  		txt.setSingleLine();
 		  		txt.setEllipsize(TextUtils.TruncateAt.END);
-		  		layout.addView(txt);	
+		  		layout.addView(txt);
 			}
 		}else{
 			// filling the text for the first row (days)
