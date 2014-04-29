@@ -80,7 +80,6 @@ public class ScheduleFragment extends DialogFragment {
 	    {
 	    	for (int i = 0; i < ((LinearLayout)parent).getChildCount(); i++){
     			TextView txt = (TextView) ((LinearLayout)parent).getChildAt(i);
-    			rxListView.addvi
     			//Toast.makeText(getActivity(), txt2.getText(),Toast.LENGTH_SHORT).show();
     		}
 	    }
