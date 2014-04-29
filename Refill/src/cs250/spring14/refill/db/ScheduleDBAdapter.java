@@ -27,7 +27,7 @@ public class ScheduleDBAdapter {
   public static final String SC_ID = "Sc_id"; // column 0
   public static final String SC_NAME = "Sc_name"; // column 1
   public static final String SC_POS = "Sc_email"; // column 2
-  
+
   public static final String[] SC_COLS = {SC_ID, SC_NAME, SC_POS};
 
   /**
@@ -113,6 +113,29 @@ public class ScheduleDBAdapter {
     }
   }
 
+  /**
+   * Method to get ScheduleItems given position
+   * 
+   * @param pos the ScheduleItems' position
+   * @return an ArrayList<ScheduleItem> with all ScheduleItems of given pos
+   * @throws SQLException
+   */
+  public ArrayList<ScheduleItem> getScshByPos(int pos) throws SQLException {
+    open();
+    ArrayList<ScheduleItem> schs = new ArrayList<ScheduleItem>();
+    Cursor c =
+        db.query(true, SC_TABLE, SC_COLS, SC_POS + "=?", new String[] {String.valueOf(pos)}, null, null, null, null);
+    if (c.moveToFirst()) {
+      do {
+        ScheduleItem result = new ScheduleItem(c.getString(1), // name
+            Integer.valueOf(c.getString(2)));
+        // Set the ID to the row in the DB
+        result.setId(c.getInt(0));
+        schs.add(result);
+      } while (c.moveToNext());
+    }
+    return schs;
+  }
 
   /**
    * Method to remove a ScheduleItem from the DB

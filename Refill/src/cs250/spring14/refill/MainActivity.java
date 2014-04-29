@@ -219,9 +219,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // as you specify a parent activity in AndroidManifest.xml.
     switch (item.getItemId()) {
       case R.id.action_cal:
-        ScheduleFragment scheduleFrag = new ScheduleFragment();
-        scheduleFrag.show(getSupportFragmentManager(), "ScheduleFragment");
-    	//Toast.makeText(this, "Let's do some fun stuff with calendars!", Toast.LENGTH_SHORT).show();
+        if (scAdapter.getSize() == 0) { 
+          Toast.makeText(this, "You should add a Prescription before opening schedule!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+          ScheduleFragment scheduleFrag = new ScheduleFragment();
+          scheduleFrag.show(getSupportFragmentManager(), "ScheduleFragment");
+        }
+        //Toast.makeText(this, "Let's do some fun stuff with calendars!", Toast.LENGTH_SHORT).show();
         return true;
       case R.id.action_add:
         openCustomDialog(this);
