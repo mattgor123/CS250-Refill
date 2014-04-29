@@ -1168,7 +1168,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
               // We insert a new RxItem into the database
               // See if we should use the value in the ET or
               // default value
-              if (!isValidInt(rxnumbET)) {
+              if (rxnumbET.getText().toString().trim().length() == 0) {
                 // Dummy value for now (not enough time to make
                 // it actually optional)
                 rxnumbET.setText(DEFAULT_RX_NUMBER);
