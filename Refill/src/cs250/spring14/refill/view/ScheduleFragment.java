@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.core.RxItem;
+import cs250.spring14.refill.core.ScheduleItem;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -27,9 +29,28 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ScheduleFragment extends DialogFragment {
+public class ScheduleFragment extends DialogFragment implements RefreshableFragment{
 	GridView grid;
 	ScheduleAdapter scheduleAdap;
+	
+	private RefreshableFragment.OnCompleteListener mListener;
+
+	  public RefreshableFragment.OnCompleteListener getmListener() {
+	    return mListener;
+	  }
+	
+	  public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
+	    this.mListener = mListener;
+	  }
+	
+	  public void onAttach(Activity activity) {
+	    super.onAttach(activity);
+	    try {
+	      this.setmListener((RefreshableFragment.OnCompleteListener) activity);
+	    } catch (final ClassCastException e) {
+	      throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+	    }
+	  }
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -40,8 +61,8 @@ public class ScheduleFragment extends DialogFragment {
 		
 		grid = (GridView) rootView.findViewById(R.id.gridView1);
 		
-		scheduleAdap = new ScheduleAdapter(rootView.getContext());
-		
+		scheduleAdap = new ScheduleAdapter(rootView.getContext(), 0, MainActivity.scAdapter.getAllSchs());
+		repopulateAdapter();
 		grid.setAdapter(scheduleAdap);
 
 		grid.setOnItemClickListener(new OnItemClickListener() {
@@ -51,9 +72,9 @@ public class ScheduleFragment extends DialogFragment {
 	        		TextView txt = (TextView) ((LinearLayout)v).getChildAt(0);
 	        		if (txt.getText() == "|         |")
 	        		{
-	        			openScheduleRxDialog(getActivity(), v, false);
+	        			openScheduleRxDialog(getActivity(), v, false, position); 
 	        		}else{
-	        			openScheduleRxDialog(getActivity(), v, true);
+	        			openScheduleRxDialog(getActivity(), v, true, position);
 	        		}
 	        		for (int i = 0; i < ((LinearLayout)v).getChildCount(); i++){
 	        			TextView txt2 = (TextView) ((LinearLayout)v).getChildAt(i);
@@ -68,7 +89,7 @@ public class ScheduleFragment extends DialogFragment {
 		return rootView;
 	}
 	
-	protected void openScheduleRxDialog(final Context context, final View parent, final boolean hasPrescription){
+	protected void openScheduleRxDialog(final Context context, final View parent, final boolean hasPrescription, final int position){
 	    final Dialog dialog = new Dialog(context);
 	    dialog.setTitle("Select Rx");
 	    dialog.setContentView(R.layout.schedule_dialog);
@@ -80,6 +101,7 @@ public class ScheduleFragment extends DialogFragment {
 	    {
 	    	for (int i = 0; i < ((LinearLayout)parent).getChildCount(); i++){
     			TextView txt = (TextView) ((LinearLayout)parent).getChildAt(i);
+    			
     			//Toast.makeText(getActivity(), txt2.getText(),Toast.LENGTH_SHORT).show();
     		}
 	    }
@@ -114,23 +136,26 @@ public class ScheduleFragment extends DialogFragment {
 			      @Override
 			      public void onClick(View v) {
 			    	  if (hasPrescription){
-			    		  TextView txt = new TextView(getActivity());
+			    		  MainActivity.scAdapter.insertSch(new ScheduleItem(((RxItem)spinner.getSelectedItem()).getName(),position, 
+			    				  ((RxItem)spinner.getSelectedItem()).getPatient().getColor()));
+			    		  repopulateAdapter();
+			    		  Toast.makeText(getActivity(), MainActivity.scAdapter.getSize()+" ", Toast.LENGTH_SHORT).show();
+			    		  /*TextView txt = new TextView(getActivity());
 			    		  txt.setBackgroundColor(((RxItem)spinner.getSelectedItem()).getPatient().getColor());
 			    		  txt.setText(((RxItem)spinner.getSelectedItem()).getName());
 			    		  txt.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 			    		  txt.setSingleLine();
 			    		  txt.setEllipsize(TextUtils.TruncateAt.END);
-			    		  ((LinearLayout)parent).addView(txt);
+			    		  ((LinearLayout)parent).addView(txt);*/
 			    	  }
 			    	  else{
 			    		  ((LinearLayout)parent).removeAllViews();
-			    		  TextView txt = new TextView(getActivity());
-			    		  txt.setBackgroundColor(((RxItem)spinner.getSelectedItem()).getPatient().getColor());
-			    		  txt.setText(((RxItem)spinner.getSelectedItem()).getName());
-			    		  txt.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-			    		  txt.setSingleLine();
-			    		  txt.setEllipsize(TextUtils.TruncateAt.END);
-			    		  ((LinearLayout)parent).addView(txt);
+			    		  MainActivity.scAdapter.insertSch(new ScheduleItem(((RxItem)spinner.getSelectedItem()).getName(),position, 
+			    				  ((RxItem)spinner.getSelectedItem()).getPatient().getColor()));
+			    		  repopulateAdapter();
+			    		  
+			    		  Toast.makeText(getActivity(), MainActivity.scAdapter.getSize()+" ", Toast.LENGTH_SHORT).show();
+			    		  //((LinearLayout)parent).addView(txt);
 			    	  }
 			  	      dialog.dismiss();
 			      }
@@ -142,4 +167,15 @@ public class ScheduleFragment extends DialogFragment {
 		}
 	    
 	  }
+
+	@Override
+	public void repopulateAdapter() {
+		// TODO Auto-generated method stub
+		if (scheduleAdap != null)
+		{
+			scheduleAdap.clear();
+			scheduleAdap.addAll(MainActivity.scAdapter.getAllSchs());
+		}
+		
+	}
 }

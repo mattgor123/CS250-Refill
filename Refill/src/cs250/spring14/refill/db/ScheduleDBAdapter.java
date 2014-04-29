@@ -20,7 +20,7 @@ public class ScheduleDBAdapter {
   private final Context context;
 
   private static final String DB_NAME = "Sch.db";
-  private static final int DB_VERSION = 1; // All Doctors must have unique
+  private static final int DB_VERSION = 3; // All Doctors must have unique
   // name
 
   private static final String SC_TABLE = "Scs";
