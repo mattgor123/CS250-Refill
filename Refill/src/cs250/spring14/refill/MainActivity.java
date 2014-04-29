@@ -57,6 +57,7 @@ import cs250.spring14.refill.db.HistoryDBAdapter;
 import cs250.spring14.refill.db.PatientDBAdapter;
 import cs250.spring14.refill.db.PharmacyDBAdapter;
 import cs250.spring14.refill.db.RxDBAdapter;
+import cs250.spring14.refill.db.ScheduleDBAdapter;
 import cs250.spring14.refill.notify.RxNotificationManager;
 import cs250.spring14.refill.view.DoctorFragment;
 import cs250.spring14.refill.view.PatientFragment;
@@ -88,6 +89,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   public static PharmacyDBAdapter phAdapter;
   public static HistoryDBAdapter hAdapter;
   public static PatientDBAdapter paAdapter;
+  public static ScheduleDBAdapter scAdapter;
   public static int currFrag;
   private boolean shouldLogin;
   private Menu menu;
@@ -185,6 +187,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       Patient adding = new Patient("Select a Patient!", 0);
       adding.setId(paAdapter.insertPa(adding));
     }
+    //ScheduleItem adapter stuff
+    scAdapter = new ScheduleDBAdapter(this);
+    scAdapter.open();
     // Notification stuff
     // Starting Alarm Service for the refill Notification
     Intent alarmIntent = new Intent(this, RxNotificationManager.class);
@@ -285,6 +290,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
           String email = data.getStringExtra(LoginActivity.RESULT_STRING);
           Toast.makeText(this, "First time logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
           // HERE IS WHERE WE ASK THEM IF WE WANT TO MAKE A NEW PATIENT
+          
           break;
         } else if (resultCode == LoginActivity.KILLED) {
           // We hit the back button
