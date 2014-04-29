@@ -97,6 +97,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   public static String DEFAULT_RX_NUMBER = "12345";
   private static MainActivity _instance;
 
+  /**
+   * Method that creates our app.
+   * 
+   * @param savedInstanceState 
+   * 				a Bundle containing a previous saved state of our app
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -193,6 +199,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     _instance = this;
   }
 
+  /**
+   * Method to create the action bar menus and inflate it with items.
+   * 
+   * @param menu
+   * 			the action bar
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -201,6 +213,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     return true;
   }
 
+  /**
+   * Method to handle a click in a action bar item.
+   * 
+   * @param item
+   * 			the action bar item clicked
+   * 
+   * @return true if the action bar item is matched in the switch statement (should always return true)
+   */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
@@ -214,8 +234,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
           ScheduleFragment scheduleFrag = new ScheduleFragment();
           scheduleFrag.show(getSupportFragmentManager(), "ScheduleFragment");
         }
-        // Toast.makeText(this, "Let's do some fun stuff with calendars!",
-        // Toast.LENGTH_SHORT).show();
         return true;
       case R.id.action_add:
         openCustomDialog(this);
@@ -254,7 +272,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Method to override standard menu button behavior to make it open our overflow menu
+   * Method to override standard menu button behavior to make it open our overflow menu.
    * 
    * @param keyCode The key
    * @param event The event
@@ -270,6 +288,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     return super.onKeyUp(keyCode, event);
   }
 
+  /**
+   * Method to get the result from the login activity.
+   * 
+   * @param requestCode
+   * @param resultCode
+   * @param data
+   */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -305,6 +330,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
   }
 
+  /**
+   * Override method to onStart().
+   * Gets executed when the app starts.
+   */
   @Override
   public void onStart() {
     super.onStart();
@@ -324,7 +353,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       frags[1] = hisFrag;
     }
   }
-
+  
+  /**
+   * Override method to onStop().
+   * Gets executed when the app stops.
+   */
   @Override
   public void onStop() {
     super.onStop();
@@ -336,6 +369,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     scAdapter.close();
   }
 
+  /**
+   * Method to handle the selection of a tab.
+   * 
+   * @param tab
+   * 		the selected tab
+   * @param fragmentTransaction
+   */
   @Override
   public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     // When the given tab is selected, switch to the corresponding page in
@@ -343,9 +383,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     mViewPager.setCurrentItem(tab.getPosition());
   }
 
+  /**
+   * Method to handle the deselection of a tab (doesn't actually do anything).
+   */
   @Override
   public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
+  /**
+   * Method to check if a int is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if int is valid, false otherwise
+   */
   public static boolean isValidInt(EditText et) {
     String str = et.getText().toString().trim();
     if (str.length() > 0) {
@@ -354,6 +405,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       return false;
   }
 
+  /**
+   * Method to check if a double is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if double is valid, false otherwise
+   */
   public static boolean isValidDouble(EditText et) {
     String str = et.getText().toString().trim();
     if (str.length() > 0 && !str.equals(".")) {
@@ -362,6 +421,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       return false;
   }
 
+  /**
+   * Method to check if a name is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if the name is valid, false otherwise
+   */
   public static boolean isValidName(String str) {
     if (str.length() > 2) {
       String[] name = str.split(" ");
@@ -377,6 +444,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     return false;
   }
 
+  /**
+   * Method to check if a phone is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if the phone is valid, false otherwise
+   */
   public static boolean isValidPhone(String str) {
     if (str.length() >= 10) {
       return android.util.Patterns.PHONE.matcher(str).matches();
@@ -384,6 +459,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       return false;
   }
 
+  /**
+   * Method to check if a email is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if the email is valid, false otherwise
+   */
   public static boolean isValidEmail(String str) {
     if (str.length() >= 5) {
       return android.util.Patterns.EMAIL_ADDRESS.matcher(str).matches();
@@ -391,6 +474,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       return false;
   }
 
+  /**
+   * Method to check if a street is valid within a EditText.
+   * This method is used to validate the data filled in our dialogs.
+   * 
+   * @param et
+   * 		the EditText being evaluated
+   * @return true if the street is valid, false otherwise
+   */
   public static boolean isValidStreet(String str) {
     if (str.length() > 0) {
       String[] address = str.split(" ");
@@ -406,15 +497,23 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     return false;
   }
 
+  /**
+   * Method to handle the reselection of a tab (doesn't actually do anything).
+   */
   @Override
   public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {}
 
+  /**
+   * Method to provide static access to MainActivity from other classes.
+   * 
+   * @return the current MainActivity instance
+   */
   public static MainActivity getInstance() {
     return _instance;
   }
 
   /**
-   * Helper method to open dialog to add a doctor WITHOUT the selection spinner
+   * Helper method to open dialog to add a doctor WITHOUT the selection spinner.
    * 
    * @param context the context for the dialog
    */
@@ -489,6 +588,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     d.show();
   }
 
+  /**
+   * Helper method to open dialog to add a patient WITHOUT the selection spinner.
+   * 
+   * @param context the context for the dialog
+   */
   protected void openAddPatientDialog(final Context context) {
     final Dialog dialog = new Dialog(context);
     dialog.setTitle("Please add a patient");
@@ -564,7 +668,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
   /**
    * Helper method to make the doctor dialog from the adding Rx This has the spinner to make a
-   * selection amongst doctors
+   * selection amongst doctors.
    * 
    * @param context the context for the dialog
    * @param v the calling view (to set the text to the selected doctor)
@@ -672,6 +776,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     d.show();
   }
 
+  /**
+   * Helper method to open dialog to add a pharmacy WITHOUT the selection spinner.
+   * 
+   * @param context the context for the dialog
+   */
   protected void openAddPharmacyDialog(final Context context) {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
     LinearLayout layout = new LinearLayout(this);
@@ -747,6 +856,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     d.show();
   }
 
+  /**
+   * Helper method to make the patient dialog from the adding Rx This has the spinner to make a
+   * selection amongst doctors.
+   * 
+   * @param context the context for the dialog
+   * @param v the calling view (to set the text to the selected patient)
+   */
   protected void openPatientSelectDialog(final Context context, final View v) {
     ArrayList<Patient> pats = paAdapter.getAllPats();
     if (pats.size() <= 1) {
@@ -787,7 +903,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
   }
 
   /**
-   * Helper method to make the select a pharmacy or add one
+   * Helper method to make the select a pharmacy or add one.
    * 
    * @param context the context for the dialog
    * @param v the calling view (EditText in this case)
@@ -904,6 +1020,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     d.show();
   }
 
+  /**
+   * Method to open a dialog from which the user can choose to add a new prescription, doctor, pharmacy or patient.
+   *  
+   * @param context the context for the dialog
+   */
   public void openCustomDialog(final Context context) {
     final Dialog dialog = new Dialog(context);
     dialog.setContentView(R.layout.select_dialog);
@@ -1318,6 +1439,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       super(fm);
     }
 
+    /**
+     * Method to get a fragment for a given position in a page.
+     * 
+     * @param position
+     * 				the requested fragment position
+     * @return a fragment for the given position
+     */
     @Override
     public Fragment getItem(int position) {
       // getItem is called to instantiate the fragment for the given page.
@@ -1328,6 +1456,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       return null;
     }
 
+    /**
+     * Method to get the count of tabs.
+     * 
+     * @return the number of tabs
+     */
     @Override
     public int getCount() {
       // Show 2 total pages.
@@ -1335,6 +1468,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
   }
 
+  /**
+   * Method to refresh the fragment which is just completed.
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public void onComplete(boolean b) {
     if (b) {
@@ -1346,6 +1484,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
   }
 
+  /**
+   * Method to implement OnSharedPreferenceChangeListener.
+   * Used to refresh the appropriate fragment and make fragments reflect settings changes.
+   * 
+   * @param sharedPreferences
+   * 				the app's shared preferences
+   * @param key
+   * 			the shared preference that just changed
+   */
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     if (key.equals(HistoryDBAdapter.histKey)) {

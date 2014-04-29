@@ -30,20 +30,32 @@ public class RxFragment extends Fragment implements RefreshableFragment {
   ArrayAdapter<RxItem> rxAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  /**
+   * Method to get the OnCompleteListener specified by the RefreshableFragment Used to determine if
+   * anything needs to be performed (ie: refresh the views)
+   * 
+   * @see RefreshableFragment.OnCompleteListener
+   */
   @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  /**
+   * Method to set the OnCompleteListener
+   */
   @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  /**
+   * Method to attach the fragment to the activity Used to attach the onCompleteListener to the
+   * Fragment
+   */
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
-    setRetainInstance(true);
     try {
       this.setmListener((RefreshableFragment.OnCompleteListener) activity);
     } catch (final ClassCastException e) {
@@ -51,6 +63,14 @@ public class RxFragment extends Fragment implements RefreshableFragment {
     }
   }
 
+  /**
+   * Method to create the Prescriptions' tab, inflate the tab and attach to the parent view
+   * 
+   * @param inflater the LayoutInflater to use
+   * @param container the parent container
+   * @param savedInstanceState The bundle with saved instance (not used really)
+   * @return the created view for the fragment
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     setRetainInstance(true);
@@ -212,12 +232,18 @@ public class RxFragment extends Fragment implements RefreshableFragment {
 
   // We will manually call this to ensure the Prescriptions view is always
   // current
+  /**
+   * We want to repopulate our adapter every time this fragment is resumed
+   */
   @Override
   public void onResume() {
     super.onResume();
     repopulateAdapter();
   }
-
+  
+  /**
+   * Method to repopulate the Rx's array adapter with changes produced in the edit dialog
+   */
   @Override
   public void repopulateAdapter() {
     if (rxAdap != null) {
