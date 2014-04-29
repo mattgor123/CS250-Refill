@@ -18,8 +18,9 @@ Features
 * **Notifications a few days before & on days of Refills**
 * **Easily contact a pharmacy/doctor for any prescription**
 * **Customization of display settings & other components**
+* **Schedule to easily view when to take pills weekly**
 
 To Do
 --------
 * Automatically contact pharmacies/doctors on days necessary
-* Improve our implementation of a user's weekly schedule
+* Improve our implementation of a user's weekly schedule (notifications, for example)

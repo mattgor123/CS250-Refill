@@ -8,17 +8,38 @@
         android:id="@+id/rxs_layout"
         android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical"/>"
+	    android:orientation="vertical"/>
     
     <Spinner 
 	    android:id="@+id/Rx_Spinner"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"/>   
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	         >
 	<Button
-            android:id="@+id/ok"
+            android:id="@+id/add"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok" />
+            android:layout_weight="1"
+            android:text="@string/add" />
+	<Button
+            android:id="@+id/close"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/close" />
+	<Button
+            android:id="@+id/remove"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/remove" />
+	</LinearLayout>
 
 </LinearLayout>

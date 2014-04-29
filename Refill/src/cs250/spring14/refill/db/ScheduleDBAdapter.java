@@ -27,7 +27,7 @@ public class ScheduleDBAdapter {
   public static final String SC_ID = "Sc_id"; // column 0
   public static final String SC_NAME = "Sc_name"; // column 1
   public static final String SC_POS = "Sc_pos"; // column 2
-  public static final String SC_COLOR = "Sc_color"; //column 3
+  public static final String SC_COLOR = "Sc_color"; // column 3
 
   public static final String[] SC_COLS = {SC_ID, SC_NAME, SC_POS, SC_COLOR};
 
@@ -80,7 +80,7 @@ public class ScheduleDBAdapter {
   }
 
   /**
-   * Method to remove a ScheduleItem from the DB given Name
+   * Method to remove ScheduleItems from the DB given Name
    * 
    * @param name the ScheduleItem's name
    * @return true if success, false otherwise
@@ -108,7 +108,7 @@ public class ScheduleDBAdapter {
       return null;
     } else {
       ScheduleItem result = new ScheduleItem(c.getString(1), // name
-          Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
+          Integer.valueOf(c.getString(2)), Integer.valueOf(c.getString(3)));
       // Set the ID to the row in the DB
       result.setId(c.getInt(0));
       return result;
@@ -130,7 +130,7 @@ public class ScheduleDBAdapter {
     if (c.moveToFirst()) {
       do {
         ScheduleItem result = new ScheduleItem(c.getString(1), // name
-            Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
+            Integer.valueOf(c.getString(2)), Integer.valueOf(c.getString(3)));
         // Set the ID to the row in the DB
         result.setId(c.getInt(0));
         schs.add(result);
@@ -184,7 +184,7 @@ public class ScheduleDBAdapter {
     if (c.moveToFirst())
       do {
         ScheduleItem result = new ScheduleItem(c.getString(1), // name
-            Integer.valueOf(c.getString(2)),Integer.valueOf(c.getString(3)));
+            Integer.valueOf(c.getString(2)), Integer.valueOf(c.getString(3)));
         // Set the ID to the row in the DB
         result.setId(c.getInt(0));
         schs.add(result);

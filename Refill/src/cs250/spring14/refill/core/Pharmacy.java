@@ -41,6 +41,7 @@ public class Pharmacy {
   /**
    * @return the pharmacy, formatted as a string
    */
+  @Override
   public String toString() {
     if (!streetAddress.isEmpty()) {
       return this.name + " <" + streetAddress + ">";

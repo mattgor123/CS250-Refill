@@ -365,6 +365,7 @@ public class RxDBAdapter {
 
   /**
    * Method to get the size of the DB
+   * 
    * @return the size of the DB
    */
   public int getSize() {
@@ -373,7 +374,7 @@ public class RxDBAdapter {
     c.moveToFirst();
     return c.getCount();
   }
-  
+
   /**
    * Method to get the cursor for a Rx given a RxId (row number)
    * 

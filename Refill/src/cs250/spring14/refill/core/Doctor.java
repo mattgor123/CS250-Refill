@@ -38,6 +38,7 @@ public class Doctor {
   /**
    * @return the doctor, formatted as a string
    */
+  @Override
   public String toString() {
     if (!phone.isEmpty()) {
       return this.name + " <" + this.phone + ">";

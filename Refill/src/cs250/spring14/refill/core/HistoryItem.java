@@ -56,6 +56,7 @@ public class HistoryItem {
     this.message = message;
   }
 
+  @Override
   public String toString() {
     return this.owner + ": " + this.message;
   }

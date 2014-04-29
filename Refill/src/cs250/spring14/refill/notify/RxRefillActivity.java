@@ -56,7 +56,8 @@ public class RxRefillActivity extends Activity {
           Toast.makeText(getApplicationContext(),
               "Successfully updated refill date to " + MainActivity.df.format(today), Toast.LENGTH_SHORT).show();
           hisAdap.open();
-          hisAdap.insertHis(new HistoryItem(r.getName(),"Updated Last Refill date to " + MainActivity.df.format(today),"R"));
+          hisAdap.insertHis(new HistoryItem(r.getName(),
+              "Updated Last Refill date to " + MainActivity.df.format(today), "R"));
           hisAdap.close();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong updating your RX, sorry!", Toast.LENGTH_SHORT)

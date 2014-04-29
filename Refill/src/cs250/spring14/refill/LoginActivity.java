@@ -79,6 +79,7 @@ public class LoginActivity extends Activity {
     setContentView(R.layout.activity_login);
     checkBox = (CheckedTextView) findViewById(R.id.checkedTextView1);
     checkBox.setOnClickListener(new View.OnClickListener() {
+      @Override
       public void onClick(View v) {
         ((CheckedTextView) v).toggle();
       }

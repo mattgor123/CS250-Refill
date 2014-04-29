@@ -27,14 +27,17 @@ public class PharmacyFragment extends DialogFragment implements RefreshableFragm
   ArrayAdapter<Pharmacy> phAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     try {

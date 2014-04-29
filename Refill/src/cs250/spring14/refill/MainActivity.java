@@ -187,7 +187,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       Patient adding = new Patient("Select a Patient!", 0);
       adding.setId(paAdapter.insertPa(adding));
     }
-    //ScheduleItem adapter stuff
+    // ScheduleItem adapter stuff
     scAdapter = new ScheduleDBAdapter(this);
     scAdapter.open();
     // Notification stuff
@@ -219,14 +219,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // as you specify a parent activity in AndroidManifest.xml.
     switch (item.getItemId()) {
       case R.id.action_cal:
-        if (rxAdapter.getSize() == 0) { 
+        if (rxAdapter.getSize() == 0) {
           Toast.makeText(this, "You should add a Prescription before opening schedule!", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
           ScheduleFragment scheduleFrag = new ScheduleFragment();
           scheduleFrag.show(getSupportFragmentManager(), "ScheduleFragment");
         }
-        //Toast.makeText(this, "Let's do some fun stuff with calendars!", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Let's do some fun stuff with calendars!",
+        // Toast.LENGTH_SHORT).show();
         return true;
       case R.id.action_add:
         openCustomDialog(this);
@@ -295,7 +295,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
           String email = data.getStringExtra(LoginActivity.RESULT_STRING);
           Toast.makeText(this, "First time logging in with e-mail: " + email, Toast.LENGTH_SHORT).show();
           // HERE IS WHERE WE ASK THEM IF WE WANT TO MAKE A NEW PATIENT
-          
+
           break;
         } else if (resultCode == LoginActivity.KILLED) {
           // We hit the back button
@@ -965,7 +965,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // Now I'm making the scrollview with a linear layout for this badboy
     // (easier to do programatically than in XML)
     ScrollView sv = new ScrollView(this);
-    LayoutParams svlp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    LayoutParams svlp = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
     sv.setLayoutParams(svlp);
     LinearLayout layout = new LinearLayout(this);
     layout.setOrientation(1);
@@ -1121,6 +1121,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // Set the builder's View to the ScrollView
     builder.setView(sv);
     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+      @Override
       public void onClick(DialogInterface dialog, int id) {
         // Adios amigos!
         return;
@@ -1137,7 +1138,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
       @Override
       public void onShow(DialogInterface d) {
 
-        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         b.setOnClickListener(new View.OnClickListener() {
           // The code to add an entry can be found here
           @Override
@@ -1208,13 +1209,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     Calendar myCal = Calendar.getInstance();
                     myCal.setTime(start);
                     myCal.add(Calendar.DAY_OF_YEAR, rx.getDaysBetweenRefills());
-                    //If we changed the date but it shouldn't impact next refill
+                    // If we changed the date but it shouldn't impact next refill
                     if (rx.getNextRefillDate().compareTo(myCal.getTime()) > 0) {
-                      Toast.makeText(getApplicationContext(), "Start date has been updated, but your Last Refill date cannot be moved backwards. If you made a mistake before Refilling, please remove and re-add this Rx.", Toast.LENGTH_LONG).show();
+                      Toast
+                          .makeText(
+                              getApplicationContext(),
+                              "Start date has been updated, but your Last Refill date cannot be moved backwards. If you made a mistake before Refilling, please remove and re-add this Rx.",
+                              Toast.LENGTH_LONG).show();
                       dateChanged = true;
                       lastRefillDate = rx.getLastRefill();
-                    }
-                    else {
+                    } else {
                       dateChanged = true;
                       lastRefillDate = start;
                     }

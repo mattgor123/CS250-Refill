@@ -24,14 +24,17 @@ public class PatientFragment extends DialogFragment implements RefreshableFragme
   ArrayAdapter<Patient> patAdap;
   private RefreshableFragment.OnCompleteListener mListener;
 
+  @Override
   public RefreshableFragment.OnCompleteListener getmListener() {
     return mListener;
   }
 
+  @Override
   public void setmListener(RefreshableFragment.OnCompleteListener mListener) {
     this.mListener = mListener;
   }
 
+  @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     try {

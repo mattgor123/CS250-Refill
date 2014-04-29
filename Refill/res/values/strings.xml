@@ -17,6 +17,10 @@
     <string name="cal">Calendar</string>
     <!-- The add button name -->
     <string name="add">Add</string>
+    <!-- The remove button name -->
+    <string name="remove">Remove</string>
+    <!-- The close button name -->
+    <string name="close">Close</string>
     <!-- The doc button name -->
     <string name="doc">Doctors</string>
     <!-- The pharmacy button name -->
