@@ -219,7 +219,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     // as you specify a parent activity in AndroidManifest.xml.
     switch (item.getItemId()) {
       case R.id.action_cal:
-        if (scAdapter.getSize() == 0) { 
+        if (rxAdapter.getSize() == 0) { 
           Toast.makeText(this, "You should add a Prescription before opening schedule!", Toast.LENGTH_SHORT).show();
         }
         else {
