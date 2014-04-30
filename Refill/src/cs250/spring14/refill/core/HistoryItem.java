@@ -1,9 +1,16 @@
 package cs250.spring14.refill.core;
 
 import cs250.spring14.refill.R;
-
+/**
+ * The HistoryItem class is the history object that appears in the
+ * history tab
+ */
 public class HistoryItem {
 
+ /**
+ * HistoryType enum is used so that we can get an icon resource, i.e. it 
+ * determine which type of picture to get. 
+ */
   public enum HistoryType {
     P("P"), // pharm
     PD("PD"), // pharm delete
@@ -16,12 +23,20 @@ public class HistoryItem {
 
     private String type;
 
+    /**
+     * 
+     * @param s the type of object that the HistoryType is
+     */
     private HistoryType(String s) {
       this.type = s;
     }
 
+    /**
+     * 
+     * @return the type of object that the HistoryType is
+     */
     public String getType() {
-      return type;
+      return this.type;
     }
   }
 
@@ -43,10 +58,10 @@ public class HistoryItem {
   }
 
   /**
-   * @return the message
+   * @return the History type's message
    */
   public String getMessage() {
-    return message;
+    return this.message;
   }
 
   /**
@@ -62,10 +77,10 @@ public class HistoryItem {
   }
 
   /**
-   * @return the owner
+   * @return the owner a reference to the creating object
    */
   public String getOwner() {
-    return owner;
+    return this.owner;
   }
 
   /**
@@ -75,15 +90,27 @@ public class HistoryItem {
     this.owner = owner;
   }
 
+  /**
+   * 
+   * @return the HistoryType's ID from the DB 
+   */
   public long getId() {
     return this.id;
   }
 
+  /**
+   * Sets the HistoryType's id from the DB
+   * @param id the id to be set
+   */
   public void setId(long id) {
     this.id = id;
 
   }
 
+  /**
+   * This uses a switch statement to determine what Icon Resource to get 
+   * @return the resource picture
+   */
   public int getIconResource() {
     switch (this.h) {
       case U:
@@ -105,10 +132,18 @@ public class HistoryItem {
     }
   }
 
+  /**
+   * 
+   * @return the HistoryItem's HistoryType
+   */
   public HistoryType getH() {
     return h;
   }
 
+  /**
+   * Sets the HistoryItem's HistoryType
+   * @param h the HistroyItem's new HistoryType
+   */
   public void setH(HistoryType h) {
     this.h = h;
   }

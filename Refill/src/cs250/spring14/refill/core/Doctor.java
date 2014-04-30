@@ -219,7 +219,7 @@ public class Doctor {
    * @param name the doctor's name
    * @param email the doctor's email
    * @param phone the doctor's phone number
-   * @return
+   * @return true if user didnt make changes, otherwise false
    */
   public static boolean shouldUpdateDr(Doctor dr, String name, String email, String phone) {
     return ((!dr.getName().equals(name)) || (!dr.getEmail().equals(email)) || (!dr.getPhone().equals(phone)));

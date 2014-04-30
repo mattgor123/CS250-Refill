@@ -14,7 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.view.RefreshableFragment;
-
+/**
+ * The Pharmacy class is the pharmacy object associated with a Rx.
+ * An Rx can not be added unless it has a pharmacy.
+ */
 public class Pharmacy {
 
   private String name;
@@ -24,12 +27,12 @@ public class Pharmacy {
   private long id;
 
   /**
-   * Constructor for Doctor given a name, e-mail, and phone
+   * Constructor for Pharmacy's given a name, e-mail, and phone
    * 
-   * @param n
-   * @param e
-   * @param p
-   * @param s
+   * @param n the pharmacy's name
+   * @param e the pharmacy's email
+   * @param p the pharmacy's phone number
+   * @param s the pharmacy's address
    */
   public Pharmacy(String n, String e, String p, String s) {
     this.setName(n);
@@ -113,6 +116,11 @@ public class Pharmacy {
     return this.id;
   }
 
+  /**
+   * Sets the pharmacy's id
+   * 
+   * @param id the pharmacy's id
+   */
   public void setId(long id) {
     this.id = id;
   }
@@ -207,10 +215,22 @@ public class Pharmacy {
     d.show();
   }
 
+  /**
+   * Generates a string representation from a Pharmacy object
+   * 
+   * @param ph the Pharmacy object
+   * @return the string representation of the pharmacy
+   */
   public static String makeStringFromPharm(Pharmacy ph) {
     return ph.getName() + " :: " + ph.getEmail() + " :: " + ph.getPhone() + " :: " + ph.getStreetAddress();
   }
 
+  /**
+   * Generate a Pharmacy object from a string representation of a pharmacy
+   * 
+   * @param string the string representation of a pharmacy
+   * @return the Pharmacy object created from the string 
+   */
   public static Pharmacy makePharmFromString(String string) {
     String[] tokens = string.split(" :: ");
     if (tokens.length != 4) {
@@ -221,6 +241,16 @@ public class Pharmacy {
     }
   }
 
+  /**
+   * Determines if the user made changes to a pharmacy while viewing the doctor's information
+   * 
+   * @param ph the pharmacy object
+   * @param name the pharmacy's name
+   * @param email the pharmacy's email
+   * @param phone the pharmacy's phone number
+   * @param address the pharmacy's address
+   * @return true if user didnt make changes, otherwise false
+   */
   public static boolean shouldUpdatePharm(Pharmacy ph, String name, String email, String phone, String address) {
     return ((!ph.getName().equals(name)) || (!ph.getEmail().equals(email)) || (!ph.getPhone().equals(phone)) || (!ph
         .getStreetAddress().equals(address)));

@@ -14,12 +14,21 @@ import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.view.RefreshableFragment;
-
+/**
+ * The Patient class is the patient object associated with a Rx.
+ * An Rx can not be added unless it has a Patient.
+ */
 public class Patient {
   private String name;
   private int color;
   private long id;
 
+  /**
+   * Constructor for Patient given a name and color
+   * 
+   * @param name - the patient's inputted name
+   * @param color - the patients inputted color
+   */
   public Patient(String name, int color) {
     this.setName(name);
     this.setColor(color);
@@ -31,30 +40,64 @@ public class Patient {
 
   }
 
+  /**
+   * Gets the patient's name
+   * @return the patient's name
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * Set a patient's name
+   * @param name the patient's new name
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * Gets the patient's color as an int
+   * @return the patient's color
+   */
   public int getColor() {
     return this.color;
   }
 
+  /**
+   * Sets the patient's color
+   * @param color an int representation of the color
+   */
   public void setColor(int color) {
     this.color = color;
   }
 
+  /**
+   * 
+   * @return the patient's ID from the DB 
+   */
   public long getId() {
     return id;
   }
 
+  /** 
+   * Sets the patient's ID from the DB
+   * @param id the patient's ID from the DB
+   */
   public void setId(long id) {
     this.id = id;
   }
 
+  /**
+   * Since the patient's color is stored as an it and we want to include the
+   * patient's color in the Rx's patient field when the user views an Rx, 
+   * we need a way to tell the user what the color is in a useful way. Therefore,
+   * we use switchstatements to determine which color name should be displayed
+   * dependeing on the int representation of the color
+   * 
+   * @param color the int representation of the color
+   * @return the string representation of the color
+   */
   public static String getColorStringFromColorInt(int color) {
     switch (color) {
       case -7012353:
@@ -74,6 +117,14 @@ public class Patient {
     }
   }
 
+  /** 
+   * This is the complementary issue mentioned in the method above. 
+   * Unlike the mthod above, this method gets the int representation
+   * of a color based on the string representation.
+   * 
+   * @param str the string representation of the color
+   * @return the int representation of the color
+   */
   public static int getColorIntFromColorString(String str) {
     switch (str) {
       case "LightBlue":
@@ -101,6 +152,13 @@ public class Patient {
 
   }
 
+  /**
+   * This method gets the integer representation of a patient's color
+   * from the string representation of a Patient
+   * 
+   * @param pat the string representation of the Patient
+   * @return the integer representation of the color
+   */
   public static int getColorIntFromPatientString(String pat) {
     String[] tokens = pat.split(" :: ");
     if (tokens.length != 2) {
@@ -132,10 +190,22 @@ public class Patient {
     }
   }
 
+  /**
+   * Creates the string representation of a Patient to be stored in the RX Database
+   * 
+   * @param p the Patient to be turned into a string
+   * @return the string representation of the patient
+   */
   public static String makeStringFromPatient(Patient p) {
     return p.name + " :: " + getColorStringFromColorInt(p.color);
   }
 
+  /**
+   * Creates a Patient object from the string representation of a Patient
+   * 
+   * @param string the string representation of the Patient to be made
+   * @return the patient object
+   */
   public static Patient makePatientFromString(String string) {
     String[] tokens = string.split(" :: ");
     if (tokens.length != 2) {
@@ -146,6 +216,13 @@ public class Patient {
     }
   }
 
+  /**
+   * Helper method to open edit Patient view
+   * 
+   * @param context the context for the dialog
+   * @param pat the Patient edit view to be shown
+   * @param fr the fragment
+   */
   public static void openEditPatientDialog(final Context context, final Patient pat, final RefreshableFragment fr) {
     final Dialog dialog = new Dialog(context);
     dialog.setTitle("Editing a patient");
@@ -247,6 +324,13 @@ public class Patient {
     dialog.show();
   }
 
+  /** Determines if the user made changes to the Patient object in the view dialog
+   * 
+   * @param pa the Patient object
+   * @param name the Patient's name
+   * @param color the Patient's color
+   * @return true if the user did not make changes, false otherwise
+   */
   public static boolean shouldUpdatePatient(Patient pa, String name, int color) {
     return ((!pa.getName().equals(name)) || !(pa.getColor() == (color)));
   }
