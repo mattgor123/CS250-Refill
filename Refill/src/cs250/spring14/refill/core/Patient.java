@@ -14,9 +14,10 @@ import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.R;
 import cs250.spring14.refill.view.RefreshableFragment;
+
 /**
- * The Patient class is the patient object associated with a Rx.
- * An Rx can not be added unless it has a Patient.
+ * The Patient class is the patient object associated with a Rx. An Rx can not be added unless it
+ * has a Patient.
  */
 public class Patient {
   private String name;
@@ -42,6 +43,7 @@ public class Patient {
 
   /**
    * Gets the patient's name
+   * 
    * @return the patient's name
    */
   public String getName() {
@@ -50,6 +52,7 @@ public class Patient {
 
   /**
    * Set a patient's name
+   * 
    * @param name the patient's new name
    */
   public void setName(String name) {
@@ -58,6 +61,7 @@ public class Patient {
 
   /**
    * Gets the patient's color as an int
+   * 
    * @return the patient's color
    */
   public int getColor() {
@@ -66,6 +70,7 @@ public class Patient {
 
   /**
    * Sets the patient's color
+   * 
    * @param color an int representation of the color
    */
   public void setColor(int color) {
@@ -74,14 +79,15 @@ public class Patient {
 
   /**
    * 
-   * @return the patient's ID from the DB 
+   * @return the patient's ID from the DB
    */
   public long getId() {
     return id;
   }
 
-  /** 
+  /**
    * Sets the patient's ID from the DB
+   * 
    * @param id the patient's ID from the DB
    */
   public void setId(long id) {
@@ -89,11 +95,10 @@ public class Patient {
   }
 
   /**
-   * Since the patient's color is stored as an it and we want to include the
-   * patient's color in the Rx's patient field when the user views an Rx, 
-   * we need a way to tell the user what the color is in a useful way. Therefore,
-   * we use switchstatements to determine which color name should be displayed
-   * dependeing on the int representation of the color
+   * Since the patient's color is stored as an it and we want to include the patient's color in the
+   * Rx's patient field when the user views an Rx, we need a way to tell the user what the color is
+   * in a useful way. Therefore, we use switchstatements to determine which color name should be
+   * displayed dependeing on the int representation of the color
    * 
    * @param color the int representation of the color
    * @return the string representation of the color
@@ -117,10 +122,9 @@ public class Patient {
     }
   }
 
-  /** 
-   * This is the complementary issue mentioned in the method above. 
-   * Unlike the mthod above, this method gets the int representation
-   * of a color based on the string representation.
+  /**
+   * This is the complementary issue mentioned in the method above. Unlike the mthod above, this
+   * method gets the int representation of a color based on the string representation.
    * 
    * @param str the string representation of the color
    * @return the int representation of the color
@@ -153,8 +157,8 @@ public class Patient {
   }
 
   /**
-   * This method gets the integer representation of a patient's color
-   * from the string representation of a Patient
+   * This method gets the integer representation of a patient's color from the string representation
+   * of a Patient
    * 
    * @param pat the string representation of the Patient
    * @return the integer representation of the color
@@ -324,7 +328,8 @@ public class Patient {
     dialog.show();
   }
 
-  /** Determines if the user made changes to the Patient object in the view dialog
+  /**
+   * Determines if the user made changes to the Patient object in the view dialog
    * 
    * @param pa the Patient object
    * @param name the Patient's name

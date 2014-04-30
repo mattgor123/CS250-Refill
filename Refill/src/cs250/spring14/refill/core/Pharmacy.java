@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.view.RefreshableFragment;
+
 /**
- * The Pharmacy class is the pharmacy object associated with a Rx.
- * An Rx can not be added unless it has a pharmacy.
+ * The Pharmacy class is the pharmacy object associated with a Rx. An Rx can not be added unless it
+ * has a pharmacy.
  */
 public class Pharmacy {
 
@@ -229,7 +230,7 @@ public class Pharmacy {
    * Generate a Pharmacy object from a string representation of a pharmacy
    * 
    * @param string the string representation of a pharmacy
-   * @return the Pharmacy object created from the string 
+   * @return the Pharmacy object created from the string
    */
   public static Pharmacy makePharmFromString(String string) {
     String[] tokens = string.split(" :: ");

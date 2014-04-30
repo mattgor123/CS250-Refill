@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cs250.spring14.refill.MainActivity;
 import cs250.spring14.refill.view.RefreshableFragment;
+
 /**
- * The Doctor class is the doctor object associated with a Rx.
- * An Rx can not be added unless it has a Doctor.
+ * The Doctor class is the doctor object associated with a Rx. An Rx can not be added unless it has
+ * a Doctor.
  */
 public class Doctor {
 
@@ -39,6 +40,8 @@ public class Doctor {
   }
 
   /**
+   * Used in the select doctor at the spinner
+   * 
    * @return the doctor, formatted as a string
    */
   @Override
@@ -92,7 +95,7 @@ public class Doctor {
   }
 
   /**
-   * @return the doctor's ID from the DB 
+   * @return the doctor's ID from the DB
    */
   public long getId() {
     return this.id;
@@ -185,8 +188,8 @@ public class Doctor {
   }
 
   /**
-   * RxDatabase store the Rx's doctor information as string, therefore this 
-   * method returns the doctor object as a string
+   * RxDatabase store the Rx's doctor information as string, therefore this method returns the
+   * doctor object as a string
    * 
    * @param dr the doctor object
    * @returnthe doctor as a string
@@ -196,9 +199,9 @@ public class Doctor {
   }
 
   /**
-   * Since RxDatabase store doctors as string, this method is needed to get
-   * a doctor object from an RxItem
-   *  
+   * Since RxDatabase store doctors as string, this method is needed to get a doctor object from an
+   * RxItem
+   * 
    * @param string the doctor as a string
    * @return
    */

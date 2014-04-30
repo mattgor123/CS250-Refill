@@ -2,6 +2,7 @@ package cs250.spring14.refill.core;
 
 import java.util.Calendar;
 import java.util.Date;
+
 /**
  * The RxItem class is the Rx object
  */
@@ -22,22 +23,23 @@ public class RxItem {
   private Date lastrefill;
   private long id;
 
- 
-/** RxItem constructor
- *
- * @param name 
- * @param patient
- * @param symptoms
- * @param sideEffects
- * @param dose
- * @param pillsPerDay
- * @param start
- * @param daysBetweenRefills
- * @param pharmacy
- * @param doc
- * @param rxNumb
- * @param lastrefill
- */
+
+  /**
+   * RxItem constructor
+   * 
+   * @param name
+   * @param patient
+   * @param symptoms
+   * @param sideEffects
+   * @param dose
+   * @param pillsPerDay
+   * @param start
+   * @param daysBetweenRefills
+   * @param pharmacy
+   * @param doc
+   * @param rxNumb
+   * @param lastrefill
+   */
   public RxItem(String name, Patient patient, String symptoms, String sideEffects, double dose, int pillsPerDay,
       Date start, int daysBetweenRefills, Pharmacy pharmacy, Doctor doc, String rxNumb, Date lastrefill) {
     this.name = name;
@@ -54,31 +56,36 @@ public class RxItem {
     this.lastrefill = lastrefill;
   }
 
- /** Determines the next refill date by adding the last refill date by 
-  * the amount of days between each refill
-  * 
- * @return the next refill date as a Date type
- */
-public Date getNextRefillDate() {
+  /**
+   * Determines the next refill date by adding the last refill date by the amount of days between
+   * each refill
+   * 
+   * @return the next refill date as a Date type
+   */
+  public Date getNextRefillDate() {
     Calendar c = Calendar.getInstance();
     c.setTime(lastrefill);
     c.add(Calendar.DATE, daysBetweenRefills);
     return c.getTime();
   }
 
-@Override
+  @Override
   public String toString() {
     return this.name + ", Rx for " + this.patient;
   }
 
-  /** Gets the RxItem's name
- * @return the RxItem's name
- */
+  /**
+   * Gets the RxItem's name
+   * 
+   * @return the RxItem's name
+   */
   public String getName() {
     return this.name;
   }
 
-  /** Gets the RxItem's patient as a Patient object
+  /**
+   * Gets the RxItem's patient as a Patient object
+   * 
    * @return the RxItem's patient
    */
   public Patient getPatient() {
@@ -149,24 +156,21 @@ public Date getNextRefillDate() {
   }
 
   /**
-   * @return the string representation of the RxItem's
-   * prescribing doctor
+   * @return the string representation of the RxItem's prescribing doctor
    */
   public String getDocString() {
     return Doctor.makeStringFromDoc(this.doc);
   }
 
   /**
-   * @return the string representation of the RxItem's 
-   * pharmacy
+   * @return the string representation of the RxItem's pharmacy
    */
   public String getPhString() {
     return Pharmacy.makeStringFromPharm(this.pharmacy);
   }
 
   /**
-   * @return the string representation of the RxItem's
-   * patient object
+   * @return the string representation of the RxItem's patient object
    */
   public String getPatientString() {
     return Patient.makeStringFromPatient(this.patient);
@@ -180,8 +184,7 @@ public Date getNextRefillDate() {
   }
 
   /**
-   * Sets the RxItem's id according to its location in 
-   * the RX Database
+   * Sets the RxItem's id according to its location in the RX Database
    * 
    * @param id the RxItem's id in the RX Database
    */
@@ -190,16 +193,16 @@ public Date getNextRefillDate() {
   }
 
   /**
-   * @return the Rx Item's id according to its location 
-   * in the Rx Database
+   * @return the Rx Item's id according to its location in the Rx Database
    */
   public long getId() {
     return this.id;
   }
 
-  /**  Determines if the user made changes to the RxItem object in the view dialog
+  /**
+   * Determines if the user made changes to the RxItem object in the view dialog
    * 
-   * @param name 
+   * @param name
    * @param patient
    * @param symptoms
    * @param sideEffects

@@ -1,7 +1,7 @@
 package cs250.spring14.refill.core;
+
 /**
- * The ScheduleItem class is the object that represents an Rx
- * in the calendar view
+ * The ScheduleItem class is the object that represents an Rx in the calendar view
  */
 public class ScheduleItem {
 
@@ -30,7 +30,8 @@ public class ScheduleItem {
     return id;
   }
 
-  /** Sets the ScheduleItem's id
+  /**
+   * Sets the ScheduleItem's id
    * 
    * @param id the ShceduleItem's id based on its position in the Schedule DB
    */
@@ -45,7 +46,8 @@ public class ScheduleItem {
     return name;
   }
 
-  /** Sets the ScheduleItem's name
+  /**
+   * Sets the ScheduleItem's name
    * 
    * @param name the ShceduleItem's name
    */
@@ -60,7 +62,8 @@ public class ScheduleItem {
     return pos;
   }
 
-  /** Sets the ScheduleItem's position in the calendar view
+  /**
+   * Sets the ScheduleItem's position in the calendar view
    * 
    * @param pos the ShceduleItem's position in the calendar view
    */
@@ -75,7 +78,8 @@ public class ScheduleItem {
     return color;
   }
 
-  /** Sets the ScheduleItem's color in the calendar view
+  /**
+   * Sets the ScheduleItem's color in the calendar view
    * 
    * @param color the ShceduleItem's color in the calendar view
    */
