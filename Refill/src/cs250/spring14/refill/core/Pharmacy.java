@@ -26,6 +26,7 @@ public class Pharmacy {
   private String phone;
   private String streetAddress;
   private long id;
+  public static final String DEFAULT_ADDRESS = "No Address Entered";
 
   /**
    * Constructor for Pharmacy's given a name, e-mail, and phone
@@ -175,14 +176,13 @@ public class Pharmacy {
         String emailStr = email.getText().toString().trim();
         String phoneStr = phone.getText().toString().trim();
         String addressStr = address.getText().toString().trim();
+        addressStr = (addressStr.length() == 0) ? DEFAULT_ADDRESS : addressStr;
         if (nameStr.length() == 0) {
           Toast.makeText(context, "Please ensure you've entered a valid name", Toast.LENGTH_SHORT).show();
         } else if (!MainActivity.isValidEmail(emailStr)) {
           Toast.makeText(context, "Please ensure you've entered a valid email", Toast.LENGTH_SHORT).show();
         } else if (!MainActivity.isValidPhone(phoneStr)) {
           Toast.makeText(context, "Please ensure you've entered a valid phone", Toast.LENGTH_SHORT).show();
-        } else if (!MainActivity.isValidStreet(addressStr)) {
-          Toast.makeText(context, "Please ensure you've entered a valid street address", Toast.LENGTH_SHORT).show();
         } else if (shouldUpdatePharm(ph, nameStr, emailStr, phoneStr, addressStr)) {
           if (MainActivity.phAdapter.updatePh(ph.getId(), nameStr, emailStr, phoneStr, addressStr)) {
             // We successfully updated the Doctor

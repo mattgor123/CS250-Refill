@@ -189,7 +189,7 @@ public class RxWrapper extends ArrayAdapter<RxItem> {
       case "zoloft":
         return R.drawable.zoloft;
       default:
-        return R.drawable.default_pill;
+        return R.drawable.noimage;
     }
   }
 }

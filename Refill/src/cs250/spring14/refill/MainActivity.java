@@ -808,6 +808,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         String emailStr = email.getText().toString().trim();
         String phoneStr = phone.getText().toString().trim();
         String streetStr = street.getText().toString().trim();
+        streetStr = (streetStr.length() == 0) ? Pharmacy.DEFAULT_ADDRESS : streetStr;
         if (nameStr.length() == 0) {
           Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name", Toast.LENGTH_SHORT)
               .show();
@@ -817,10 +818,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         } else if (!isValidPhone(phoneStr)) {
           Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone", Toast.LENGTH_SHORT)
               .show();
-        } else if (!isValidStreet(streetStr)) {
-          Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",
-              Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
           // We are good to add our pharmacy
           Pharmacy newPh = new Pharmacy(nameStr, emailStr, phoneStr, streetStr);
           newPh.setId(phAdapter.insertPh(new Pharmacy(nameStr, emailStr, phoneStr, streetStr)));
@@ -927,6 +926,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         String emailStr = email.getText().toString().trim();
         String phoneStr = phone.getText().toString().trim();
         String streetStr = street.getText().toString().trim();
+        streetStr = (streetStr.length() == 0) ? Pharmacy.DEFAULT_ADDRESS : streetStr;
         if (nameStr.length() == 0) {
           Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid name", Toast.LENGTH_SHORT)
               .show();
@@ -936,9 +936,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         } else if (!isValidPhone(phoneStr)) {
           Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid phone", Toast.LENGTH_SHORT)
               .show();
-        } else if (!isValidStreet(streetStr)) {
-          Toast.makeText(getApplicationContext(), "Please ensure you've entered a valid street address",
-              Toast.LENGTH_SHORT).show();
         } else {
           // We are good to add our pharmacy
           Pharmacy newPh = new Pharmacy(nameStr, emailStr, phoneStr, streetStr);
